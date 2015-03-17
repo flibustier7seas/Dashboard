@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>TFS Dashboard</title>
+    <script src="scripts/libs/require.js" data-main="scripts/bootstrap"></script>
+</head>
+<body>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Repository</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Updated</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: listOfRepositories">
+            <!-- ko foreach: listOfPullRequests -->
+            <tr>
+                <td data-bind="text: $parent.name"></td>
+                <td data-bind="text: createdByDisplayName"></td>
+                <td data-bind="text: title"></td>
+                <td data-bind="text: pullRequestId"></td>
+            </tr>
+            <!-- /ko -->
+        </tbody>
+    </table>
+    
+
+    <ul data-bind="foreach: listOfRepositories">
+        <!-- ko if: listOfPullRequests().length > 0 -->
+        <li>
+            <a data-bind="text: name, attr: {href:url}" target="_blank"> </a><br/>
+            <ul data-bind="foreach: listOfPullRequests">
+                <li>
+                    <a data-bind="text: title, attr: {href:$parent.url() + url()}" target="_blank"> </a><br/>
+                </li>
+            </ul>
+        </li>
+        <!-- /ko -->
+    </ul>
+</body>
+</html>
