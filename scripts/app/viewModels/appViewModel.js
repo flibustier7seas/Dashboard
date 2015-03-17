@@ -66,10 +66,10 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
 
                 var repository = new repositoryViewModel(this, client);
 
-                client.getPullRequests(repository).done(function (pullRequests) {
+                client.getPullRequests(repository.id()).done(function (pullRequests) {
 
                     $.each(pullRequests, function () {
-                        self.listOfPullRequest.push(new pullRequestViewModel(this,repository));
+                        self.listOfPullRequest.push(new pullRequestViewModel(this,repository,client));
 
                     });
 

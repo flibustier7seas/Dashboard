@@ -1,11 +1,12 @@
 ﻿define([], function () {
-    return function (id, status, title, url, createdByDisplayName) {
+    return function (id, status, title, url, createdByDisplayName, lastMergeSourceCommitId) {
         return {
             pullRequestId: id,
             status: status,
             title: title,
             url: url,
-            createdByDisplayName: createdByDisplayName
+            createdByDisplayName: createdByDisplayName,
+            lastMergeSourceCommitId: lastMergeSourceCommitId
         };
     };
 });
