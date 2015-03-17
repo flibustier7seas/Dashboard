@@ -6,7 +6,7 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
             { title: 'Repository', sortPropertyName: 'repositoryName', asc: true, active: false },
             { title: 'Author', sortPropertyName: 'createdByDisplayName', asc: true, active: false },
             { title: 'Title', sortPropertyName: 'title', asc: true, active: false },
-            { title: 'Updated', sortPropertyName: 'pullRequestId', asc: true, active: false }
+            { title: 'Updated', sortPropertyName: 'update', asc: true, active: false }
         ];
 
         this.filters = [
@@ -27,12 +27,11 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
 
             header.active = true;
 
-            
             var prop = header.sortPropertyName;
             var ascSort = function(a, b) {
                  return a[prop]() < b[prop]() ? -1 : a[prop]() > b[prop]() ? 1 : a[prop]() == b[prop]() ? 0 : 0;
             };
-            //NOTE: Для сортировки в противоположном направлении, можно еще использовать reverse();
+
             var descSort = function(a, b) {
                 return a[prop]() > b[prop]() ? -1 : a[prop]() < b[prop]() ? 1 : a[prop]() == b[prop]() ? 0 : 0;
             };

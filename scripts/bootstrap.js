@@ -4,7 +4,8 @@
     "paths": {
         "app":      "../app",
         "jquery":   "jquery-2.1.0",
-        "ko":       "knockout-3.3.0"
+        "ko":       "knockout-3.3.0",
+        "moment":   "moment"
     },
     "shim": {
         //"jquery.blockUI": ["jquery"],
