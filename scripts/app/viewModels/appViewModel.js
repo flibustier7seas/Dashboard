@@ -6,14 +6,16 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
             { title: 'Repository', sortPropertyName: 'repositoryName', asc: true, active: false },
             { title: 'Author', sortPropertyName: 'createdByDisplayName', asc: true, active: false },
             { title: 'Title', sortPropertyName: 'title', asc: true, active: false },
-            { title: 'Updated', sortPropertyName: 'update', asc: true, active: false }
-        ];
+            { title: 'Updated', sortPropertyName: 'update', asc: true, active: false }];
 
         this.filters = [
             { title: 'Show All', filter: null },
             { title: 'Only erm', filter: function (item) { return item.repository().name() == 'erm'; } },
-            { title: 'Only auto - tests', filter: function (item) { return item.repository().name() == 'auto-tests'; } }
-        ];
+            { title: 'Only auto - tests', filter: function (item) { return item.repository().name() == 'auto-tests'; } }];
+
+        this.textForFilters = ko.observable("");
+
+        this.propertyForFilters = ko.observable();
 
         this.activeSort = ko.observable(function () { return 0; });
 
@@ -28,11 +30,11 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
             header.active = true;
 
             var prop = header.sortPropertyName;
-            var ascSort = function(a, b) {
-                 return a[prop]() < b[prop]() ? -1 : a[prop]() > b[prop]() ? 1 : a[prop]() == b[prop]() ? 0 : 0;
+            var ascSort = function (a, b) {
+                return a[prop]() < b[prop]() ? -1 : a[prop]() > b[prop]() ? 1 : a[prop]() == b[prop]() ? 0 : 0;
             };
 
-            var descSort = function(a, b) {
+            var descSort = function (a, b) {
                 return a[prop]() > b[prop]() ? -1 : a[prop]() < b[prop]() ? 1 : a[prop]() == b[prop]() ? 0 : 0;
             };
             var sortFunc = header.asc ? ascSort : descSort;
@@ -50,10 +52,17 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
 
         this.filteredListOfPullRequest = ko.computed(function () {
             var result;
+
             if (self.activeFilter()) {
                 result = ko.utils.arrayFilter(self.listOfPullRequest(), self.activeFilter());
             } else {
                 result = self.listOfPullRequest();
+            }
+
+            if (self.textForFilters() != "") {
+                result = ko.utils.arrayFilter(result, function(item) {
+                    return item[self.propertyForFilters()]().indexOf(self.textForFilters()) != -1;
+                });
             }
 
             return result.sort(self.activeSort());
@@ -68,14 +77,13 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
                 client.getPullRequests(repository.id()).done(function (pullRequests) {
 
                     $.each(pullRequests, function () {
-                        self.listOfPullRequest.push(new pullRequestViewModel(this,repository,client));
+                        self.listOfPullRequest.push(new pullRequestViewModel(this, repository, client));
 
                     });
 
                 });
             });
         });
-
     };
 });
 

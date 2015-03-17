@@ -9,6 +9,15 @@
         <input type="button" data-bind="click: $parent.setActiveFilter, value: title" />
     </div>
 
+    <div>
+        <select data-bind="options:headers, value: propertyForFilters, optionsText: 'title',optionsValue: 'sortPropertyName'"></select>
+        <input data-bind="textInput: textForFilters" />
+    </div>
+    
+    <a data-bind="text: propertyForFilters"></a>
+    <a data-bind="text: textForFilters"></a>
+   
+
     <table>
         <thead>
             <tr data-bind="foreach: headers">
