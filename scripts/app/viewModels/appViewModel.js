@@ -1,19 +1,45 @@
-define(["jquery", "ko", "./repositoryViewModel"], function ($, ko, repositoryViewModel) {
+define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], function ($, ko, repositoryViewModel, pullRequestViewModel) {
     return function (client) {
         var self = this;
 
         this.headers = [
-            { title: 'Repository', sortPropertyName: 'firstName', asc: true, active: false },
-            { title: 'Author', sortPropertyName: 'lastName', asc: true, active: false },
-            { title: 'Title', sortPropertyName: 'age', asc: true, active: false },
-            { title: 'Updated', sortPropertyName: 'age', asc: true, active: false }
+            { title: 'Repository', sortPropertyName: 'repositoryName', asc: true, active: false },
+            { title: 'Author', sortPropertyName: 'createdByDisplayName', asc: true, active: false },
+            { title: 'Title', sortPropertyName: 'title', asc: true, active: false },
+            { title: 'Updated', sortPropertyName: 'pullRequestId', asc: true, active: false }
         ];
 
         this.filters = [
             { title: 'Show All', filter: null },
-            { title: 'Only erm', filter: function (item) { return item.name() == 'erm'; } },
-            { title: 'Only auto - tests', filter: function (item) { return item.name() == 'auto-tests'; } }
+            { title: 'Only erm', filter: function (item) { return item.repository().name() == 'erm'; } },
+            { title: 'Only auto - tests', filter: function (item) { return item.repository().name() == 'auto-tests'; } }
         ];
+
+        this.activeSort = ko.observable(function () { return 0; });
+
+        this.sort = function (header) {
+            //NOTE: Если кликнули 2 раза, то меняем направление сортировки
+            if (header.active) {
+                header.asc = !header.asc;
+            }
+
+            ko.utils.arrayForEach(self.headers, function (item) { item.active = false; });
+
+            header.active = true;
+
+            
+            var prop = header.sortPropertyName;
+            var ascSort = function(a, b) {
+                 return a[prop]() < b[prop]() ? -1 : a[prop]() > b[prop]() ? 1 : a[prop]() == b[prop]() ? 0 : 0;
+            };
+            //NOTE: Для сортировки в противоположном направлении, можно еще использовать reverse();
+            var descSort = function(a, b) {
+                return a[prop]() > b[prop]() ? -1 : a[prop]() < b[prop]() ? 1 : a[prop]() == b[prop]() ? 0 : 0;
+            };
+            var sortFunc = header.asc ? ascSort : descSort;
+
+            self.activeSort(sortFunc);
+        };
 
         this.activeFilter = ko.observable(self.filters[0].filter);
 
@@ -21,32 +47,36 @@ define(["jquery", "ko", "./repositoryViewModel"], function ($, ko, repositoryVie
             self.activeFilter(model.filter);
         };
 
-        this.listOfRepositories = ko.observableArray();
+        this.listOfPullRequest = ko.observableArray();
 
-        this.filteredListOfRepositories = ko.computed(function () {
+        this.filteredListOfPullRequest = ko.computed(function () {
             var result;
             if (self.activeFilter()) {
-                result = ko.utils.arrayFilter(self.listOfRepositories(), self.activeFilter());
+                result = ko.utils.arrayFilter(self.listOfPullRequest(), self.activeFilter());
             } else {
-                result = self.listOfRepositories();
+                result = self.listOfPullRequest();
             }
-            return result;
+
+            return result.sort(self.activeSort());
         });
 
-        this.sort = function () {
-            self.listOfRepositories.sort(function (left, right) {
-                return left.name() == right.name() ? 0 : (left.name() < right.name() ? -1 : 1);
-            });
-        };
+        client.getRepositories().done(function (repositories) {
 
-        client.getRepositories().done(function (items) {
-            self.listOfRepositories.removeAll();
-            $.each(items, function () {
-                self.listOfRepositories.push(new repositoryViewModel(this, client));
-            });
+            $.each(repositories, function () {
 
-            self.sort();
+                var repository = new repositoryViewModel(this, client);
+
+                client.getPullRequests(repository).done(function (pullRequests) {
+
+                    $.each(pullRequests, function () {
+                        self.listOfPullRequest.push(new pullRequestViewModel(this,repository));
+
+                    });
+
+                });
+            });
         });
+
     };
 });
 

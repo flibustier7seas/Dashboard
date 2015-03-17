@@ -17,8 +17,8 @@
                     });
                 });
             },
-            getPullRequests: function (repositoryId) {
-                return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS).then(function (data) {
+            getPullRequests: function (repos) {
+                return $.getJSON(requestUrl + '/' + repos.id() + API_PULLREQUESTS).then(function (data) {
                     return $.map(data.value || [], function (item) {
                         return new pullRequest(
                             item.pullRequestId,

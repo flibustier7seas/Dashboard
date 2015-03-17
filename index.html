@@ -12,33 +12,21 @@
     <table>
         <thead>
             <tr data-bind="foreach: headers">
-                <th data-bind="text: title"></th>
+                <th data-bind="click: $parent.sort, text: title"></th>
             </tr>
         </thead>
-        <tbody data-bind="foreach: filteredListOfRepositories">
-            <!-- ko foreach: listOfPullRequests -->
+        <tbody data-bind="foreach: filteredListOfPullRequest">
             <tr>
-                <td data-bind="text: $parent.name"></td>
+                <td data-bind="text: repositoryName"></td>
                 <td data-bind="text: createdByDisplayName"></td>
                 <td data-bind="text: title"></td>
                 <td data-bind="text: pullRequestId"></td>
             </tr>
-            <!-- /ko -->
         </tbody>
     </table>
 
 
-    <ul data-bind="foreach: listOfRepositories">
-        <!-- ko if: listOfPullRequests().length > 0 -->
-        <li>
-            <a data-bind="text: name, attr: {href:url}" target="_blank"> </a><br />
-            <ul data-bind="foreach: listOfPullRequests">
-                <li>
-                    <a data-bind="text: title, attr: {href:$parent.url() + url()}" target="_blank"> </a><br />
-                </li>
-            </ul>
-        </li>
-        <!-- /ko -->
-    </ul>
+    <!--<a data-bind="text: title, attr: {href:$parent.url() + url()}" target="_blank"> </a><br />-->
+
 </body>
 </html>

@@ -1,5 +1,9 @@
 ﻿define(["jquery", "ko"], function ($, ko) {
-    return function (pullRequest) {
+    return function (pullRequest, repository) {
+
+        this.repository = ko.observable(repository);
+        this.repositoryName = ko.observable(repository.name());
+
         this.pullRequestId = ko.observable(pullRequest.pullRequestId);
         this.status = ko.observable(pullRequest.status);
         this.title = ko.observable(pullRequest.title);
