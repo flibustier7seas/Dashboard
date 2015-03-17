@@ -15,7 +15,7 @@
                 <th>Updated</th>
             </tr>
         </thead>
-        <tbody data-bind="foreach: listOfRepositories">
+        <tbody data-bind="foreach: filteredListOfRepositories">
             <!-- ko foreach: listOfPullRequests -->
             <tr>
                 <td data-bind="text: $parent.name"></td>
