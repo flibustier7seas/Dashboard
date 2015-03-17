@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>TFS Dashboard</title>
+    <link rel="stylesheet" href="style/StyleSheet.css" type="text/css" />
     <script src="scripts/libs/require.js" data-main="scripts/bootstrap"></script>
 </head>
 <body>
@@ -13,12 +14,8 @@
         <select data-bind="options:headers, value: propertyForFilters, optionsText: 'title',optionsValue: 'sortPropertyName'"></select>
         <input data-bind="textInput: textForFilters" />
     </div>
-    
-    <a data-bind="text: propertyForFilters"></a>
-    <a data-bind="text: textForFilters"></a>
-   
 
-    <table>
+    <table class="simple-little-table" cellspacing='0'>
         <thead>
             <tr data-bind="foreach: headers">
                 <th data-bind="click: $parent.sort, text: title"></th>
