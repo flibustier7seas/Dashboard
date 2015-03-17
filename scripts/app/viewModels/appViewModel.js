@@ -2,12 +2,24 @@ define(["jquery", "ko", "./repositoryViewModel"], function ($, ko, repositoryVie
     return function (client) {
         var self = this;
 
-        this.filters = [
-            { title: 'Show All', filter: null },
-            { title: 'Only erm', filter: function (item) { return item.name() == 'erm'; } }
+        this.headers = [
+            { title: 'Repository', sortPropertyName: 'firstName', asc: true, active: false },
+            { title: 'Author', sortPropertyName: 'lastName', asc: true, active: false },
+            { title: 'Title', sortPropertyName: 'age', asc: true, active: false },
+            { title: 'Updated', sortPropertyName: 'age', asc: true, active: false }
         ];
 
-        this.activeFilter = ko.observable(self.filters[1].filter);
+        this.filters = [
+            { title: 'Show All', filter: null },
+            { title: 'Only erm', filter: function (item) { return item.name() == 'erm'; } },
+            { title: 'Only auto - tests', filter: function (item) { return item.name() == 'auto-tests'; } }
+        ];
+
+        this.activeFilter = ko.observable(self.filters[0].filter);
+
+        this.setActiveFilter = function (model) {
+            self.activeFilter(model.filter);
+        };
 
         this.listOfRepositories = ko.observableArray();
 

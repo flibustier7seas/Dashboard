@@ -5,14 +5,14 @@
     <script src="scripts/libs/require.js" data-main="scripts/bootstrap"></script>
 </head>
 <body>
-    
+    <div data-bind="foreach: filters">
+        <input type="button" data-bind="click: $parent.setActiveFilter, value: title" />
+    </div>
+
     <table>
         <thead>
-            <tr>
-                <th>Repository</th>
-                <th>Author</th>
-                <th>Title</th>
-                <th>Updated</th>
+            <tr data-bind="foreach: headers">
+                <th data-bind="text: title"></th>
             </tr>
         </thead>
         <tbody data-bind="foreach: filteredListOfRepositories">
@@ -26,15 +26,15 @@
             <!-- /ko -->
         </tbody>
     </table>
-    
+
 
     <ul data-bind="foreach: listOfRepositories">
         <!-- ko if: listOfPullRequests().length > 0 -->
         <li>
-            <a data-bind="text: name, attr: {href:url}" target="_blank"> </a><br/>
+            <a data-bind="text: name, attr: {href:url}" target="_blank"> </a><br />
             <ul data-bind="foreach: listOfPullRequests">
                 <li>
-                    <a data-bind="text: title, attr: {href:$parent.url() + url()}" target="_blank"> </a><br/>
+                    <a data-bind="text: title, attr: {href:$parent.url() + url()}" target="_blank"> </a><br />
                 </li>
             </ul>
         </li>
