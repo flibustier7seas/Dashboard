@@ -1,8 +1,9 @@
-﻿define(["jquery", "./models/repository", "./models/pullRequest", "./models/commit"], function ($, repository, pullRequest, commit) {
+﻿define(["jquery", "./models/repository", "./models/pullRequest", "./models/commit", "./models/reviewer"], function ($, repository, pullRequest, commit, reviewer) {
     var API_REPOSITORIES = "/_apis/git/repositories";
     var API_PULLREQUESTS = "/pullRequests";
     var API_PULLREQUEST = "/pullRequest";
-    var API_COMMITS= "/commits";
+    var API_COMMITS = "/commits";
+    var API_REVIEWERS = "/reviewers";
 
     return function (url) {
         var requestUrl = url + API_REPOSITORIES;
@@ -19,6 +20,7 @@
                 });
             },
             getPullRequests: function (repositoryId) {
+                console.log(requestUrl + '/' + repositoryId + API_PULLREQUESTS);
                 return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS).then(function (data) {
                     return $.map(data.value || [], function (item) {
                         return new pullRequest(
@@ -32,12 +34,24 @@
                     });
                 });
             },
+
             getCommit: function (repositoryId,commitId) {
                 return $.getJSON(requestUrl + '/' + repositoryId + API_COMMITS +'/'+ commitId).then(function (data) {
                     return new commit(
                            data.commitId,
                            data.push.date
                         );
+                });
+            },
+            getReviewers: function (repositoryId, pullRequestId) {
+                return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS + '/' + pullRequestId + API_REVIEWERS).then(function (data) {
+                    return $.map(data.value || [], function (item) {
+                        return new reviewer(
+                               item.displayName,
+                               item.vote
+                            );
+                    });
+
                 });
             }
         }

@@ -6,7 +6,8 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
             { title: 'Repository', sortPropertyName: 'repositoryName', asc: true, active: false },
             { title: 'Author', sortPropertyName: 'createdByDisplayName', asc: true, active: false },
             { title: 'Title', sortPropertyName: 'title', asc: true, active: false },
-            { title: 'Updated', sortPropertyName: 'update', asc: true, active: false }];
+            { title: 'Updated', sortPropertyName: 'update', asc: true, active: false },
+            { title: 'Status', sortPropertyName: 'minVote', asc: true, active: false }];
 
         this.filters = [
             { title: 'Show All', filter: null },
@@ -18,6 +19,15 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
         this.propertyForFilters = ko.observable();
 
         this.activeSort = ko.observable(function () { return 0; });
+
+        this.reviewers = ko.observableArray();
+
+        this.setReviewers = function (pullRequest) {
+            self.reviewers.removeAll();
+            pullRequest.reviewers().forEach(function(item) {
+                self.reviewers.push(item);
+            });
+        }
 
         this.sort = function (header) {
             //NOTE: Если кликнули 2 раза, то меняем направление сортировки
