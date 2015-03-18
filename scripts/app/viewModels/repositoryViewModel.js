@@ -1,4 +1,4 @@
-﻿define(["jquery", "ko", "./pullRequestViewModel"], function ($, ko, pullRequestViewModel) {
+﻿define(["jquery", "ko"], function ($, ko) {
     return function (repository) {
         this.id = ko.observable(repository.id);
         this.name = ko.observable(repository.name);
