@@ -12,9 +12,16 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
         this.filters = [
             { title: 'Show All', filter: null },
             { title: 'Only erm', filter: function (item) { return item.repository().name() == 'erm'; } },
-            { title: 'Only auto - tests', filter: function (item) { return item.repository().name() == 'auto-tests'; } }];
+            { title: 'Only auto-tests', filter: function (item) { return item.repository().name() == 'auto-tests'; } },
+            { title: 'Status: No vote', filter: function (item) { return item.titleMinVote() == 'No vote'; } },
+            { title: 'Status: Yes', filter: function (item) { return item.titleMinVote() == 'Yes'; } },
+            { title: 'Status: No', filter: function (item) { return item.titleMinVote() == 'No'; } }
+        ];
 
         this.textForFilters = ko.observable("");
+
+        this.chosenPullRequest = ko.observable("");
+
 
         this.propertyForFilters = ko.observable();
 
@@ -24,9 +31,11 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
 
         this.setReviewers = function (pullRequest) {
             self.reviewers.removeAll();
-            pullRequest.reviewers().forEach(function(item) {
+            pullRequest.reviewers().forEach(function (item) {
                 self.reviewers.push(item);
             });
+
+            self.chosenPullRequest(pullRequest);
         }
 
         this.sort = function (header) {
@@ -70,7 +79,7 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
             }
 
             if (self.textForFilters() != "") {
-                result = ko.utils.arrayFilter(result, function(item) {
+                result = ko.utils.arrayFilter(result, function (item) {
                     return item[self.propertyForFilters()]().indexOf(self.textForFilters()) != -1;
                 });
             }

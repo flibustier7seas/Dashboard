@@ -10,6 +10,10 @@
         this.status = ko.observable(pullRequest.status);
         this.title = ko.observable(pullRequest.title);
         this.createdByDisplayName = ko.observable(pullRequest.createdByDisplayName);
+        this.creationDate = ko.observable(pullRequest.creationDate);
+        this.sourceRefName = ko.observable(pullRequest.sourceRefName);
+        this.mergeStatus = ko.observable(pullRequest.mergeStatus);
+        this.description = ko.observable(pullRequest.description);
 
         this.update = ko.observable();
         this.minVote = ko.observable();

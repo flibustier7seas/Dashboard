@@ -29,7 +29,11 @@
                             item.title,
                             API_PULLREQUEST + '/' + item.pullRequestId,
                             item.createdBy.displayName,
-                            item.lastMergeSourceCommit.commitId
+                            item.lastMergeSourceCommit.commitId,
+                            item.creationDate,
+                            item.sourceRefName,
+                            item.mergeStatus,
+                            item.description
                         );
                     });
                 });

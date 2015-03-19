@@ -2,49 +2,79 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>TFS Dashboard</title>
-    <link rel="stylesheet" href="style/StyleSheet.css" type="text/css" />
     <script src="scripts/libs/require.js" data-main="scripts/bootstrap"></script>
+    <link href="style/bootstrap.css" rel="stylesheet">
 </head>
 <body>
-    <div data-bind="foreach: filters">
-        <input type="button" data-bind="click: $parent.setActiveFilter, value: title" />
-    </div>
 
-    <div>
-        <select data-bind="options:headers, value: propertyForFilters, optionsText: 'title',optionsValue: 'sortPropertyName'"></select>
-        <input data-bind="textInput: textForFilters" />
-    </div>
+    <div class="container">
+        <div class="row">
+            <h1>TFS Dashboard</h1>
+            <div class="navbar navbar-inverse">
+                <div class="container">
+                    <div class="navbar-header">
 
-    <table class="simple-little-table">
-        <thead>
-            <tr data-bind="foreach: headers">
-                <th data-bind="click: $parent.sort, text: title"></th>
-            </tr>
-        </thead>
-        <tbody data-bind="foreach: filteredListOfPullRequest">
-            <tr>
-                <td><a data-bind="text: repositoryName, attr: {href:repositoryUrl}" target="_blank"></a></td>
-                <td data-bind="text: createdByDisplayName"></td>
-                <td><a data-bind="text: title, attr: {href:url}" target="_blank"></a></td>
-                <td data-bind="text: date"></td>
-                <td data-bind="text: titleMinVote, click: $root.setReviewers"></td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <table class="simple-little-table">
-        <thead>
-            <tr>
-                <th>Display Name</th>
-                <th>Title Vote</th>
-            </tr>
-        </thead>
-        <tbody data-bind="foreach: reviewers">
-            <tr>
-                <td data-bind="text: displayName"></td>
-                <td data-bind="text: titleVote"></td>
-            </tr>
-        </tbody>
-    </table>
+                    </div>
+                    <div class="collapse navbar-collapse">
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div data-bind="foreach: filters">
+            <input type="button" class="btn btn-info" data-bind="click: $parent.setActiveFilter, value: title" />
+        </div>
+
+        <div>
+            <select data-bind="options:headers, value: propertyForFilters, optionsText: 'title',optionsValue: 'sortPropertyName'"></select>
+            <input data-bind="textInput: textForFilters" />
+        </div>
+
+        <table class="table-responsive table-hover table-bordered">
+            <thead>
+                <tr class="text-info " data-bind="foreach: headers">
+                    <th data-bind="click: $parent.sort, text: title"></th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: filteredListOfPullRequest">
+                <tr>
+                    <td><a data-bind="text: repositoryName, attr: {href:repositoryUrl}" target="_blank"></a></td>
+                    <td data-bind="text: createdByDisplayName"></td>
+                    <td><a data-bind="text: title, attr: {href:url}" target="_blank"></a></td>
+                    <td data-bind="text: date"></td>
+                    <td data-bind="text: titleMinVote, click: $root.setReviewers"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="row" data-bind="with: chosenPullRequest">
+            <h3 data-bind="text: title"></h3>
+            <p><label>Repository</label>: <span data-bind="text: repositoryName"></span></p>
+            <p><label>Created By</label>: <span data-bind="text: createdByDisplayName"></span></p>
+            <p><label>Creation Date</label>: <span data-bind="text: creationDate"></span></p>
+            <p><label>SourceRefName</label>: <span data-bind="text: sourceRefName"></span></p>
+            <p><label>Merge Status</label>: <span data-bind="text: mergeStatus"></span></p>
+            <p><label>Description</label>: <span data-bind="text: description"></span></p>
+
+            <table class="table">
+                <caption>Reviewers</caption>
+                <thead>
+                    <tr>
+                        <th>Display Name</th>
+                        <th>Title Vote</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: reviewers">
+                    <tr>
+                        <td data-bind="text: displayName"></td>
+                        <td data-bind="text: titleVote"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>
