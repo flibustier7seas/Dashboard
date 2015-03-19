@@ -1,5 +1,6 @@
 define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], function ($, ko, repositoryViewModel, pullRequestViewModel) {
     return function (client) {
+
         var self = this;
 
         this.listOfPullRequest = ko.observableArray();
@@ -45,7 +46,8 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
         }
 
         this.activeSort = ko.observable(function () { return 0; });
-        this.sort = function (header,asc) {
+
+        this.sort = function (header,asc,items) {
 
             ko.utils.arrayForEach(self.headers, function (item) { item.active = false; });
 
@@ -61,7 +63,7 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
                 
             };
 
-            self.activeSort(sort);
+            items.sort(sort);
         };
 
         this.textForFilters = ko.observable("");
@@ -72,20 +74,20 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
         };
         this.filteredListOfPullRequest = ko.computed(function () {
             var result;
-
+            //Фильтр по кнопке
             if (self.activeFilter()) {
                 result = ko.utils.arrayFilter(self.listOfPullRequest(), self.activeFilter());
             } else {
                 result = self.listOfPullRequest();
             }
-
+            //Фильтр по введенному тексту
             if (self.textForFilters() != "") {
                 result = ko.utils.arrayFilter(result, function (item) {
                     return item[self.propertyForFilters()]().indexOf(self.textForFilters()) != -1;
                 });
             }
 
-            return result.sort(self.activeSort());
+            return result;
         });
 
         this.chosenPullRequest = ko.observable("");

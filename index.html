@@ -7,7 +7,6 @@
     <link href="style/styleSheet.css" rel="stylesheet">
 </head>
 <body>
-
     <div class="container">
 
         <div class="row">
@@ -27,7 +26,11 @@
             <table class="table table-hover table-bordered">
                 <thead>
                     <tr class="text-info" data-bind="foreach: $root.headersRepository">
-                        <th data-bind="text: title"></th>
+                        <th>
+                            <span data-bind="text: title"></span>
+                            <span class="glyphicon glyphicon-arrow-up" data-bind="click: function(data){$root.sort(data,true,$parent.listOfRepositories)}"></span>
+                            <span class="glyphicon glyphicon-arrow-down" data-bind="click: function(data){$root.sort(data,false,$parent.listOfRepositories)}"></span>
+                        </th>
 
                     </tr>
                 </thead>
@@ -64,8 +67,8 @@
                         <tr class="text-info" data-bind="foreach: $root.headers">
                             <th>
                                 <span data-bind="text: title"></span>
-                                <span class="glyphicon glyphicon-arrow-up" data-bind="click: function(data){$root.sort(data,true)}"></span>
-                                <span class="glyphicon glyphicon-arrow-down" data-bind="click: function(data){$root.sort(data,false)}"></span>
+                                <span class="glyphicon glyphicon-arrow-up" data-bind="click: function(data){$root.sort(data,true,$parent.listOfPullRequest)}"></span>
+                                <span class="glyphicon glyphicon-arrow-down" data-bind="click: function(data){$root.sort(data,false,$parent.listOfPullRequest)}"></span>
                             </th>
                         </tr>
                     </thead>
