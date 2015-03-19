@@ -14,7 +14,9 @@
                         return new repository(
                             item.id,
                             item.name,
-                            item.remoteUrl
+                            item.remoteUrl,
+                            item.project.name,
+                            item.defaultBranch
                         );
                     });
                 });
@@ -38,7 +40,6 @@
                     });
                 });
             },
-
             getCommit: function (repositoryId,commitId) {
                 return $.getJSON(requestUrl + '/' + repositoryId + API_COMMITS +'/'+ commitId).then(function (data) {
                     return new commit(

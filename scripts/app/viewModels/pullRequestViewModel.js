@@ -1,4 +1,4 @@
-﻿define(["jquery", "ko", "moment", "./reviewerViewModel"], function ($, ko, moment, reviewerViewModel) {
+﻿define(["jquery", "ko", "moment", "./reviewerViewModel", "./commitViewModel"], function ($, ko, moment, reviewerViewModel, commitViewModel) {
     return function (pullRequest, repository, client) {
         var self = this;
 
@@ -32,8 +32,9 @@
             return moment(self.update()).format('LLLL');
         });
 
-        client.getCommit(repository.id(), pullRequest.lastMergeSourceCommitId).done(function (commit) {
-            self.update(commit.pushDate);
+        client.getCommit(repository.id(), pullRequest.lastMergeSourceCommitId).done(function (commitModel) {
+            var commit = new commitViewModel(commitModel);
+            self.update(commit.pushDate());
         });
 
         client.getReviewers(repository.id(), self.pullRequestId()).done(function (reviewers) {
