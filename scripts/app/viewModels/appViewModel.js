@@ -73,6 +73,7 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
         this.setActiveFilter = function (model) {
             self.activeFilter(model.filter);
         };
+
         this.filteredListOfPullRequest = ko.computed(function () {
             var result;
             //Фильтр по кнопке
