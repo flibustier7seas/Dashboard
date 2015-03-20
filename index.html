@@ -23,18 +23,18 @@
         </div>
 
         <div class="row" data-bind="visible: menuHeaders()[0].active">
-            <table class="table table-hover table-bordered">
+            <table class="table table-hover table-bordered" data-bind="with: listOfRepositories">
                 <thead>
-                    <tr class="text-info" data-bind="foreach: $root.headersRepository">
+                    <tr class="text-info" data-bind="foreach: headers">
                         <th>
                             <span data-bind="text: title"></span>
-                            <span class="glyphicon glyphicon-arrow-up" data-bind="click: function(data){$root.sort(data,true,$parent.listOfRepositories)}"></span>
-                            <span class="glyphicon glyphicon-arrow-down" data-bind="click: function(data){$root.sort(data,false,$parent.listOfRepositories)}"></span>
+                            <span class="glyphicon glyphicon-arrow-up" data-bind="click: function(data){$root.sort(data,true,$parent.list)}"></span>
+                            <span class="glyphicon glyphicon-arrow-down" data-bind="click: function(data){$root.sort(data,false,$parent.list)}"></span>
                         </th>
 
                     </tr>
                 </thead>
-                <tbody data-bind="foreach: listOfRepositories">
+                <tbody data-bind="foreach: list">
                     <tr class="text-left">
                         <td class="col-md-4"><a data-bind="text: id"></a></td>
                         <td class="col-md-3" data-bind="text: name"></td>
@@ -45,7 +45,10 @@
             </table>
         </div>
 
-        <div data-bind="visible: menuHeaders()[1].active">
+        
+        
+
+        <div data-bind="with: listOfPullRequest, visible: menuHeaders()[1].active">
 
             <div class="row" data-bind="foreach: filters">
                 <input type="button" class="btn btn-info" data-bind="click: $parent.setActiveFilter, value: title" />
@@ -64,11 +67,11 @@
             <div class="row">
                 <table class="table table-hover table-bordered">
                     <thead>
-                        <tr class="text-info" data-bind="foreach: $root.headers">
+                        <tr class="text-info" data-bind="foreach: headers">
                             <th>
                                 <span data-bind="text: title"></span>
-                                <span class="glyphicon glyphicon-arrow-up" data-bind="click: function(data){$root.sort(data,true,$parent.listOfPullRequest)}"></span>
-                                <span class="glyphicon glyphicon-arrow-down" data-bind="click: function(data){$root.sort(data,false,$parent.listOfPullRequest)}"></span>
+                                <span class="glyphicon glyphicon-arrow-up" data-bind="click: function(data){$root.sort(data,true,$parent.list)}"></span>
+                                <span class="glyphicon glyphicon-arrow-down" data-bind="click: function(data){$root.sort(data,false,$parent.list)}"></span>
                             </th>
                         </tr>
                     </thead>
@@ -78,7 +81,7 @@
                             <td class="col-md-3" data-bind="text: createdByDisplayName"></td>
                             <td class="col-md-4"><a data-bind="text: title, attr: {href:url}" target="_blank"></a></td>
                             <td class="col-md-3" data-bind="text: date"></td>
-                            <td class="col-md-1" data-bind="text: titleMinVote, click: $root.setReviewers"></td>
+                            <td class="col-md-1" data-bind="text: titleMinVote, click: $parent.setReviewers"></td>
                         </tr>
                     </tbody>
                 </table>
