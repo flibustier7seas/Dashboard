@@ -31,6 +31,7 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], func
             { title: 'Status: No', filter: function (item) { return item.titleMinVote() == 'No'; } }
         ];
 
+        //TODO: вынести
         this.headersRepository = [
             { title: 'id', sortPropertyName: 'id', asc: true, active: false },
             { title: 'name', sortPropertyName: 'name', asc: true, active: false },
