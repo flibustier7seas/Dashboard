@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#"%>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>TFS Dashboard</title>
@@ -7,6 +8,16 @@
     <link href="style/styleSheet.css" rel="stylesheet">
 </head>
 <body>
+    <script type="text/javascript">
+        <% var settings = new Settings(); %>
+
+        ///TODO: найти способ передать settings как параметр, а не делать его глобальным
+        settings = {
+            userId: "<% Response.Write(settings.UserId); %>",
+            userName: "<% Response.Write(settings.UserName); %>",
+            mainUrl: "<% Response.Write(settings.MainUrl); %>"
+        };
+    </script>
     <div class="container">
 
         <div class="row">
@@ -17,6 +28,7 @@
                         <ul class="nav navbar-nav" data-bind="foreach: menuHeaders">
                             <li><a href="#" data-bind="click: $root.setActiveMenu, text: title"></a></li>
                         </ul>
+                        <a class="navbar-brand navbar-right" data-bind="text: userName"></a>
                     </div>
                 </div>
             </nav>

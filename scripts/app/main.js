@@ -1,9 +1,6 @@
 ﻿define(["jquery", "ko", "./server", "./ViewModels/appViewModel"], function ($, ko, server, appViewModel) {
-    //TODO: создать кошерный конфиг
-    var mainUrl = "http://uk-tfs02.2gis.local/tfs/DefaultCollection";
-
     $(function () {
-        var client = new server(mainUrl);
+        var client = new server(settings.mainUrl);
         ko.applyBindings(new appViewModel(client));
     });
 });

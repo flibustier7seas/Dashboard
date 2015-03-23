@@ -2,7 +2,13 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel", "./li
     function ($, ko, repositoryViewModel, pullRequestViewModel, listOfRepositoriesViewModel, listOfPullRequestViewModel) {
     return function (client) {
 
+        console.log(settings.userId);
+        console.log(settings.userName);
+
         var self = this;
+
+        this.userName = settings.userName;
+        this.userId = settings.userId;
 
         this.listOfPullRequest = ko.observable(new listOfPullRequestViewModel());
         this.listOfRepositories = ko.observable(new listOfRepositoriesViewModel());
@@ -20,8 +26,6 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel", "./li
         };
 
         this.sort = function (header, asc, items) {
-            //ko.utils.arrayForEach(self.headers, function (item) { item.active = false; });
-            //header.active = true;
             var prop = header.sortPropertyName;
             var sort = function (a, b) {
                 if (asc) {
