@@ -23,6 +23,8 @@
         </div>
 
         <div class="row" data-bind="visible: menuHeaders()[0].active">
+            
+
             <table class="table table-hover table-bordered" data-bind="with: listOfRepositories">
                 <thead>
                     <tr class="text-info" data-bind="foreach: headers">
@@ -43,12 +45,15 @@
                     </tr>
                 </tbody>
             </table>
+            
+
         </div>
 
         
         
 
         <div data-bind="with: listOfPullRequest, visible: menuHeaders()[1].active">
+            
 
             <div class="row" data-bind="foreach: filters">
                 <input type="button" class="btn btn-info" data-bind="click: $parent.setActiveFilter, value: title" />
@@ -78,9 +83,10 @@
                     <tbody data-bind="foreach: filteredListOfPullRequest">
                         <tr class="text-left">
                             <td class="col-md-1"><a data-bind="text: repositoryName, attr: {href:repositoryUrl}" target="_blank"></a></td>
-                            <td class="col-md-3" data-bind="text: createdByDisplayName"></td>
+                            <td class="col-md-2" data-bind="text: createdByDisplayName"></td>
                             <td class="col-md-4"><a data-bind="text: title, attr: {href:url}" target="_blank"></a></td>
-                            <td class="col-md-3" data-bind="text: date"></td>
+                            <td class="col-md-2" data-bind="text: creationDateToText"></td>
+                            <td class="col-md-2" data-bind="text: updateToText"></td>
                             <td class="col-md-1" data-bind="text: titleMinVote, click: $parent.setReviewers"></td>
                         </tr>
                     </tbody>
@@ -115,6 +121,7 @@
 
 
         </div>
+
     </div>
 </body>
 </html>

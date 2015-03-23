@@ -25,11 +25,18 @@
             return repository.url() + pullRequest.url;
         });
 
-        this.date = ko.computed(function () {
+        this.updateToText = ko.computed(function () {
             if (moment().diff(self.update(), 'days') < 7) {
                 return moment(self.update()).fromNow();
             }
             return moment(self.update()).format('LLLL');
+        });
+
+        this.creationDateToText = ko.computed(function () {
+            if (moment().diff(self.creationDate(), 'days') < 7) {
+                return moment(self.creationDate()).fromNow();
+            }
+            return moment(self.creationDate()).format('LLLL');
         });
 
         client.getCommit(repository.id(), pullRequest.lastMergeSourceCommitId).done(function (commitModel) {

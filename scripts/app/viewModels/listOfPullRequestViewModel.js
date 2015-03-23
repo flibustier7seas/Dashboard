@@ -1,4 +1,4 @@
-﻿define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel"], function ($, ko, repositoryViewModel, pullRequestViewModel) {
+﻿define(["jquery", "ko"], function ($, ko) {
     return function () {
 
         var self = this;
@@ -13,6 +13,7 @@
             { title: 'Repository', sortPropertyName: 'repositoryName', asc: true, active: false },
             { title: 'Author', sortPropertyName: 'createdByDisplayName', asc: true, active: false },
             { title: 'Title', sortPropertyName: 'title', asc: true, active: false },
+            { title: 'Creation Date', sortPropertyName: 'creationDate', asc: true, active: false },
             { title: 'Updated', sortPropertyName: 'update', asc: true, active: false },
             { title: 'Status', sortPropertyName: 'minVote', asc: true, active: false }
         ];

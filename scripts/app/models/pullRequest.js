@@ -1,5 +1,5 @@
 ﻿define([], function () {
-    return function (id, status, title, url, createdByDisplayName, lastMergeSourceCommitId, creationDate,sourceRefName, mergeStatus, description) {
+    return function (id, status, title, url, createdByDisplayName, lastMergeSourceCommitId, creationDate, sourceRefName, mergeStatus, description) {
         return {
             pullRequestId: id,
             status: status,
