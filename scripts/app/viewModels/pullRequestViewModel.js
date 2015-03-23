@@ -1,5 +1,5 @@
-﻿define(["jquery", "ko", "moment"], function ($, ko,moment) {
-    return function (pullRequest, repository,client) {
+﻿define(["jquery", "ko", "moment", "./reviewerViewModel", "./commitViewModel"], function ($, ko, moment, reviewerViewModel, commitViewModel) {
+    return function (pullRequest, repository, client) {
         var self = this;
 
         this.repository = ko.observable(repository);
@@ -10,8 +10,16 @@
         this.status = ko.observable(pullRequest.status);
         this.title = ko.observable(pullRequest.title);
         this.createdByDisplayName = ko.observable(pullRequest.createdByDisplayName);
+        this.creationDate = ko.observable(pullRequest.creationDate);
+        this.sourceRefName = ko.observable(pullRequest.sourceRefName);
+        this.mergeStatus = ko.observable(pullRequest.mergeStatus);
+        this.description = ko.observable(pullRequest.description);
 
         this.update = ko.observable();
+        this.minVote = ko.observable();
+        this.titleMinVote = ko.observable();
+
+        this.reviewers = ko.observableArray();
 
         this.url = ko.computed(function () {
             return repository.url() + pullRequest.url;
@@ -24,9 +32,26 @@
             return moment(self.update()).format('LLLL');
         });
 
-        //NOTE: Создать модель для commit
-        client.getCommit(repository.id(), pullRequest.lastMergeSourceCommitId).done(function (commit) {
-            self.update(commit.pushDate);
+        client.getCommit(repository.id(), pullRequest.lastMergeSourceCommitId).done(function (commitModel) {
+            var commit = new commitViewModel(commitModel);
+            self.update(commit.pushDate());
+        });
+
+        client.getReviewers(repository.id(), self.pullRequestId()).done(function (reviewers) {
+
+            var minVote = 20;
+            var titleMinVote = "No reviewers";
+
+            reviewers.forEach(function (item) {
+                var reviewer = new reviewerViewModel(item);
+                if (reviewer.vote() < minVote) {
+                    minVote = reviewer.vote();
+                    titleMinVote = reviewer.titleVote();
+                }
+                self.reviewers.push(reviewer);
+            });
+            self.minVote(minVote);
+            self.titleMinVote(titleMinVote);
         });
     };
 });

@@ -1,8 +1,9 @@
-﻿define(["jquery", "./models/repository", "./models/pullRequest", "./models/commit"], function ($, repository, pullRequest, commit) {
+﻿define(["jquery", "./models/repository", "./models/pullRequest", "./models/commit", "./models/reviewer"], function ($, repository, pullRequest, commit, reviewer) {
     var API_REPOSITORIES = "/_apis/git/repositories";
     var API_PULLREQUESTS = "/pullRequests";
     var API_PULLREQUEST = "/pullRequest";
-    var API_COMMITS= "/commits";
+    var API_COMMITS = "/commits";
+    var API_REVIEWERS = "/reviewers";
 
     return function (url) {
         var requestUrl = url + API_REPOSITORIES;
@@ -13,12 +14,15 @@
                         return new repository(
                             item.id,
                             item.name,
-                            item.remoteUrl
+                            item.remoteUrl,
+                            item.project.name,
+                            item.defaultBranch
                         );
                     });
                 });
             },
             getPullRequests: function (repositoryId) {
+                console.log(requestUrl + '/' + repositoryId + API_PULLREQUESTS);
                 return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS).then(function (data) {
                     return $.map(data.value || [], function (item) {
                         return new pullRequest(
@@ -27,7 +31,11 @@
                             item.title,
                             API_PULLREQUEST + '/' + item.pullRequestId,
                             item.createdBy.displayName,
-                            item.lastMergeSourceCommit.commitId
+                            item.lastMergeSourceCommit.commitId,
+                            item.creationDate,
+                            item.sourceRefName,
+                            item.mergeStatus,
+                            item.description
                         );
                     });
                 });
@@ -38,6 +46,17 @@
                            data.commitId,
                            data.push.date
                         );
+                });
+            },
+            getReviewers: function (repositoryId, pullRequestId) {
+                return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS + '/' + pullRequestId + API_REVIEWERS).then(function (data) {
+                    return $.map(data.value || [], function (item) {
+                        return new reviewer(
+                               item.displayName,
+                               item.vote
+                            );
+                    });
+
                 });
             }
         }
