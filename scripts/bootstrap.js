@@ -5,13 +5,17 @@
         "app":      "../app",
         "jquery":   "jquery-2.1.0",
         "ko":       "knockout-3.3.0",
-        "moment":   "moment"
+        "moment": "moment",
+        "i18n": "i18n",
+        "bootstrapMin": "bootstrap.min",
+        "chart":"Chart"
     },
-    "shim": {
-        //"jquery.blockUI": ["jquery"],
-        //"jquery.columns": ["jquery", "mustache", "jquery.columns.plugin.smartschema"]
+        "shim": {
+            "bootstrapMin": {
+                deps:["jquery"]
+            }
     }
 });
 
 // load the main app module to start the app
-requirejs(["app/main"]);
+requirejs(["bootstrapMin","app/main"]);

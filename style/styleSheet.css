@@ -1,3 +1,13 @@
 ﻿div {
-    margin-top: 10px;
+    padding-top: 10px;
+}
+body {
+    padding-top: 80px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
 }
