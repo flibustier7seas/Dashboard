@@ -40,8 +40,10 @@
         });
 
         client.getCommit(repository.id(), pullRequest.lastMergeSourceCommitId).done(function (commitModel) {
-            var commit = new commitViewModel(commitModel);
-            self.update(commit.pushDate());
+            if (commitModel) {
+                var commit = new commitViewModel(commitModel);
+                self.update(commit.pushDate());
+            }
         });
 
         client.getReviewers(repository.id(), self.pullRequestId()).done(function (reviewers) {
@@ -49,14 +51,16 @@
             var minVote = 20;
             var titleMinVote = "No reviewers";
 
-            reviewers.forEach(function (item) {
-                var reviewer = new reviewerViewModel(item);
-                if (reviewer.vote() < minVote) {
-                    minVote = reviewer.vote();
-                    titleMinVote = reviewer.titleVote();
-                }
-                self.reviewers.push(reviewer);
-            });
+            if (reviewers) {
+                reviewers.forEach(function(item) {
+                    var reviewer = new reviewerViewModel(item);
+                    if (reviewer.vote() < minVote) {
+                        minVote = reviewer.vote();
+                        titleMinVote = reviewer.titleVote();
+                    }
+                    self.reviewers.push(reviewer);
+                });
+            }
             self.minVote(minVote);
             self.titleMinVote(titleMinVote);
         });
