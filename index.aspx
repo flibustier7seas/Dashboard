@@ -38,37 +38,8 @@
 
 
     <div class="container body-content">
-        <div class="row" data-bind="visible: menuHeaders()[0].active">
 
-
-            <table class="table table-hover table-bordered" data-bind="with: listOfRepositories">
-                <thead>
-                    <tr class="text-info" data-bind="foreach: headers">
-                        <th>
-                            <span data-bind="text: title"></span>
-                            <span class="glyphicon glyphicon-arrow-up" data-bind="click: function (data) { $root.sort(data, true, $parent.list) }"></span>
-                            <span class="glyphicon glyphicon-arrow-down" data-bind="click: function (data) { $root.sort(data, false, $parent.list) }"></span>
-                        </th>
-
-                    </tr>
-                </thead>
-                <tbody data-bind="foreach: list">
-                    <tr class="text-left">
-                        <td class="col-md-4"><a data-bind="text: id"></a></td>
-                        <td class="col-md-3" data-bind="text: name"></td>
-                        <td class="col-md-2"><a data-bind="text: projectName"></a></td>
-                        <td class="col-md-3" data-bind="text: defaultBranch"></td>
-                    </tr>
-                </tbody>
-            </table>
-
-
-        </div>
-
-
-
-
-        <div data-bind="with: listOfPullRequest, visible: menuHeaders()[1].active">
+        <div data-bind="with: listOfPullRequest, visible: menuHeaders()[0].active">
 
             <button class="btn btn-primary" data-toggle="modal" data-target="#modalStatistic">Statistic</button>
             <div class="row" data-bind="foreach: filters">
@@ -148,6 +119,22 @@
                                     <tr>
                                         <td data-bind="text: displayName"></td>
                                         <td data-bind="text: titleVote"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="table">
+                                <caption>Commits (top 10)</caption>
+                                <thead>
+                                    <tr>
+                                        <th>Push date</th>
+                                        <th>Comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="foreach: commits">
+                                    <tr>
+                                        <td data-bind="text: pushDate"></td>
+                                        <td data-bind="text: comment"></td>
                                     </tr>
                                 </tbody>
                             </table>

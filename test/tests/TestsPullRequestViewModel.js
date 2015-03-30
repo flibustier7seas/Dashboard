@@ -1,9 +1,7 @@
-﻿define(["app/viewModels/pullRequestViewModel"], function (pullRequestViewModel) {
+﻿define(["app/viewModels/pullRequestViewModel","ko"], function (pullRequestViewModel,ko) {
     var run = function () {
 
-        var self = this;
-
-        this.pullRequest = {
+        var pullRequestModel = {
             pullRequestId: null,
             status: null,
             title: null,
@@ -13,39 +11,59 @@
             description: null,
             url: null,
             mergeStatus: null,
-            lastMergeSourceCommitId: null
+            lastMergeSourceCommitId: null,
+            repositoryName: null,
+            repositoryUrl: null,
+            commits: ko.observableArray(),
+            reviewers: null
+
         };
 
-        this.repository = {
-            name: function () { },
-            url: function () { },
-            id: function () { }
-        };
+        var data = [
+            [
+                {
+                    displayName: null,
+                    vote: -10,
+                    titleVote: "No"
+                }
+            ],
+            [
+                {
+                    displayName: null,
+                    vote: -10,
+                    titleVote: "No"
+                },
+                {
+                    displayName: null,
+                    vote: 0,
+                    titleVote: "No vote"
+                }
+            ],
+            [
+                {
+                    displayName: null,
+                    vote: -10,
+                    titleVote: "No"
+                },
+                {
+                    displayName: null,
+                    vote: 10,
+                    titleVote: "Yes"
+                }
+            ]
 
-        this.reviewers = [
-            { displayName: null, vote: -10 },
-            { displayName: null, vote: 0 }
         ];
-
-        this.client = {
-            getCommit: function () {
-                return {
-                    done: function () { return null; }
-                }
-            },
-            getReviewers: function () {
-                return {
-                    done: function (callback) {
-                        return callback(self.reviewers);
-                    }
-                }
-            },
-        };
-
-        var item = new pullRequestViewModel(self.pullRequest, self.repository, self.client);
-
         test("Test pullRequestViewModell", function () {
-            ok(item.titleMinVote() == "No", "vote:-10,0;Status: 'No'");
+            data.forEach(function(item) {
+                pullRequestModel.reviewers = ko.observableArray(item);
+
+                var pullRequest = new pullRequestViewModel(pullRequestModel);
+
+                ok(pullRequest.titleMinVote() == "No", "Status: 'No'");
+            });
+            
+
+
         });
     }
     return { run: run };

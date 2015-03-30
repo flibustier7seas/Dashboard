@@ -24,7 +24,7 @@ require(
     function (qUnit, testsReviewerViewModel, testsPullRequestViewModel) {
 
         // run the tests.
-        testsReviewerViewModel.run();
+        //testsReviewerViewModel.run();
         testsPullRequestViewModel.run();
 
         // start QUnit.

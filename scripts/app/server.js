@@ -3,6 +3,7 @@
     var API_PULLREQUESTS = "/pullRequests";
     var API_PULLREQUEST = "/pullRequest";
     var API_COMMITS = "/commits";
+    var API_COMMITSBATCH = "/commitsBatch?$top=10";
     var API_REVIEWERS = "/reviewers";
 
     return function (url) {
@@ -22,42 +23,49 @@
                 });
             },
             getPullRequests: function (repositoryId) {
-                console.log(requestUrl + '/' + repositoryId + API_PULLREQUESTS);
-                return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS).then(function (data) {
-                    return $.map(data.value || [], function (item) {
-                        return new pullRequest(
-                            item.pullRequestId,
-                            item.status,
-                            item.title,
-                            API_PULLREQUEST + '/' + item.pullRequestId,
-                            item.createdBy.displayName,
-                            item.lastMergeSourceCommit.commitId,
-                            item.creationDate,
-                            item.sourceRefName,
-                            item.mergeStatus,
-                            item.description
-                        );
-                    });
-                });
+                return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS);
+                //.then(function (data) {
+                //    return $.map(data.value || [], function (item) {
+                //        return new pullRequest(
+                //            item.pullRequestId,
+                //            item.status,
+                //            item.title,
+                //            API_PULLREQUEST + '/' + item.pullRequestId,
+                //            item.createdBy.displayName,
+                //            item.lastMergeSourceCommit.commitId,
+                //            item.creationDate,
+                //            item.sourceRefName,
+                //            item.mergeStatus,
+                //            item.description
+                //        );
+                //    });
+                //});
             },
-            getCommit: function (repositoryId,commitId) {
-                return $.getJSON(requestUrl + '/' + repositoryId + API_COMMITS +'/'+ commitId).then(function (data) {
+            getCommit: function (repositoryId, commitId) {
+                return $.getJSON(requestUrl + '/' + repositoryId + API_COMMITS + '/' + commitId).then(function (data) {
                     return new commit(
                            data.commitId,
                            data.push.date
                         );
                 });
             },
-            getReviewers: function (repositoryId, pullRequestId) {
-                return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS + '/' + pullRequestId + API_REVIEWERS).then(function (data) {
-                    return $.map(data.value || [], function (item) {
-                        return new reviewer(
-                               item.displayName,
-                               item.vote
-                            );
-                    });
 
-                });
+            getCommits: function (sourceRefName, targetRefName,repositoryId) {
+                var between = {
+                    "itemVersion": {
+                        "versionType": "branch",
+                        "version": targetRefName.replace("refs/heads/", "")
+                    },
+                    "compareVersion": {
+                        "versionType": "branch",
+                        "version": sourceRefName.replace("refs/heads/", "")
+                    }
+                }
+
+                return $.post(requestUrl + "/" + repositoryId + API_COMMITSBATCH, between);
+            },
+            getReviewers: function (repositoryId, pullRequestId) {
+                return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS + '/' + pullRequestId + API_REVIEWERS);
             }
         }
     };

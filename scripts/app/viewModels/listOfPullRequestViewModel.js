@@ -3,8 +3,6 @@
 
         var self = this;
 
-        console.log(tr.red);
-
         this.list = ko.observableArray();
 
         this.add = function (item) {

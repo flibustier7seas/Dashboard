@@ -1,10 +1,9 @@
-﻿define(["jquery", "ko", "moment", "./reviewerViewModel", "./commitViewModel"], function ($, ko, moment, reviewerViewModel, commitViewModel) {
-    return function (pullRequest, repository, client) {
+﻿define(["jquery", "ko", "moment"], function ($, ko, moment) {
+    return function (pullRequest) {
         var self = this;
 
-        this.repository = ko.observable(repository);
-        this.repositoryName = ko.observable(repository.name());
-        this.repositoryUrl = ko.observable(repository.url());
+        this.repositoryName = ko.observable(pullRequest.repositoryName);
+        this.repositoryUrl = ko.observable(pullRequest.repositoryUrl);
 
         this.pullRequestId = ko.observable(pullRequest.pullRequestId);
         this.status = ko.observable(pullRequest.status);
@@ -15,22 +14,14 @@
         this.mergeStatus = ko.observable(pullRequest.mergeStatus);
         this.description = ko.observable(pullRequest.description);
 
-        this.update = ko.observable();
-        this.minVote = ko.observable();
-        this.titleMinVote = ko.observable();
-
-        this.reviewers = ko.observableArray();
+        this.commits = pullRequest.commits;
+        this.reviewers = pullRequest.reviewers;
 
         this.url = ko.computed(function () {
-            return repository.url() + pullRequest.url;
+            return pullRequest.repositoryUrl + pullRequest.url;
         });
 
-        this.updateToText = ko.computed(function () {
-            if (moment().diff(self.update(), 'days') < 7) {
-                return moment(self.update()).fromNow();
-            }
-            return moment(self.update()).format('LLLL');
-        });
+
 
         this.creationDateToText = ko.computed(function () {
             if (moment().diff(self.creationDate(), 'days') < 7) {
@@ -39,30 +30,46 @@
             return moment(self.creationDate()).format('LLLL');
         });
 
-        client.getCommit(repository.id(), pullRequest.lastMergeSourceCommitId).done(function (commitModel) {
-            if (commitModel) {
-                var commit = new commitViewModel(commitModel);
-                self.update(commit.pushDate());
-            }
-        });
+        this.titleMinVote = ko.observable();
 
-        client.getReviewers(repository.id(), self.pullRequestId()).done(function (reviewers) {
+        this.minVote = ko.computed(function () {
 
             var minVote = 20;
             var titleMinVote = "No reviewers";
 
-            if (reviewers) {
-                reviewers.forEach(function(item) {
-                    var reviewer = new reviewerViewModel(item);
-                    if (reviewer.vote() < minVote) {
-                        minVote = reviewer.vote();
-                        titleMinVote = reviewer.titleVote();
-                    }
-                    self.reviewers.push(reviewer);
-                });
-            }
-            self.minVote(minVote);
+            ///TODO: вынести в утилиты
+            self.reviewers().forEach(function (reviewer) {
+                if (reviewer.vote < minVote) {
+                    minVote = reviewer.vote;
+                    titleMinVote = reviewer.titleVote;
+                }
+            });
             self.titleMinVote(titleMinVote);
+
+            return minVote;
+        });
+
+        this.updateToText = ko.observable();
+        this.update = ko.computed(function () {
+            if (self.commits().length > 0) {
+
+                var maxDate = self.commits()[0].pushDate;
+
+                ///TODO: вынести в утилиты
+                self.commits().forEach(function (commit) {
+                    if (commit.pushDate > maxDate) {
+                        maxDate = commit.pushDate;
+                    }
+                });
+
+                if (moment().diff(maxDate, 'days') < 7) {
+                    self.updateToText(moment(maxDate).fromNow());
+                }
+
+                self.updateToText(moment(maxDate).format('LLLL'));
+                return maxDate;
+            }
+            return "";
         });
     };
 });

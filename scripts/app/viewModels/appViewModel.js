@@ -1,6 +1,6 @@
 define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel", "./listOfRepositoriesViewModel", "./listOfPullRequestViewModel"],
     function ($, ko, repositoryViewModel, pullRequestViewModel, listOfRepositoriesViewModel, listOfPullRequestViewModel) {
-    return function (client) {
+        return function (pullRequests) {
 
         console.log(settings.userId);
         console.log(settings.userName);
@@ -10,12 +10,10 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel", "./li
         this.userName = settings.userName;
         this.userId = settings.userId;
 
-        this.listOfPullRequest = ko.observable(new listOfPullRequestViewModel());
-        this.listOfRepositories = ko.observable(new listOfRepositoriesViewModel());
+        this.listOfPullRequest = ko.observable(pullRequests);
 
         this.menuHeaders = ko.observableArray([
-            { title: "Repositories", active: ko.observable(true) },
-            { title: "Pull Requests", active: ko.observable(false) }
+            { title: "Pull Requests", active: ko.observable(true) }
         ]);
 
         this.setActiveMenu = function(header) {
@@ -36,22 +34,6 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel", "./li
             };
             items.sort(sort);
         };
-
-        client.getRepositories().done(function (repositories) {
-
-            $.each(repositories, function () {
-                var repository = new repositoryViewModel(this);
-
-                self.listOfRepositories().add(repository);
-
-                client.getPullRequests(repository.id()).done(function (pullRequests) {
-
-                    $.each(pullRequests, function () {
-                        self.listOfPullRequest().add(new pullRequestViewModel(this, repository, client));
-                    });
-                });
-            });
-        });
 
     };
 });
