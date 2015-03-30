@@ -4,7 +4,6 @@
 
         this.repositoryName = ko.observable(pullRequest.repositoryName);
         this.repositoryUrl = ko.observable(pullRequest.repositoryUrl);
-
         this.pullRequestId = ko.observable(pullRequest.pullRequestId);
         this.status = ko.observable(pullRequest.status);
         this.title = ko.observable(pullRequest.title);
@@ -21,8 +20,6 @@
         this.url = ko.computed(function () {
             return pullRequest.repositoryUrl + pullRequest.url;
         });
-
-
 
         this.creationDateToText = ko.computed(function () {
             if (moment().diff(self.creationDate(), 'days') < 7) {
