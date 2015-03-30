@@ -61,9 +61,6 @@
 
                 ok(pullRequest.titleMinVote() == "No", "Status: 'No'");
             });
-            
-
-
         });
     }
     return { run: run };

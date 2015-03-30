@@ -42,8 +42,8 @@
             }
         ];
 
-        this.updateData = function() {
-            for (var i = 0; i < self.data.length; i ++) {
+        this.updateData = function () {
+            for (var i = 0; i < self.data.length; i++) {
                 self.data[i].value = self.statistic()[i].count();
             }
             new Chart(document.getElementById("canvas").getContext("2d")).Pie(self.data);
@@ -64,11 +64,19 @@
 
         this.filters = [
             { title: tr.filter_ShowAll, filter: null },
-            { title: tr.filter_OnlyErm, filter: function (item) { return item.repository().name() == 'erm'; } },
-            { title: tr.filter_OnlyAutoTests, filter: function (item) { return item.repository().name() == 'auto-tests'; } },
+            { title: tr.filter_OnlyErm, filter: function (item) { return item.repositoryName() == 'erm'; } },
+            { title: tr.filter_OnlyAutoTests, filter: function (item) { return item.repositoryName() == 'auto-tests'; } },
             { title: tr.filter_StatusNoVote, filter: function (item) { return item.titleMinVote() == 'No vote'; } },
             { title: tr.filter_StatusYes, filter: function (item) { return item.titleMinVote() == 'Yes'; } },
-            { title: tr.filter_StatusNo, filter: function (item) { return item.titleMinVote() == 'No'; } }
+            { title: tr.filter_StatusNo, filter: function (item) { return item.titleMinVote() == 'No'; } },
+            { title: tr.filter_MyPullRequest, filter: function (item) { return item.createdById() == settings.userId; } },
+            {
+                title: tr.filter_MyReview, filter: function (item) {
+                    return item.reviewers().filter(function(reviewer) {
+                       return reviewer.id == settings.userId;
+                    }).length > 0;
+                }
+            }
         ];
 
 
@@ -99,6 +107,7 @@
         });
 
         this.chosenPullRequest = ko.observable("");
+
         this.setReviewers = function (pullRequest) {
             self.chosenPullRequest(pullRequest);
         };

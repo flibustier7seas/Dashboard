@@ -12,7 +12,9 @@
         "filter_OnlyAutoTests": "Only auto-tests'",
         "filter_StatusNoVote": "Status: No vote",
         "filter_StatusYes": "Status: Yes",
-        "filter_StatusNo": "Status: No"
+        "filter_StatusNo": "Status: No",
+        "filter_MyPullRequest": "My PullRequests",
+        "filter_MyReview": "My Review"
     },
     "ru": true
 });

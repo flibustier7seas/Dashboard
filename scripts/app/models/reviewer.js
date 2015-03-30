@@ -1,6 +1,7 @@
 ﻿define([], function () {
-    return function (displayName, vote) {
+    return function (displayName, id, vote) {
         this.displayName = displayName;
+        this.id = id;
         this.vote = vote;
         this.titleVote = "";
 

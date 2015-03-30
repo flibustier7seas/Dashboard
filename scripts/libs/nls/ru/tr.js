@@ -8,8 +8,10 @@
 
     "filter_ShowAll": "Все",
     "filter_OnlyErm": "Только erm",
-    "filter_OnlyAutoTests": "Тольк auto-tests'",
+    "filter_OnlyAutoTests": "Тольк auto-tests",
     "filter_StatusNoVote": "Статус: Ожидание ответа",
     "filter_StatusYes": "Статус: Все хорошо!",
-    "filter_StatusNo": "Статус: Еще не готово"
+    "filter_StatusNo": "Статус: Еще не готово",
+    "filter_MyPullRequest": "Мои запросы",
+    "filter_MyReview": "Мои ревью"
 });

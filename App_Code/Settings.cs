@@ -39,7 +39,8 @@ public class Settings
         var configurationServer = TfsServer.GetConfiguration(urlTfs);
 
         _mainUrl = ConfigurationManager.ConnectionStrings["MainUrl"].ConnectionString;
-        _userId = configurationServer.AuthorizedIdentity.TeamFoundationId;
+        //_userId = configurationServer.AuthorizedIdentity.TeamFoundationId;
+        _userId = new Guid("a26028dd-e61a-4958-a76b-b1f47b7230cb");
         _userName = configurationServer.AuthorizedIdentity.DisplayName;
     }
 }
