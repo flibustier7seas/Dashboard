@@ -10,7 +10,7 @@
         };
 
         this.getStat = function (property, value) {
-            var result = ko.utils.arrayFilter(self.list(), function (item) {
+            var result = self.list().filter( function (item) {
                 return item[property]() == value;
             });
             return result.length;
@@ -91,13 +91,13 @@
             var result;
             //Фильтр по кнопке
             if (self.activeFilter()) {
-                result = ko.utils.arrayFilter(self.list(), self.activeFilter());
+                result = self.list().filter(self.activeFilter());
             } else {
                 result = self.list();
             }
             //Фильтр по введенному тексту
             if (self.textForFilters() != "") {
-                result = ko.utils.arrayFilter(result, function (item) {
+                result = result.filter( function (item) {
                     return item[self.propertyForFilters()]().indexOf(self.textForFilters()) != -1;
                 });
             }
