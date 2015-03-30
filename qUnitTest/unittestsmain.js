@@ -1,5 +1,5 @@
 ﻿requirejs.config({
-    "paths": {
+    paths: {
         "app": "../scripts/app",
         "jquery": "../scripts/libs/jquery-2.1.0",
         "ko": "../scripts/libs/knockout-3.3.0",
