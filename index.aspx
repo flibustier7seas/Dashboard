@@ -62,8 +62,8 @@
                         <tr class="text-info" data-bind="foreach: headers">
                             <th>
                                 <span data-bind="text: title"></span>
-                                <span class="glyphicon glyphicon-arrow-up" data-bind="click: function (data) { $root.sort(data, true, $parent.list) }"></span>
-                                <span class="glyphicon glyphicon-arrow-down" data-bind="click: function (data) { $root.sort(data, false, $parent.list) }"></span>
+                                <span class="glyphicon glyphicon-arrow-up " data-bind="click: function (data) { $parent.sort(data, true) }, style: { 'opacity':opacityUp }"></span>
+                                <span class="glyphicon glyphicon-arrow-down" data-bind="click: function (data) { $parent.sort(data, false) }, style: { 'opacity': opacityDown}"></span>
                             </th>
                         </tr>
                     </thead>
@@ -159,7 +159,7 @@
                                     <a data-bind="text: title"></a>:<a data-bind="    text: count"></a><br />
                                 </div>
                                 <div class="col-md-4">
-                                    <canvas id="canvas" height="400" width="600"></canvas>
+                                    <canvas id="pie" height="300" width="300"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -173,5 +173,6 @@
         </div>
 
     </div>
+    
 </body>
 </html>

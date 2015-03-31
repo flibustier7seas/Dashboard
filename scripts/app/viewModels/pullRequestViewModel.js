@@ -1,4 +1,4 @@
-﻿define(["jquery", "ko", "moment"], function ($, ko, moment) {
+﻿define(["jquery", "ko","../utils"], function ($, ko,utils) {
     return function (pullRequest) {
         var self = this;
 
@@ -21,53 +21,37 @@
             return pullRequest.repositoryUrl + pullRequest.url;
         });
 
+
         this.creationDateToText = ko.computed(function () {
-            if (moment().diff(self.creationDate(), 'days') < 7) {
-                return moment(self.creationDate()).fromNow();
-            }
-            return moment(self.creationDate()).format('LLLL');
+            return utils.dateToText(self.creationDate());
         });
 
         this.titleMinVote = ko.observable();
 
         this.minVote = ko.computed(function () {
+            var compare = utils.getFunctionCompare("vote",false);
+            var min = utils.getMaxOfArray(self.reviewers(), compare);
 
-            var minVote = 20;
-            var titleMinVote = "No reviewers";
-
-            ///TODO: вынести в утилиты
-            self.reviewers().forEach(function (reviewer) {
-                if (reviewer.vote < minVote) {
-                    minVote = reviewer.vote;
-                    titleMinVote = reviewer.titleVote;
-                }
-            });
-            self.titleMinVote(titleMinVote);
-
-            return minVote;
+            if (min) {
+                self.titleMinVote(min.titleVote);
+                return min.vote;
+            } else {
+                self.titleMinVote("No reviewers");
+                return 20;
+            }
         });
 
         this.updateToText = ko.observable();
         this.update = ko.computed(function () {
-            if (self.commits().length > 0) {
-
-                var maxDate = self.commits()[0].pushDate;
-
-                ///TODO: вынести в утилиты
-                self.commits().forEach(function (commit) {
-                    if (commit.pushDate > maxDate) {
-                        maxDate = commit.pushDate;
-                    }
-                });
-
-                if (moment().diff(maxDate, 'days') < 7) {
-                    self.updateToText(moment(maxDate).fromNow());
-                }
-
-                self.updateToText(moment(maxDate).format('LLLL'));
-                return maxDate;
+            var compare = utils.getFunctionCompare("pushDate");
+            var max = utils.getMaxOfArray(self.commits(), compare);
+            if (max) {
+                self.updateToText(utils.dateToText(max.pushDate));
+                return max.pushDate;
             }
             return "";
         });
+
+
     };
 });

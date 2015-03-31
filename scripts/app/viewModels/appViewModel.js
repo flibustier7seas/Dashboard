@@ -1,9 +1,6 @@
-define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel", "./listOfRepositoriesViewModel", "./listOfPullRequestViewModel"],
-    function ($, ko, repositoryViewModel, pullRequestViewModel, listOfRepositoriesViewModel, listOfPullRequestViewModel) {
+define(["jquery", "ko"],
+    function ($, ko) {
         return function (pullRequests) {
-
-        console.log(settings.userId);
-        console.log(settings.userName);
 
         var self = this;
 
@@ -17,24 +14,11 @@ define(["jquery", "ko", "./repositoryViewModel", "./pullRequestViewModel", "./li
         ]);
 
         this.setActiveMenu = function(header) {
-            ko.utils.arrayForEach(self.menuHeaders(), function(item) {
+           self.menuHeaders().forEach( function(item) {
                 item.active(false);
             });
             header.active(true);
         };
-
-        this.sort = function (header, asc, items) {
-            var prop = header.sortPropertyName;
-            var sort = function (a, b) {
-                if (asc) {
-                    return a[prop]() < b[prop]() ? -1 : a[prop]() > b[prop]() ? 1 : a[prop]() == b[prop]() ? 0 : 0;
-                } else {
-                    return a[prop]() > b[prop]() ? -1 : a[prop]() < b[prop]() ? 1 : a[prop]() == b[prop]() ? 0 : 0;
-                }
-            };
-            items.sort(sort);
-        };
-
     };
 });
 

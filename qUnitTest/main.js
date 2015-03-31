@@ -4,7 +4,7 @@
         "jquery": "../scripts/libs/jquery-2.1.0",
         "ko": "../scripts/libs/knockout-3.3.0",
         "moment": "../scripts/libs/moment",
-        "qUnit" : "qunit-1.17.1"
+        "qUnit" : "libs/qunit-1.17.1"
     }
     ,
     shim: {
@@ -24,7 +24,7 @@ require(
     function (qUnit, testsReviewerViewModel, testsPullRequestViewModel) {
 
         // run the tests.
-        //testsReviewerViewModel.run();
+        testsReviewerViewModel.run();
         testsPullRequestViewModel.run();
 
         // start QUnit.

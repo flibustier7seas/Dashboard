@@ -1,10 +1,10 @@
-﻿define(["jquery", "ko", "./server", "./viewModels/appViewModel", "./factory", "./viewModels/listOfPullRequestViewModel", "./viewModels/pullRequestViewModel"],
-    function ($, ko, server, appViewModel, factory, listOfPullRequestViewModel, pullRequestViewModel) {
+﻿define(["jquery", "ko", "./server", "./viewModels/appViewModel", "./factory", "./viewModels/pullRequestsViewModel", "./viewModels/pullRequestViewModel"],
+    function ($, ko, server, appViewModel, factory, pullRequestsViewModel, pullRequestViewModel) {
         $(function () {
 
             var client = new server(settings.mainUrl);
 
-            var pullRequests = new listOfPullRequestViewModel();
+            var pullRequests = new pullRequestsViewModel();
 
             var f = new factory(client);
 

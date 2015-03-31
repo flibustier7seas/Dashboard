@@ -11,3 +11,6 @@ body {
     padding-left: 15px;
     padding-right: 15px;
 }
+.test {
+    opacity: 0.5
+}

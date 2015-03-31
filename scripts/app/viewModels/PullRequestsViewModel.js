@@ -1,6 +1,5 @@
 ﻿define(["jquery", "ko", "i18n!nls/tr", "chart"], function ($, ko, tr) {
     return function () {
-
         var self = this;
 
         this.list = ko.observableArray();
@@ -9,8 +8,46 @@
             self.list.push(item);
         };
 
+        ///NOTE: Заголовки таблицы
+        this.headers = [
+            { title: tr.header_Repository, sortPropertyName: 'repositoryName', asc: true, active: true, opacityUp: ko.observable(0.5), opacityDown: ko.observable(1)},
+            { title: tr.header_Author, sortPropertyName: 'createdByDisplayName', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
+            { title: tr.header_Title, sortPropertyName: 'title', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
+            { title: tr.header_CreationDate, sortPropertyName: 'creationDate', asc: false, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
+            { title: tr.header_Updated, sortPropertyName: 'update', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
+            { title: tr.header_Status, sortPropertyName: 'minVote', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) }
+        ];
+
+        ///NOTE: Столбец для сортировки
+        this.sortHeader = ko.observable(self.headers[0]);
+
+        this.sort = function(data, asc) {
+            ///NOTE: Подсветка стрелочки
+            self.sortHeader().opacityUp(1);
+            self.sortHeader().opacityDown(1);
+            if (asc == true) {
+                data.opacityUp(0.5);
+            } else {
+                data.opacityDown(0.5);
+            }
+            data.asc = asc;
+            self.sortHeader(data);
+        };
+
+        this.sortList = ko.computed(function() {
+            var property = self.sortHeader().sortPropertyName;
+            var compare = function (a, b) {
+                if (self.sortHeader().asc) {
+                    return a[property]() < b[property]() ? -1 : a[property]() > b[property]() ? 1 : a[property]() == b[property]() ? 0 : 0;
+                } else {
+                    return a[property]() > b[property]() ? -1 : a[property]() < b[property]() ? 1 : a[property]() == b[property]() ? 0 : 0;
+                }
+            };
+            self.list.sort(compare);
+        });
+
         this.getStat = function (property, value) {
-            var result = self.list().filter( function (item) {
+            var result = self.list().filter(function (item) {
                 return item[property]() == value;
             });
             return result.length;
@@ -23,22 +60,26 @@
             { title: tr.filter_ShowAll, count: ko.computed(function () { return self.list().length; }) }
         ]);
 
+
+        ///NOTE: Данные для диаграммы
         this.data = [
             {
-                value: 0,
-                color: "#F38630"
+                value: 1,
+                color: "#F7464A",
+                highlight: "#FF5A5E",
+                label: tr.filter_StatusNoVote
             },
             {
-                value: 0,
-                color: "#E0E4CC"
+                value: 1,
+                color: "#46BFBD",
+                highlight: "#5AD3D1",
+                label: tr.filter_StatusYes
             },
             {
-                value: 0,
-                color: "#69D2E7"
-            },
-            {
-                value: 0,
-                color: "#697736"
+                value: 1,
+                color: "#FDB45C",
+                highlight: "#FFC870",
+                label: tr.filter_StatusNo
             }
         ];
 
@@ -46,21 +87,10 @@
             for (var i = 0; i < self.data.length; i++) {
                 self.data[i].value = self.statistic()[i].count();
             }
-            new Chart(document.getElementById("canvas").getContext("2d")).Pie(self.data);
+            new Chart(document.getElementById("pie").getContext("2d")).Pie(self.data);
         };
 
-        this.add = function (item) {
-            self.list.push(item);
-        };
 
-        this.headers = [
-            { title: tr.header_Repository, sortPropertyName: 'repositoryName', asc: true, active: false },
-            { title: tr.header_Author, sortPropertyName: 'createdByDisplayName', asc: true, active: false },
-            { title: tr.header_Title, sortPropertyName: 'title', asc: true, active: false },
-            { title: tr.header_CreationDate, sortPropertyName: 'creationDate', asc: true, active: false },
-            { title: tr.header_Updated, sortPropertyName: 'update', asc: true, active: false },
-            { title: tr.header_Status, sortPropertyName: 'minVote', asc: true, active: false }
-        ];
 
         this.filters = [
             { title: tr.filter_ShowAll, filter: null },
@@ -72,13 +102,12 @@
             { title: tr.filter_MyPullRequest, filter: function (item) { return item.createdById() == settings.userId; } },
             {
                 title: tr.filter_MyReview, filter: function (item) {
-                    return item.reviewers().filter(function(reviewer) {
-                       return reviewer.id == settings.userId;
+                    return item.reviewers().filter(function (reviewer) {
+                        return reviewer.id == settings.userId;
                     }).length > 0;
                 }
             }
         ];
-
 
         this.textForFilters = ko.observable("");
         this.propertyForFilters = ko.observable();
@@ -97,7 +126,7 @@
             }
             //Фильтр по введенному тексту
             if (self.textForFilters() != "") {
-                result = result.filter( function (item) {
+                result = result.filter(function (item) {
                     return item[self.propertyForFilters()]().indexOf(self.textForFilters()) != -1;
                 });
             }

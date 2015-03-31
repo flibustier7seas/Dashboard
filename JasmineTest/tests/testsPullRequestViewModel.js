@@ -1,5 +1,5 @@
 ﻿define(["app/viewModels/pullRequestViewModel","ko"], function (pullRequestViewModel,ko) {
-    var run = function () {
+    describe("Tests pullRequestViewModel", function () {
 
         var pullRequestModel = {
             pullRequestId: null,
@@ -14,9 +14,7 @@
             lastMergeSourceCommitId: null,
             repositoryName: null,
             repositoryUrl: null,
-            commits: ko.observableArray(),
-            reviewers: null
-
+            commits: ko.observableArray()
         };
 
         var data = [
@@ -53,15 +51,16 @@
             ]
 
         ];
-        test("Test pullRequestViewModell", function () {
-            data.forEach(function(item) {
-                pullRequestModel.reviewers = ko.observableArray(item);
 
-                var pullRequest = new pullRequestViewModel(pullRequestModel);
+        data.forEach(function (item) {
+            pullRequestModel.reviewers = ko.observableArray(item);
 
-                ok(pullRequest.titleMinVote() == "No", "Status: 'No'");
+            var pullRequest = new pullRequestViewModel(pullRequestModel);
+
+            it("Status: 'No'", function () {
+                expect(pullRequest.titleMinVote()).toBe("No");
             });
         });
-    }
-    return { run: run };
+
+    });
 });
