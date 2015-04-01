@@ -1,9 +1,7 @@
 ﻿define(["jquery", "ko", "i18n!nls/tr", "chart"], function ($, ko, tr) {
     return function () {
         var self = this;
-
         this.list = ko.observableArray();
-
         this.add = function (item) {
             self.list.push(item);
         };
@@ -91,7 +89,6 @@
         };
 
 
-
         this.filters = [
             { title: tr.filter_ShowAll, filter: null },
             { title: tr.filter_OnlyErm, filter: function (item) { return item.repositoryName() == 'erm'; } },
@@ -135,11 +132,35 @@
             return result;
         });
 
-        this.chosenPullRequest = ko.observable("");
+        this.chosenPullRequest = ko.observable();
 
         this.setReviewers = function (pullRequest) {
             self.chosenPullRequest(pullRequest);
         };
+
+
+        ///NOTE: Разбиение на страницы
+        this.countRecords = ko.observable(20);
+        this.pageNumber = ko.observable(1);
+        this.newListOfPullRequest = ko.computed(function () {
+            var indexEnd = self.pageNumber() * self.countRecords();
+            var indexBegin = indexEnd - self.countRecords();
+            return self.filteredListOfPullRequest().slice(indexBegin, indexEnd);
+        });
+        this.numberOfPages = ko.computed(function() {
+            return Math.ceil(self.filteredListOfPullRequest().length / self.countRecords());
+        });
+        this.numberOfPagesButton = ko.computed(function () {
+            var buttons = [];
+            for (var i = 1; i <= self.numberOfPages();i++ ) {
+                buttons.push({num: i});
+            }
+            return buttons;
+        });
+        this.setPage = function(page) {
+            self.pageNumber(page.num);
+        }
+
     };
 });
 

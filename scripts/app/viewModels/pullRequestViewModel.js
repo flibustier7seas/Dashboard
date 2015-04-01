@@ -29,6 +29,7 @@
         this.titleMinVote = ko.observable();
 
         this.minVote = ko.computed(function () {
+            console.log("minVote called");
             var compare = utils.getFunctionCompare("vote",false);
             var min = utils.getMaxOfArray(self.reviewers(), compare);
 
@@ -51,7 +52,6 @@
             }
             return "";
         });
-
-
+        this.test = function (a) { self.minVote(); };
     };
 });

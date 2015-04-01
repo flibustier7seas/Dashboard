@@ -37,8 +37,7 @@
 
 
 
-    <div class="container body-content">
-
+    <div class="container-fluid">
         <div data-bind="with: listOfPullRequest, visible: menuHeaders()[0].active">
 
             <button class="btn btn-primary" data-toggle="modal" data-target="#modalStatistic">Statistic</button>
@@ -54,20 +53,19 @@
                     <input class="col-md-3 form-control" type="text" data-bind="textInput: textForFilters" />
                 </div>
             </div>
-
-
             <div class="row">
                 <table class="table table-hover table-bordered">
                     <thead>
                         <tr class="text-info" data-bind="foreach: headers">
                             <th>
                                 <span data-bind="text: title"></span>
-                                <span class="glyphicon glyphicon-arrow-up " data-bind="click: function (data) { $parent.sort(data, true) }, style: { 'opacity':opacityUp }"></span>
-                                <span class="glyphicon glyphicon-arrow-down" data-bind="click: function (data) { $parent.sort(data, false) }, style: { 'opacity': opacityDown}"></span>
+                                <a class="glyphicon glyphicon-arrow-up "  href="#" data-bind="click: function (data) { $parent.sort(data, true) }, style: { 'opacity':opacityUp }"></a>
+                                <a class="glyphicon glyphicon-arrow-down" href="#" data-bind="click: function (data) { $parent.sort(data, false) }, style: { 'opacity': opacityDown}"></a>
                             </th>
                         </tr>
                     </thead>
-                    <tbody data-bind="foreach: filteredListOfPullRequest">
+                    
+                    <tbody data-bind="foreach: newListOfPullRequest">
                         <tr class="text-left" data-toggle="modal" data-target="#myModal" data-bind="click: $parent.setReviewers">
                             <td class="col-md-1"><a data-bind="text: repositoryName, attr: { href: repositoryUrl }" target="_blank"></a></td>
                             <td class="col-md-2" data-bind="text: createdByDisplayName"></td>
@@ -78,8 +76,13 @@
                         </tr>
                     </tbody>
                 </table>
+                <div><input data-bind="value: countRecords" /></div>
+                <div data-bind="foreach: numberOfPagesButton">
+                   <a class="btn" data-bind="click: $parent.setPage">
+                       <p data-bind="text: num"></p>
+                   </a>
+                </div>
             </div>
-
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content" data-bind="with: chosenPullRequest">
@@ -156,7 +159,7 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-4" data-bind="foreach: statistic">
-                                    <a data-bind="text: title"></a>:<a data-bind="    text: count"></a><br />
+                                    <a data-bind="text: title"></a>:<a data-bind="text: count"></a><br />
                                 </div>
                                 <div class="col-md-4">
                                     <canvas id="pie" height="300" width="300"></canvas>
