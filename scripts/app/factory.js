@@ -1,12 +1,9 @@
 ﻿define(["jquery", "ko", "./models/pullRequest", "./models/commit", "./models/reviewer"],
     function ($, ko, pullRequestModel, commit, reviewer) {
-        var API_PULLREQUEST = "/pullRequest";
-
         return function (client) {
-            this.getRepositories = function () {
+            this.getRepositories = function() {
                 return client.getRepositories();
-            }
-
+            };
             this.getPullRequests = function (repository) {
                 return client.getPullRequests(repository.id)
                     .then(
@@ -39,7 +36,7 @@
                             client.getReviewers(item.repository.id, item.pullRequestId)
                                 .then(function (data) {
                                     data.value.forEach(function (rvw) {
-                                        pullRequest.addReviewer(new reviewer(rvw.displayName,rvw.id, rvw.vote));
+                                        pullRequest.addReviewer(new reviewer(rvw.displayName, rvw.id, rvw.vote));
                                     });
 
                                 });

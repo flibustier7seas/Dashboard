@@ -8,5 +8,4 @@ public static class TfsServer
         var tfsUri = new Uri(path);
         return TfsConfigurationServerFactory.GetConfigurationServer(tfsUri);
     }
-
 }

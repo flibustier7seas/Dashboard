@@ -1,9 +1,4 @@
 ﻿define(["jquery", "./models/repository"], function ($, repository) {
-    var API_REPOSITORIES = "/_apis/git/repositories";
-    var API_PULLREQUESTS = "/pullRequests";
-    var API_COMMITSBATCH = "/commitsBatch?$top=10";
-    var API_REVIEWERS = "/reviewers";
-
     return function (url) {
         var requestUrl = url + API_REPOSITORIES;
         return {

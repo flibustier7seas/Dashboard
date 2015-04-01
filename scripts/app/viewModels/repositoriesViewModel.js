@@ -1,4 +1,5 @@
-﻿define(["jquery", "ko"], function ($, ko) {
+﻿///TODO: Если выводить репозитории не нужно, то можно удалять. Сейчас не используется.
+define(["jquery", "ko"], function ($, ko) {
     return function () {
 
         var self = this;
@@ -17,8 +18,6 @@
         ];
     };
 });
-
-
 //------------------------View---------------------------------
 //<div class="row" data-bind="visible: menuHeaders()[1].active">
 

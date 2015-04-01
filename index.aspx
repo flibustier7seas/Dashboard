@@ -5,18 +5,24 @@
 <head>
     <title>TFS Dashboard</title>
     <script src="scripts/libs/require.js" data-main="scripts/bootstrap"></script>
-    <link href="style/bootstrap.css" rel="stylesheet">
+    <link href="style/bootstrap.min.css" rel="stylesheet">
     <link href="style/styleSheet.css" rel="stylesheet">
 </head>
 <body>
     <script type="text/javascript">
-        <% var settings = new Settings(); %>
-        settings = {
-            userId: "<% Response.Write(settings.UserId); %>",
-            userName: "<% Response.Write(settings.UserName); %>",
-            mainUrl: "<% Response.Write(settings.MainUrl); %>"
-        };
+        <%
+        var configuration = TfsServer.GetConfiguration(Parameters.GetUrlTfs());
+        var settings = new Profiles(configuration);
+        var constants = Parameters.GetConstants();
+
+        foreach (var constant in constants)
+        {
+            Response.Write("var " + constant.Key + " = '" + constant.Value + "';");
+        }
+        Response.Write("var settings = {userId: '" + settings.UserId + "',userName: '" + settings.UserName + "'};");
+        %>
     </script>
+
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -35,14 +41,19 @@
         </div>
     </div>
 
-
-
     <div class="container-fluid">
+
         <div data-bind="with: listOfPullRequest, visible: menuHeaders()[0].active">
 
             <button class="btn btn-primary" data-toggle="modal" data-target="#modalStatistic">Statistic</button>
-            <div class="row" data-bind="foreach: filters">
-                <input type="button" class="btn btn-info" data-bind="click: $parent.setActiveFilter, value: title" />
+
+            <div class="row">
+                <div class="btn-group" data-toggle="buttons" data-bind="foreach: filters">
+                    <label class="btn btn-primary" data-bind="click: $parent.setActiveFilter">
+                        <input type="radio" name="options" />
+                        <span data-bind="text: title"></span>
+                    </label>
+                </div>
             </div>
 
             <div class="row">
@@ -59,14 +70,14 @@
                         <tr class="text-info" data-bind="foreach: headers">
                             <th>
                                 <span data-bind="text: title"></span>
-                                <a class="glyphicon glyphicon-arrow-up "  href="#" data-bind="click: function (data) { $parent.sort(data, true) }, style: { 'opacity':opacityUp }"></a>
-                                <a class="glyphicon glyphicon-arrow-down" href="#" data-bind="click: function (data) { $parent.sort(data, false) }, style: { 'opacity': opacityDown}"></a>
+                                <a class="glyphicon glyphicon-arrow-up" href="#" data-bind="click: function (data) { $parent.sort(data, true) }, style: { 'opacity': opacityUp }"></a>
+                                <a class="glyphicon glyphicon-arrow-down" href="#" data-bind="click: function (data) { $parent.sort(data, false) }, style: { 'opacity': opacityDown }"></a>
                             </th>
                         </tr>
                     </thead>
-                    
+
                     <tbody data-bind="foreach: newListOfPullRequest">
-                        <tr class="text-left" data-toggle="modal" data-target="#myModal" data-bind="click: $parent.setReviewers">
+                        <tr class="text-left" data-toggle="modal" data-target="#myModal" data-bind="click: $parent.setPullRequest">
                             <td class="col-md-1"><a data-bind="text: repositoryName, attr: { href: repositoryUrl }" target="_blank"></a></td>
                             <td class="col-md-2" data-bind="text: createdByDisplayName"></td>
                             <td class="col-md-4"><a data-bind="text: title, attr: { href: url }" target="_blank"></a></td>
@@ -76,11 +87,15 @@
                         </tr>
                     </tbody>
                 </table>
-                <div><input data-bind="value: countRecords" /></div>
-                <div data-bind="foreach: numberOfPagesButton">
-                   <a class="btn" data-bind="click: $parent.setPage">
-                       <p data-bind="text: num"></p>
-                   </a>
+                <div class="col-xs-2">
+                    <input class="form-control" placeholder="Count records" data-bind="value: countRecords" />
+                </div>
+
+                <div class="btn-group" data-toggle="buttons" data-bind="foreach: numberOfPagesButton">
+                    <label class="btn btn-danger" data-bind="click: $parent.setPage">
+                        <input type="radio" name="options" />
+                        <span data-bind="text: num"></span>
+                    </label>
                 </div>
             </div>
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -159,7 +174,7 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-4" data-bind="foreach: statistic">
-                                    <a data-bind="text: title"></a>:<a data-bind="text: count"></a><br />
+                                    <a data-bind="text: title"></a>:<a data-bind="    text: count"></a><br />
                                 </div>
                                 <div class="col-md-4">
                                     <canvas id="pie" height="300" width="300"></canvas>
@@ -173,9 +188,9 @@
                 </div>
             </div>
 
-        </div>
 
+        </div>
     </div>
-    
+
 </body>
 </html>

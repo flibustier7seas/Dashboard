@@ -8,7 +8,7 @@
 
         ///NOTE: Заголовки таблицы
         this.headers = [
-            { title: tr.header_Repository, sortPropertyName: 'repositoryName', asc: true, active: true, opacityUp: ko.observable(0.5), opacityDown: ko.observable(1)},
+            { title: tr.header_Repository, sortPropertyName: 'repositoryName', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
             { title: tr.header_Author, sortPropertyName: 'createdByDisplayName', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
             { title: tr.header_Title, sortPropertyName: 'title', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
             { title: tr.header_CreationDate, sortPropertyName: 'creationDate', asc: false, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
@@ -19,7 +19,7 @@
         ///NOTE: Столбец для сортировки
         this.sortHeader = ko.observable(self.headers[0]);
 
-        this.sort = function(data, asc) {
+        this.sort = function (data, asc) {
             ///NOTE: Подсветка стрелочки
             self.sortHeader().opacityUp(1);
             self.sortHeader().opacityDown(1);
@@ -32,7 +32,7 @@
             self.sortHeader(data);
         };
 
-        this.sortList = ko.computed(function() {
+        this.sortList = ko.computed(function () {
             var property = self.sortHeader().sortPropertyName;
             var compare = function (a, b) {
                 if (self.sortHeader().asc) {
@@ -134,30 +134,48 @@
 
         this.chosenPullRequest = ko.observable();
 
-        this.setReviewers = function (pullRequest) {
+        this.setPullRequest = function (pullRequest) {
             self.chosenPullRequest(pullRequest);
         };
 
-
         ///NOTE: Разбиение на страницы
-        this.countRecords = ko.observable(20);
+        this.records = ko.observable(20);
+        this.countRecords = ko.computed({
+            read: function () {
+                return self.records();
+            },
+            write: function (value) {
+                if (value > 0) {
+                    self.records(Math.ceil(value));
+                }
+            }
+        });
+
         this.pageNumber = ko.observable(1);
+
+        this.numberOfPages = ko.computed(function () {
+            var num = Math.ceil(self.filteredListOfPullRequest().length / self.countRecords());
+
+            if (self.pageNumber() > num && num != 0) {
+                self.pageNumber(num);
+            }
+            return num;
+        });
+
         this.newListOfPullRequest = ko.computed(function () {
             var indexEnd = self.pageNumber() * self.countRecords();
             var indexBegin = indexEnd - self.countRecords();
             return self.filteredListOfPullRequest().slice(indexBegin, indexEnd);
         });
-        this.numberOfPages = ko.computed(function() {
-            return Math.ceil(self.filteredListOfPullRequest().length / self.countRecords());
-        });
+
         this.numberOfPagesButton = ko.computed(function () {
             var buttons = [];
-            for (var i = 1; i <= self.numberOfPages();i++ ) {
-                buttons.push({num: i});
+            for (var i = 1; i <= self.numberOfPages() ; i++) {
+                buttons.push({ num: i });
             }
             return buttons;
         });
-        this.setPage = function(page) {
+        this.setPage = function (page) {
             self.pageNumber(page.num);
         }
 
