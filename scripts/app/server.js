@@ -1,19 +1,10 @@
-﻿define(["jquery", "./models/repository"], function ($, repository) {
+﻿define(["jquery"], function ($) {
     return function (url) {
         var requestUrl = url + API_REPOSITORIES;
         return {
+            //TODO: вынести создание модели
             getRepositories: function () {
-                return $.getJSON(requestUrl).then(function (data) {
-                    return $.map(data.value || [], function (item) {
-                        return new repository(
-                            item.id,
-                            item.name,
-                            item.remoteUrl,
-                            item.project.name,
-                            item.defaultBranch
-                        );
-                    });
-                });
+                return $.getJSON(requestUrl);
             },
             getPullRequests: function (repositoryId) {
                 return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS);

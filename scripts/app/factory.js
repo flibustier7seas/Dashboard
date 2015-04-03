@@ -1,9 +1,19 @@
-﻿define(["jquery", "ko", "./utils", "./models/pullRequest", "./models/commit", "./models/reviewer", "./models/build"],
-    function ($, ko, utils, pullRequestModel, commit, reviewer, build) {
+﻿define(["jquery", "ko", "./utils", "./models/pullRequest", "./models/commit", "./models/reviewer", "./models/build", "./models/repository"],
+    function ($, ko, utils, pullRequestModel, commit, reviewer, build, repository) {
         var issueReg = new RegExp("[A-Z]+-\\d+", "i");
         return function (client) {
             this.getRepositories = function () {
-                return client.getRepositories();
+                return client.getRepositories().then(function (data) {
+                    return $.map(data.value || [], function (item) {
+                        return new repository(
+                            item.id,
+                            item.name,
+                            item.remoteUrl,
+                            item.project.name,
+                            item.defaultBranch
+                        );
+                    });
+                });
             };
             this.getPullRequests = function (repository) {
                 return client.getPullRequests(repository.id)
