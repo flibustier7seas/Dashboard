@@ -78,12 +78,22 @@
 
                     <tbody data-bind="foreach: newListOfPullRequest">
                         <tr class="text-left" data-toggle="modal" data-target="#myModal" data-bind="click: $parent.setPullRequest">
-                            <td class="col-md-1"><a data-bind="text: repositoryName, attr: { href: repositoryUrl }" target="_blank"></a></td>
+                            <td class="col-md-1">
+                                <a data-bind="text: repositoryName, attr: { href: repositoryUrl }" target="_blank"></a>
+                            </td>
                             <td class="col-md-2" data-bind="text: createdByDisplayName"></td>
-                            <td class="col-md-4"><a data-bind="text: title, attr: { href: url }" target="_blank"></a></td>
+                            <td class="col-md-4">
+                                <a data-bind="text: title, attr: { href: url }" target="_blank"></a>
+                            </td>
                             <td class="col-md-2" data-bind="text: creationDateToText"></td>
                             <td class="col-md-2" data-bind="text: updateToText"></td>
                             <td class="col-md-1" data-bind="text: titleMinVote"></td>
+                            <td>
+                                <a data-bind="text: statusName, attr: { href: issueUrl }" target="_blank"></a>
+                            </td>
+                            <td class="col-md-1" data-bind="text: priorityName"></td>
+                            <td class="col-md-1" data-bind="text: issueTypeName"></td>
+                            
                         </tr>
                     </tbody>
                 </table>
@@ -92,7 +102,7 @@
                 </div>
 
                 <div class="btn-group" data-toggle="buttons" data-bind="foreach: numberOfPagesButton">
-                    <label class="btn btn-danger" data-bind="click: $parent.setPage">
+                    <label class="btn btn-success" data-bind="click: $parent.setPage">
                         <input type="radio" name="options" />
                         <span data-bind="text: num"></span>
                     </label>
@@ -117,6 +127,9 @@
                             </p>
                             <p>
                                 <label>SourceRefName</label>: <span data-bind="text: sourceRefName"></span>
+                            </p>
+                            <p>
+                                <label>TargetRefName</label>: <span data-bind="text: targetRefName"></span>
                             </p>
                             <p>
                                 <label>Merge Status</label>: <span data-bind="text: mergeStatus"></span>
@@ -153,6 +166,32 @@
                                     <tr>
                                         <td data-bind="text: pushDate"></td>
                                         <td data-bind="text: comment"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="table">
+                                <caption>Builds</caption>
+                                <thead>
+                                    <tr>
+                                        <th>buildTypeId</th>
+                                        <th>state</th>
+                                        <th>status</th>
+                                        <th>Status text</th>
+                                        <th>Start date</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="foreach: builds">
+                                    <tr>
+                                        <td>
+                                            <a data-bind="text: buildTypeId, attr: { href: webUrl }" target="_blank"></a>
+                                        </td>
+                                        <td data-bind="text: state"></td>
+                                        <td data-bind="text: status"></td>
+                                        <td data-bind="text: statusText"></td>
+                                        <td data-bind="text: startDate"></td>
+                                        <td data-bind="text: time"></td>
                                     </tr>
                                 </tbody>
                             </table>

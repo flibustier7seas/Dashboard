@@ -6,6 +6,9 @@
         "header_CreationDate": "Creation Date",
         "header_Updated": "Updated",
         "header_Status": "Status",
+        "header_StatusIssue": "Status Issue",
+        "header_Priority": "Priority",
+        "header_TypeIssue": "Type Issue",
 
         "filter_ShowAll": "Show All",
         "filter_OnlyErm": "Only erm",

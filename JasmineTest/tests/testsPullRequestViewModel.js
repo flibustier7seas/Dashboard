@@ -72,17 +72,15 @@
             pullRequestModel.reviewers = ko.observableArray(data[2]);
             pullRequest = new pullRequestViewModel(pullRequestModel);
 
-            item = spyOn(pullRequest, "minVote");
-
-            ///NOTE: После добавления ревьювера, вызывается minVote,т.к. minVote зависит от reviewers
+            item = spyOn(pullRequest, "minVoteСalculation");
 
             pullRequest.reviewers.push(data[0]);
-            //pullRequest.minVote();
+
             //pullRequest.test();
+            //pullRequest.minVoteСalculation();
         });
-
-
-        it("'minVote' called", function () {
+        ///NOTE: Не проходит!
+        it("'minVoteСalculation' called", function () {
             expect(item).toHaveBeenCalled();
         });
     });

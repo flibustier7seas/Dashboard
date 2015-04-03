@@ -8,6 +8,9 @@
 
             var f = new factory(client);
 
+
+
+
             f.getRepositories().then(function (repositories) {
                 repositories.forEach(function (repository) {
                     f.getPullRequests(repository).then(function (items) {

@@ -5,6 +5,9 @@
     "header_CreationDate": "Дата создания",
     "header_Updated": "Дата обновления",
     "header_Status": "Статус",
+    "header_StatusIssue": "Статус тикета",
+    "header_Priority": "Приоритет",
+    "header_TypeIssue": "Тип тикета",
 
     "filter_ShowAll": "Все",
     "filter_OnlyErm": "Только erm",

@@ -22,18 +22,26 @@
                 var between = {
                     "itemVersion": {
                         "versionType": "branch",
-                        "version": targetRefName.replace("refs/heads/", "")
+                        "version": targetRefName
                     },
                     "compareVersion": {
                         "versionType": "branch",
-                        "version": sourceRefName.replace("refs/heads/", "")
+                        "version": sourceRefName
                     }
                 }
-
                 return $.post(requestUrl + "/" + repositoryId + API_COMMITSBATCH, between);
             },
             getReviewers: function (repositoryId, pullRequestId) {
                 return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS + '/' + pullRequestId + API_REVIEWERS);
+            },
+            getIssue: function(issueName) {
+                return $.getJSON(JIRAURL + API_ISSUE + issueName);
+            },
+            getBuilds: function (branchName) {
+                return $.getJSON(TEAMCITY + API_BUILDS + branchName);
+            },
+            getBuild: function (url) {
+                return $.getJSON(TEAMCITY + url);
             }
         }
     };

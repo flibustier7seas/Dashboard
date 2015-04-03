@@ -11,11 +11,17 @@
         this.createdById = ko.observable(pullRequest.createdById);
         this.creationDate = ko.observable(pullRequest.creationDate);
         this.sourceRefName = ko.observable(pullRequest.sourceRefName);
+        this.targetRefName = ko.observable(pullRequest.targetRefName);
         this.mergeStatus = ko.observable(pullRequest.mergeStatus);
         this.description = ko.observable(pullRequest.description);
 
         this.commits = pullRequest.commits;
         this.reviewers = pullRequest.reviewers;
+        this.builds = pullRequest.builds;
+        this.priorityName = pullRequest.priorityName;
+        this.issueUrl = pullRequest.issueUrl;
+        this.statusName = pullRequest.statusName;
+        this.issueTypeName = pullRequest.issueTypeName;
 
         this.url = ko.computed(function () {
             return pullRequest.repositoryUrl + pullRequest.url;
@@ -29,7 +35,7 @@
         this.titleMinVote = ko.observable();
 
         this.minVote = ko.computed(function () {
-            var compare = utils.getFunctionCompare("vote",false);
+            var compare = utils.getFunctionCompare("vote", false);
             var min = utils.getMaxOfArray(self.reviewers(), compare);
 
             if (min) {
@@ -51,6 +57,5 @@
             }
             return "";
         });
-        this.test = function (a) { self.minVote(); };
     };
 });

@@ -1,7 +1,8 @@
-﻿define(["jquery", "ko", "./models/pullRequest", "./models/commit", "./models/reviewer"],
-    function ($, ko, pullRequestModel, commit, reviewer) {
+﻿define(["jquery", "ko", "./utils", "./models/pullRequest", "./models/commit", "./models/reviewer", "./models/build"],
+    function ($, ko, utils, pullRequestModel, commit, reviewer, build) {
+        var issueReg = new RegExp("[A-Z]+-\\d+", "i");
         return function (client) {
-            this.getRepositories = function() {
+            this.getRepositories = function () {
                 return client.getRepositories();
             };
             this.getPullRequests = function (repository) {
@@ -19,14 +20,49 @@
                                 item.createdBy.id,
                                 item.lastMergeSourceCommit.commitId,
                                 item.creationDate,
-                                item.sourceRefName,
+                                item.sourceRefName.replace("refs/heads/", ""),
+                                item.targetRefName.replace("refs/heads/", ""),
                                 item.mergeStatus,
                                 item.description,
                                 repository.name,
                                 repository.url
                             );
 
-                            client.getCommits(item.sourceRefName, item.targetRefName, item.repository.id)
+                            client.getBuilds(pullRequest.sourceRefName).then(function (data) {
+                                if (data.count > 0) {
+                                    data.build.forEach(function (bld) {
+
+                                        client.getBuild(bld.href).then(function (obj) {
+                                            pullRequest.builds.push(new build(
+                                                obj.buildTypeId,
+                                                obj.state,
+                                                obj.status,
+                                                obj.webUrl,
+                                                obj.statusText,
+                                                utils.dateToTextTC(obj.startDate),
+                                                utils.timeDifference(obj.startDate, obj.finishDate)
+                                                ));
+                                        });
+                                    });
+                                }
+                            });
+
+                            var issueArraySource = issueReg.exec(item.sourceRefName);
+                            var issueArrayTarget = issueReg.exec(item.targetRefName);
+                            var issueArray = issueArraySource || issueArrayTarget;
+                            if (issueArray) {
+                                issueArray.forEach(function (str) {
+                                    client.getIssue(str)
+                                        .then(function (data) {
+                                            pullRequest.priorityName(data.fields.priority.name);
+                                            pullRequest.issueUrl(JIRAURL + BROWSEURL + str);
+                                            pullRequest.statusName(data.fields.status.name);
+                                            pullRequest.issueTypeName(data.fields.issuetype.name);
+                                        });
+                                });
+                            };
+
+                            client.getCommits(pullRequest.sourceRefName, pullRequest.targetRefName, item.repository.id)
                                 .then(function (data) {
                                     data.value.forEach(function (cmt) {
                                         pullRequest.addCommit(new commit(cmt.commitId, cmt.committer.date, cmt.comment));
