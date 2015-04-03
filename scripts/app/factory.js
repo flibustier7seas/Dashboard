@@ -1,6 +1,6 @@
 ﻿define(["jquery", "ko", "./utils", "./models/pullRequest", "./models/commit", "./models/reviewer", "./models/build", "./models/repository"],
     function ($, ko, utils, pullRequestModel, commit, reviewer, build, repository) {
-        var issueReg = new RegExp("[A-Z]+-\\d+", "i");
+        var issueReg = new RegExp("[A-Z]+-\\d{4}", "i");
         return function (client) {
             this.getRepositories = function () {
                 return client.getRepositories().then(function (data) {
@@ -15,8 +15,8 @@
                     });
                 });
             };
-            this.getPullRequests = function (repository) {
-                return client.getPullRequests(repository.id)
+            this.getPullRequests = function (repos) {
+                return client.getPullRequests(repos.id)
                     .then(
                     function (items) {
                         return $.map(items.value || [], function (item) {
@@ -34,8 +34,8 @@
                                 item.targetRefName.replace("refs/heads/", ""),
                                 item.mergeStatus,
                                 item.description,
-                                repository.name,
-                                repository.url
+                                repos.name,
+                                repos.url
                             );
 
                             client.getBuilds(pullRequest.sourceRefName).then(function (data) {
@@ -75,7 +75,7 @@
                             client.getCommits(pullRequest.sourceRefName, pullRequest.targetRefName, item.repository.id)
                                 .then(function (data) {
                                     data.value.forEach(function (cmt) {
-                                        pullRequest.addCommit(new commit(cmt.commitId, cmt.committer.date, cmt.comment));
+                                        pullRequest.addCommit(new commit(cmt.commitId, utils.dateToText(cmt.committer.date), cmt.comment));
                                     });
                                 });
 

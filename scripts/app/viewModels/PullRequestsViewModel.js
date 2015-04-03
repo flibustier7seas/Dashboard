@@ -73,6 +73,8 @@
             { title: tr.filter_ShowAll, count: ko.computed(function () { return self.list().length; }) }
         ]);
 
+
+        
         ///NOTE: Данные для диаграммы
         this.data = [
             {
@@ -111,8 +113,7 @@
             { title: tr.filter_StatusYes, filter: function (item) { return item.titleMinVote() == 'Yes'; } },
             { title: tr.filter_StatusNo, filter: function (item) { return item.titleMinVote() == 'No'; } },
             { title: tr.filter_MyPullRequest, filter: function (item) { return item.createdById() == settings.userId; } },
-            {
-                title: tr.filter_MyReview, filter: function (item) {
+            { title: tr.filter_MyReview, filter: function (item) {
                     return item.reviewers().filter(function (reviewer) {
                         return reviewer.id == settings.userId;
                     }).length > 0;
@@ -141,7 +142,6 @@
                     return item[self.propertyForFilters()]().indexOf(self.textForFilters()) != -1;
                 });
             }
-
             self.updateData();
             return result;
         });

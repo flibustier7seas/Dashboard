@@ -17,7 +17,18 @@
         "filter_StatusYes": "Status: Yes",
         "filter_StatusNo": "Status: No",
         "filter_MyPullRequest": "My PullRequests",
-        "filter_MyReview": "My Review"
+        "filter_MyReview": "My Review",
+
+        "PullRequests": "Pull Requests",
+        "Statistic": "Statistic",
+        "CreatedBy": "Created By",
+        "CreationDate": "Creation Date",
+        "SourceRefName": "SourceRefName",
+        "TargetRefName": "TargetRefName",
+        "Merge Status": "Merge Status",
+        "Description": "Description",
+        "Reviewers": "Reviewers",
+        "Commits": "Commits"
     },
     "ru": true
 });

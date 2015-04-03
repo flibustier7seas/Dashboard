@@ -24,9 +24,11 @@
             }
         },
         dateToText: function (date) {
+
             if (moment().diff(date, 'days') < 7) {
                 return moment(date).fromNow();
             }
+
             return moment(date).format('LLLL');
         },
         dateToTextTC: function (startDate) {
@@ -36,14 +38,12 @@
             }
             return date.format('LLLL');
         },
-
-        timeDifference: function (startDate, finishDate) {
-            var a = moment(startDate, [this.timeTCTemplate]);
-            var b = moment(finishDate, [this.timeTCTemplate]);
-            var c = moment(b.diff(a));
-            return c.format('mm:ss');
+        timeDifference: function (start, finish) {
+            var startDate = moment(start, [this.timeTCTemplate]);
+            var finishDate = moment(finish, [this.timeTCTemplate]);
+            var result = moment(finishDate.diff(startDate));
+            return result.format('mm:ss');
         }
-
     }
 }
 );

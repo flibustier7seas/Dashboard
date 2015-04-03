@@ -26,7 +26,11 @@
                 return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS + '/' + pullRequestId + API_REVIEWERS);
             },
             getIssue: function(issueName) {
-                return $.getJSON(JIRAURL + API_ISSUE + issueName);
+                return $.getJSON(JIRAURL + API_ISSUE + issueName).error(function (data) {
+                    if (data.status == 401) {
+                        console.log("Необходимо авторизоваться в jira");
+                    };
+                });
             },
             getBuilds: function (branchName) {
                 return $.getJSON(TEAMCITY + API_BUILDS + branchName);
