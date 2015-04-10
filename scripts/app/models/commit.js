@@ -1,8 +1,9 @@
 ﻿define([], function () {
-    return function (commitId, pushDate) {
+    return function (commitId, pushDate, comment) {
         return {
             commitId: commitId,
-            pushDate: pushDate
+            pushDate: pushDate,
+            comment: comment
         };
     };
 });

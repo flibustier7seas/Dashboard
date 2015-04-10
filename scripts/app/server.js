@@ -1,63 +1,42 @@
-﻿define(["jquery", "./models/repository", "./models/pullRequest", "./models/commit", "./models/reviewer"], function ($, repository, pullRequest, commit, reviewer) {
-    var API_REPOSITORIES = "/_apis/git/repositories";
-    var API_PULLREQUESTS = "/pullRequests";
-    var API_PULLREQUEST = "/pullRequest";
-    var API_COMMITS = "/commits";
-    var API_REVIEWERS = "/reviewers";
-
+﻿define(["jquery"], function ($) {
     return function (url) {
         var requestUrl = url + API_REPOSITORIES;
         return {
+            //TODO: вынести создание модели
             getRepositories: function () {
-                return $.getJSON(requestUrl).then(function (data) {
-                    return $.map(data.value || [], function (item) {
-                        return new repository(
-                            item.id,
-                            item.name,
-                            item.remoteUrl,
-                            item.project.name,
-                            item.defaultBranch
-                        );
-                    });
-                });
+                return $.getJSON(requestUrl);
             },
             getPullRequests: function (repositoryId) {
-                console.log(requestUrl + '/' + repositoryId + API_PULLREQUESTS);
-                return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS).then(function (data) {
-                    return $.map(data.value || [], function (item) {
-                        return new pullRequest(
-                            item.pullRequestId,
-                            item.status,
-                            item.title,
-                            API_PULLREQUEST + '/' + item.pullRequestId,
-                            item.createdBy.displayName,
-                            item.lastMergeSourceCommit.commitId,
-                            item.creationDate,
-                            item.sourceRefName,
-                            item.mergeStatus,
-                            item.description
-                        );
-                    });
-                });
+                return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS);
             },
-            getCommit: function (repositoryId,commitId) {
-                return $.getJSON(requestUrl + '/' + repositoryId + API_COMMITS +'/'+ commitId).then(function (data) {
-                    return new commit(
-                           data.commitId,
-                           data.push.date
-                        );
-                });
+            getCommits: function (sourceRefName, targetRefName,repositoryId) {
+                var between = {
+                    "itemVersion": {
+                        "versionType": "branch",
+                        "version": targetRefName
+                    },
+                    "compareVersion": {
+                        "versionType": "branch",
+                        "version": sourceRefName
+                    }
+                }
+                return $.post(requestUrl + "/" + repositoryId + API_COMMITSBATCH, between);
             },
             getReviewers: function (repositoryId, pullRequestId) {
-                return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS + '/' + pullRequestId + API_REVIEWERS).then(function (data) {
-                    return $.map(data.value || [], function (item) {
-                        return new reviewer(
-                               item.displayName,
-                               item.vote
-                            );
-                    });
-
+                return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS + '/' + pullRequestId + API_REVIEWERS);
+            },
+            getIssue: function(issueName) {
+                return $.getJSON(JIRAURL + API_ISSUE + issueName).error(function (data) {
+                    if (data.status == 401) {
+                        console.log("Необходимо авторизоваться в jira");
+                    };
                 });
+            },
+            getBuilds: function (branchName) {
+                return $.getJSON(TEAMCITY + API_BUILDS + branchName);
+            },
+            getBuild: function (url) {
+                return $.getJSON(TEAMCITY + url);
             }
         }
     };

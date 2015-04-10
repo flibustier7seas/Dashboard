@@ -1,57 +1,61 @@
-﻿define(["jquery", "ko", "moment", "./reviewerViewModel", "./commitViewModel"], function ($, ko, moment, reviewerViewModel, commitViewModel) {
-    return function (pullRequest, repository, client) {
+﻿define(["jquery", "ko","../utils"], function ($, ko,utils) {
+    return function (pullRequest) {
         var self = this;
 
-        this.repository = ko.observable(repository);
-        this.repositoryName = ko.observable(repository.name());
-        this.repositoryUrl = ko.observable(repository.url());
-
+        this.repositoryName = ko.observable(pullRequest.repositoryName);
+        this.repositoryUrl = ko.observable(pullRequest.repositoryUrl);
         this.pullRequestId = ko.observable(pullRequest.pullRequestId);
         this.status = ko.observable(pullRequest.status);
         this.title = ko.observable(pullRequest.title);
         this.createdByDisplayName = ko.observable(pullRequest.createdByDisplayName);
+        this.createdById = ko.observable(pullRequest.createdById);
         this.creationDate = ko.observable(pullRequest.creationDate);
         this.sourceRefName = ko.observable(pullRequest.sourceRefName);
+        this.targetRefName = ko.observable(pullRequest.targetRefName);
         this.mergeStatus = ko.observable(pullRequest.mergeStatus);
         this.description = ko.observable(pullRequest.description);
 
-        this.update = ko.observable();
-        this.minVote = ko.observable();
-        this.titleMinVote = ko.observable();
-
-        this.reviewers = ko.observableArray();
+        this.commits = pullRequest.commits;
+        this.reviewers = pullRequest.reviewers;
+        this.builds = pullRequest.builds;
+        this.priorityName = pullRequest.priorityName;
+        this.issueUrl = pullRequest.issueUrl;
+        this.statusName = pullRequest.statusName;
+        this.issueTypeName = pullRequest.issueTypeName;
 
         this.url = ko.computed(function () {
-            return repository.url() + pullRequest.url;
+            return pullRequest.repositoryUrl + pullRequest.url;
         });
 
-        this.date = ko.computed(function () {
-            if (moment().diff(self.update(), 'days') < 7) {
-                return moment(self.update()).fromNow();
+
+        this.creationDateToText = ko.computed(function () {
+            return utils.dateToText(self.creationDate());
+        });
+
+        this.titleMinVote = ko.observable();
+
+        this.minVote = ko.computed(function () {
+            var compare = utils.getFunctionCompare("vote", false);
+            var min = utils.getMaxOfArray(self.reviewers(), compare);
+
+            if (min) {
+                self.titleMinVote(min.titleVote);
+                return min.vote;
+            } else {
+                self.titleMinVote("No reviewers");
+                return 20;
             }
-            return moment(self.update()).format('LLLL');
         });
 
-        client.getCommit(repository.id(), pullRequest.lastMergeSourceCommitId).done(function (commitModel) {
-            var commit = new commitViewModel(commitModel);
-            self.update(commit.pushDate());
-        });
-
-        client.getReviewers(repository.id(), self.pullRequestId()).done(function (reviewers) {
-
-            var minVote = 20;
-            var titleMinVote = "No reviewers";
-
-            reviewers.forEach(function (item) {
-                var reviewer = new reviewerViewModel(item);
-                if (reviewer.vote() < minVote) {
-                    minVote = reviewer.vote();
-                    titleMinVote = reviewer.titleVote();
-                }
-                self.reviewers.push(reviewer);
-            });
-            self.minVote(minVote);
-            self.titleMinVote(titleMinVote);
+        this.updateToText = ko.observable();
+        this.update = ko.computed(function () {
+            var compare = utils.getFunctionCompare("pushDate");
+            var max = utils.getMaxOfArray(self.commits(), compare);
+            if (max) {
+                self.updateToText(max.pushDate);
+                return max.pushDate;
+            }
+            return "";
         });
     };
 });
