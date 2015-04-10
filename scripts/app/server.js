@@ -33,11 +33,11 @@
 
         var temcitycmds = {
             builds: teamcityUrl + "/httpAuth/app/rest/builds",
-            build: function(name) {
-                return this.builds + name;
+            build: function (buildId) {
+                return this.builds + "/id:" + buildId;
             },
             buildsForBranch: function (name) {
-                return this.builds + "?locator=count:1,branch:" + name;
+                return this.builds + "?locator=count:1,branch:" + name.replace("feature/", "");
             }
         };
 
@@ -70,8 +70,8 @@
             getBuilds: function (branchName) {
                 return $.getJSON(temcitycmds.buildsForBranch(branchName));
             },
-            getBuild: function (buildName) {
-                return $.getJSON(temcitycmds.build(buildName));
+            getBuild: function (buildId) {
+                return $.getJSON(temcitycmds.build(buildId));
             }
         }
     };

@@ -42,7 +42,7 @@
                                 if (data.count > 0) {
                                     data.build.forEach(function (bld) {
 
-                                        client.getBuild(bld.href).then(function (obj) {
+                                        client.getBuild(bld.id).then(function (obj) {
                                             pullRequest.builds.push(new build(
                                                 obj.buildTypeId,
                                                 obj.state,
