@@ -25,7 +25,7 @@
                                 item.pullRequestId,
                                 item.status,
                                 item.title,
-                                API_PULLREQUEST + '/' + item.pullRequestId,
+                                item.pullRequestId,
                                 item.createdBy.displayName,
                                 item.createdBy.id,
                                 item.lastMergeSourceCommit.commitId,
@@ -42,7 +42,7 @@
                                 if (data.count > 0) {
                                     data.build.forEach(function (bld) {
 
-                                        client.getBuild(bld.href).then(function (obj) {
+                                        client.getBuild(bld.id).then(function (obj) {
                                             pullRequest.builds.push(new build(
                                                 obj.buildTypeId,
                                                 obj.state,
@@ -65,7 +65,7 @@
                                     client.getIssue(str)
                                         .then(function (data) {
                                             pullRequest.priorityName(data.fields.priority.name);
-                                            pullRequest.issueUrl(JIRAURL + BROWSEURL + str);
+                                            pullRequest.issueUrl(str);
                                             pullRequest.statusName(data.fields.status.name);
                                             pullRequest.issueTypeName(data.fields.issuetype.name);
                                         });
