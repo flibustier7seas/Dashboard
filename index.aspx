@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" %>
+<%@ Import Namespace="Dashboard" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -7,21 +8,17 @@
     <script src="scripts/libs/require.js" data-main="scripts/bootstrap"></script>
     <link href="style/bootstrap.min.css" rel="stylesheet">
     <link href="style/styleSheet.css" rel="stylesheet">
+
+    <script type="text/javascript">
+        var user = { id: "<%=Settings.CurrentUser.Id%>", name: "<%=Settings.CurrentUser.Name %>" };
+        var services = {
+            tfs: "<%=Settings.Services.TfsUrl%>",
+            jira: "<%=Settings.Services.JiraUrl%>",
+            teamcity: "<%=Settings.Services.TeamCityUrl%>",
+        };
+    </script>
 </head>
 <body>
-    <script type="text/javascript">
-        <%
-        var configuration = TfsServer.GetConfiguration(Parameters.GetUrlTfs());
-        var settings = new Profiles(configuration);
-        var constants = Parameters.GetConstants();
-
-        foreach (var constant in constants)
-        {
-            Response.Write("var " + constant.Key + " = '" + constant.Value + "';");
-        }
-        Response.Write("var settings = {userId: '" + settings.UserId + "',userName: '" + settings.UserName + "'};");
-        %>
-    </script>
 
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">

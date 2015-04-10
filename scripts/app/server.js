@@ -1,13 +1,52 @@
 ﻿define(["jquery"], function ($) {
-    return function (url) {
-        var requestUrl = url + API_REPOSITORIES;
+    return function (services) {
+
+        var tfsUrl = services.tfs;
+        var jiraUrl = services.jira;
+        var teamcityUrl = services.teamcity;
+
+        var commands = {
+            repositories: tfsUrl + "/DefaultCollection/_apis/git/repositories",
+            repository: function(repositoryId) {
+                return this.repositories + "/" + repositoryId;
+            },
+            pullRequests: function(repositoryId) {
+                return this.repository(repositoryId) + "/pullRequests";
+            },
+            pullRequest: function(repositoryId, pullRequestId) {
+                return this.repository(repositoryId) + "/pullRequests/" + pullRequestId;
+            },
+            commits: function(repositoryId) {
+                return this.repository(repositoryId) + "/commitsBatch?$top=10"
+            },
+            reviewers: function(repositoryId, pullRequestId) {
+                return this.pullRequest(repositoryId, pullRequestId) + "/reviewers";
+            }
+        };
+
+        var jiracmds = {
+            issues: jiraUrl + "/rest/api/2/issue",
+            issue: function (issue) {
+                return this.issues + "/" + issue;
+            }
+        };
+
+        var temcitycmds = {
+            builds: teamcityUrl + "/httpAuth/app/rest/builds",
+            build: function(name) {
+                return this.builds + name;
+            },
+            buildsForBranch: function (name) {
+                return this.builds + "?locator=count:1,branch:" + name;
+            }
+        };
+
         return {
-            //TODO: вынести создание модели
             getRepositories: function () {
-                return $.getJSON(requestUrl);
+                return $.getJSON(commands.repositories);
             },
             getPullRequests: function (repositoryId) {
-                return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS);
+                return $.getJSON(commands.pullRequests(repositoryId));
             },
             getCommits: function (sourceRefName, targetRefName,repositoryId) {
                 var between = {
@@ -20,23 +59,19 @@
                         "version": sourceRefName
                     }
                 }
-                return $.post(requestUrl + "/" + repositoryId + API_COMMITSBATCH, between);
+                return $.post(commands.commits(repositoryId), between);
             },
             getReviewers: function (repositoryId, pullRequestId) {
-                return $.getJSON(requestUrl + '/' + repositoryId + API_PULLREQUESTS + '/' + pullRequestId + API_REVIEWERS);
+                return $.getJSON(commands.reviewers(repositoryId, pullRequestId));
             },
             getIssue: function(issueName) {
-                return $.getJSON(JIRAURL + API_ISSUE + issueName).error(function (data) {
-                    if (data.status == 401) {
-                        console.log("Необходимо авторизоваться в jira");
-                    };
-                });
+                return $.getJSON(jiracmds.issue(issueName));
             },
             getBuilds: function (branchName) {
-                return $.getJSON(TEAMCITY + API_BUILDS + branchName);
+                return $.getJSON(temcitycmds.buildsForBranch(branchName));
             },
-            getBuild: function (url) {
-                return $.getJSON(TEAMCITY + url);
+            getBuild: function (buildName) {
+                return $.getJSON(temcitycmds.build(buildName));
             }
         }
     };

@@ -4,8 +4,8 @@ define(["jquery", "ko"],
 
         var self = this;
 
-        this.userName = settings.userName;
-        this.userId = settings.userId;
+        this.userId = user.id;
+        this.userName = user.name;
 
         this.listOfPullRequest = ko.observable(pullRequests);
 

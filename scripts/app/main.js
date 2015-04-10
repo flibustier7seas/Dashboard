@@ -2,7 +2,7 @@
     function ($, ko, server, appViewModel, factory, pullRequestsViewModel, pullRequestViewModel) {
         $(function () {
 
-            var client = new server(MAINURL);
+            var client = new server(services);
 
             var pullRequests = new pullRequestsViewModel();
 
