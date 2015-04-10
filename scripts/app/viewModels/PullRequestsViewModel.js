@@ -10,19 +10,19 @@
 
         ///NOTE: Заголовки таблицы
         this.headers = [
+            { title: ""/*tr.header_Status*/, sortPropertyName: 'minVote', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
+            { title: tr.header_Title, sortPropertyName: 'title', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
             { title: tr.header_Repository, sortPropertyName: 'repositoryName', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
             { title: tr.header_Author, sortPropertyName: 'createdByDisplayName', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_Title, sortPropertyName: 'title', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
             { title: tr.header_CreationDate, sortPropertyName: 'creationDate', asc: false, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
             { title: tr.header_Updated, sortPropertyName: 'update', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_Status, sortPropertyName: 'minVote', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
             { title: tr.header_StatusIssue, sortPropertyName: 'statusName', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
             { title: tr.header_Priority, sortPropertyName: 'priorityName', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
             { title: tr.header_TypeIssue, sortPropertyName: 'issueTypeName', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) }
         ];
 
         ///NOTE: Столбец для сортировки
-        this.sortHeader = ko.observable(self.headers[0]);
+        this.sortHeader = ko.observable(self.headers[2]);
 
         this.sort = function (data, asc) {
             ///NOTE: Имитация устойчивой сортировки.

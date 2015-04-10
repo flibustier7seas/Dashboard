@@ -17,6 +17,12 @@
             teamcity: "<%=Settings.Services.TeamCityUrl%>",
         };
     </script>
+    
+    <style>
+        .sorting {
+            opacity: 0.5;
+        }
+    </style>
 </head>
 <body>
 
@@ -62,29 +68,36 @@
                 </div>
             </div>
             <div class="row">
-                <table class="table table-hover table-bordered">
+                <table class="table table-hover">
                     <thead>
                         <tr class="text-info" data-bind="foreach: headers">
                             <th>
-                                <span data-bind="text: title"></span>
-                                <a class="glyphicon glyphicon-arrow-up" href="#" data-bind="click: function (data) { $parent.sort(data, true) }, style: { 'opacity': opacityUp }"></a>
-                                <a class="glyphicon glyphicon-arrow-down" href="#" data-bind="click: function (data) { $parent.sort(data, false) }, style: { 'opacity': opacityDown }"></a>
+                                <span data-bind="text: title, click: function (data) { $parent.sort(data, true) }"></span>
+                                <span class="glyphicon glyphicon-sort text-muted sorting"></span>
+                                <span class="glyphicon glyphicon-sort-by-attributes sorting" data-bind="click: function (data) { $parent.sort(data, true) }"></span>
+                                <span class="glyphicon glyphicon-sort-by-attributes-alt sorting" data-bind="click: function (data) { $parent.sort(data, false) }"></span>
+<%--                                <a class="glyphicon glyphicon-arrow-up" href="#" data-bind="click: function (data) { $parent.sort(data, true) }, style: { 'opacity': opacityUp }"></a>--%>
+<%--                                <a class="glyphicon glyphicon-arrow-down" href="#" data-bind="click: function (data) { $parent.sort(data, false) }, style: { 'opacity': opacityDown }"></a>--%>
                             </th>
                         </tr>
                     </thead>
 
                     <tbody data-bind="foreach: newListOfPullRequest">
                         <tr class="text-left" data-toggle="modal" data-target="#myModal" data-bind="click: $parent.setPullRequest">
+                            <td data-bind="attr: { 'title': titleMinVote }">
+                                <span class="glyphicon glyphicon-ok-sign text-success" data-bind="visible: minVote() == 10"></span>
+                                <span class="glyphicon glyphicon-remove-sign text-danger" data-bind="visible: minVote() == -10"></span>
+                                <span class="glyphicon glyphicon-question-sign text-info" data-bind="visible: minVote() == 0"></span>
+                            </td>
+                            <td class="col-md-4">
+                                <span class="text-primary" data-bind="text: title, attr: { href: url }"></span>
+                            </td>
                             <td class="col-md-1">
                                 <a data-bind="text: repositoryName, attr: { href: repositoryUrl }" target="_blank"></a>
                             </td>
                             <td class="col-md-2" data-bind="text: createdByDisplayName"></td>
-                            <td class="col-md-4">
-                                <a data-bind="text: title, attr: { href: url }" target="_blank"></a>
-                            </td>
                             <td class="col-md-2" data-bind="text: creationDateToText"></td>
                             <td class="col-md-2" data-bind="text: updateToText"></td>
-                            <td class="col-md-1" data-bind="text: titleMinVote"></td>
                             <td>
                                 <a data-bind="text: statusName, attr: { href: issueUrl }" target="_blank"></a>
                             </td>
