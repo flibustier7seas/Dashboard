@@ -38,10 +38,8 @@
         </div>
     </div>
 
-    <div class="container-fluid">
-        
-         <div data-bind="template: { if: listOfPullRequest().isLoaded, name: 'pullRequestsView', data: listOfPullRequest }"></div>
-
+    <div class="container-fluid" data-bind="foreach: collection">
+         <div data-bind="template: { if: isLoaded, name: viewName, data: data }"></div>
     </div>
 
 </body>

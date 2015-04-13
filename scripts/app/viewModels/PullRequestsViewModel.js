@@ -10,43 +10,44 @@
 
         ///NOTE: Заголовки таблицы
         this.headers = [
-            { title: ""/*tr.header_Status*/, sortPropertyName: 'minVote', asc: ko.observable(true), active: ko.observable(false) },
-            { title: tr.header_Title, sortPropertyName: 'title', asc: ko.observable(true), active: ko.observable(false) },
-            { title: tr.header_Repository, sortPropertyName: 'repositoryName', asc: ko.observable(true), active: ko.observable(false) },
-            { title: tr.header_Author, sortPropertyName: 'createdByDisplayName', asc: ko.observable(true), active: ko.observable(false) },
-            { title: tr.header_CreationDate, sortPropertyName: 'creationDate', asc: ko.observable(true), active: ko.observable(false) },
-            { title: tr.header_Updated, sortPropertyName: 'update', asc: ko.observable(true), active: ko.observable(false) },
-            { title: tr.header_StatusIssue, sortPropertyName: 'statusName', asc: ko.observable(true), active: ko.observable(false) },
-            { title: tr.header_Priority, sortPropertyName: 'priorityName', asc: ko.observable(true), active: ko.observable(false) },
-            { title: tr.header_TypeIssue, sortPropertyName: 'issueTypeName', asc: ko.observable(true), active: ko.observable(false) }
+            { title: ""/*tr.header_Status*/, sortPropertyName: 'minVote',status: ko.observable(1) },
+            { title: tr.header_Title, sortPropertyName: 'title',status: ko.observable(0) },
+            { title: tr.header_Repository, sortPropertyName: 'repositoryName',status: ko.observable(0) },
+            { title: tr.header_Author, sortPropertyName: 'createdByDisplayName',status: ko.observable(0) },
+            { title: tr.header_CreationDate, sortPropertyName: 'creationDate',status: ko.observable(0) },
+            { title: tr.header_Updated, sortPropertyName: 'update',status: ko.observable(0) },
+            { title: tr.header_StatusIssue, sortPropertyName: 'statusName',status: ko.observable(0) },
+            { title: tr.header_Priority, sortPropertyName: 'priorityName',status: ko.observable(0) },
+            { title: tr.header_TypeIssue, sortPropertyName: 'issueTypeName',status: ko.observable(0) }
         ];
 
-        this.getOpacity = ko.computed(function (data) {
-
-            console.log(data);
-        });
-
         ///NOTE: Столбец для сортировки
-        this.sortHeader = ko.observable(self.headers[2]);
+        this.sortHeader = ko.observable(self.headers[0]);
 
+        ///TODO: Разобраться с сортировкой, работает не корректно
         this.sort = function (data) {
-            self.sortHeader().active(false);
 
-            data.active(true);
-            data.asc(!data.asc());
-
-            self.sortHeader(data);
+            if (data.status() !== 0) {
+                data.status(-data.status());
+            } else {
+                self.sortHeader().status(0);
+                data.status(1);
+                self.sortHeader(data);
+            }
         };
 
         this.sortList = ko.computed(function () {
             var property = self.sortHeader().sortPropertyName;
+            var status = self.sortHeader().status();
+
             var compare = function (a, b) {
-                if (self.sortHeader().asc()) {
+                if (status == 1) {
                     return a[property]() < b[property]() ? -1 : a[property]() > b[property]() ? 1 : a[property]() == b[property]() ? 0 : 0;
                 } else {
                     return a[property]() > b[property]() ? -1 : a[property]() < b[property]() ? 1 : a[property]() == b[property]() ? 0 : 0;
                 }
             };
+
             self.list.sort(compare);
         });
 
@@ -94,7 +95,6 @@
             }
             //new Chart(document.getElementById("pie").getContext("2d")).Pie(self.data);
         };
-
 
 
 
@@ -148,7 +148,7 @@
             self.chosenPullRequest(pullRequest);
         };
 
-        
+
         ///NOTE: Разбиение на страницы, нужно ли?
         this.records = ko.observable(25);
         this.countRecords = ko.computed({
@@ -189,18 +189,6 @@
             };
             return buttons;
         });
-
-
-        ///TODO: Вынести загрузку View из ViewModel
-        this.isLoaded = ko.observable(false);
-        this.loadPage = function () {
-            if (!self.isLoaded()) {
-                viewLoader.loadView("pullRequestsView", function () {
-                    self.isLoaded(true);
-                });
-            }
-        }
-        this.loadPage();
     };
 });
 
