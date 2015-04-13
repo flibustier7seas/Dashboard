@@ -10,15 +10,15 @@
 
         ///NOTE: Заголовки таблицы
         this.headers = [
-            { title: ""/*tr.header_Status*/, sortPropertyName: 'minVote', asc: ko.observable(true), active: ko.observable(false)},
-            { title: tr.header_Title, sortPropertyName: 'title', asc: ko.observable(true), active: ko.observable(false)},
-            { title: tr.header_Repository, sortPropertyName: 'repositoryName', asc: ko.observable(true), active: ko.observable(false)},
-            { title: tr.header_Author, sortPropertyName: 'createdByDisplayName', asc: ko.observable(true), active: ko.observable(false)},
-            { title: tr.header_CreationDate, sortPropertyName: 'creationDate', asc: ko.observable(true), active: ko.observable(false)},
-            { title: tr.header_Updated, sortPropertyName: 'update', asc: ko.observable(true), active: ko.observable(false)},
-            { title: tr.header_StatusIssue, sortPropertyName: 'statusName', asc: ko.observable(true), active: ko.observable(false)},
-            { title: tr.header_Priority, sortPropertyName: 'priorityName', asc: ko.observable(true), active: ko.observable(false)},
-            { title: tr.header_TypeIssue, sortPropertyName: 'issueTypeName', asc: ko.observable(true), active: ko.observable(false)}
+            { title: ""/*tr.header_Status*/, sortPropertyName: 'minVote', asc: ko.observable(true), active: ko.observable(false) },
+            { title: tr.header_Title, sortPropertyName: 'title', asc: ko.observable(true), active: ko.observable(false) },
+            { title: tr.header_Repository, sortPropertyName: 'repositoryName', asc: ko.observable(true), active: ko.observable(false) },
+            { title: tr.header_Author, sortPropertyName: 'createdByDisplayName', asc: ko.observable(true), active: ko.observable(false) },
+            { title: tr.header_CreationDate, sortPropertyName: 'creationDate', asc: ko.observable(true), active: ko.observable(false) },
+            { title: tr.header_Updated, sortPropertyName: 'update', asc: ko.observable(true), active: ko.observable(false) },
+            { title: tr.header_StatusIssue, sortPropertyName: 'statusName', asc: ko.observable(true), active: ko.observable(false) },
+            { title: tr.header_Priority, sortPropertyName: 'priorityName', asc: ko.observable(true), active: ko.observable(false) },
+            { title: tr.header_TypeIssue, sortPropertyName: 'issueTypeName', asc: ko.observable(true), active: ko.observable(false) }
         ];
 
         this.getOpacity = ko.computed(function (data) {
@@ -30,18 +30,7 @@
         this.sortHeader = ko.observable(self.headers[2]);
 
         this.sort = function (data) {
-
             self.sortHeader().active(false);
-
-            //self.sortHeader().opacityUp(1);
-            //self.sortHeader().opacityDown(1);
-
-            //if (asc == true) {
-            //    ///NOTE: Подсветка стрелочки
-            //    data.opacityUp(0.5);
-            //} else {
-            //    data.opacityDown(0.5);
-            //};
 
             data.active(true);
             data.asc(!data.asc());
@@ -118,7 +107,8 @@
             { title: tr.filter_StatusYes, filter: function (item) { return item.titleMinVote() == 'Yes'; } },
             { title: tr.filter_StatusNo, filter: function (item) { return item.titleMinVote() == 'No'; } },
             { title: tr.filter_MyPullRequest, filter: function (item) { return item.createdById() == settings.userId; } },
-            { title: tr.filter_MyReview, filter: function (item) {
+            {
+                title: tr.filter_MyReview, filter: function (item) {
                     return item.reviewers().filter(function (reviewer) {
                         return reviewer.id == settings.userId;
                     }).length > 0;
@@ -158,7 +148,8 @@
             self.chosenPullRequest(pullRequest);
         };
 
-        ///NOTE: Разбиение на страницы
+        
+        ///NOTE: Разбиение на страницы, нужно ли?
         this.records = ko.observable(25);
         this.countRecords = ko.computed({
             read: function () {
@@ -185,7 +176,7 @@
             return num;
         });
 
-        this.newListOfPullRequest = ko.computed(function () {
+        this.pullRequests = ko.computed(function () {
             var indexEnd = self.pageNumber() * self.countRecords();
             var indexBegin = indexEnd - self.countRecords();
             return self.filteredListOfPullRequest().slice(indexBegin, indexEnd);
@@ -202,9 +193,9 @@
 
         ///TODO: Вынести загрузку View из ViewModel
         this.isLoaded = ko.observable(false);
-        this.loadPage = function() {
+        this.loadPage = function () {
             if (!self.isLoaded()) {
-                viewLoader.loadView("pullRequestsView",function() {
+                viewLoader.loadView("pullRequestsView", function () {
                     self.isLoaded(true);
                 });
             }

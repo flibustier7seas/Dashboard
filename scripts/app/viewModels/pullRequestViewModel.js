@@ -24,7 +24,7 @@
         this.issueTypeName = pullRequest.issueTypeName;
 
         this.url = ko.computed(function () {
-            return pullRequest.repositoryUrl + pullRequest.url;
+            return pullRequest.repositoryUrl + "/pullrequest/" + pullRequest.url;
         });
 
 
