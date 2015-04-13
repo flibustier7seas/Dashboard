@@ -1,4 +1,4 @@
-﻿define(["jquery", "ko", "i18n!nls/tr", "chart"], function ($, ko, tr) {
+﻿define(["jquery", "ko", "i18n!nls/tr", "app/viewLoader", "chart"], function ($, ko, tr, viewLoader) {
     return function () {
         var self = this;
 
@@ -58,6 +58,8 @@
             self.list.sort(compare);
         });
 
+
+        ///TODO: Вынести статистику в отдельную ViewModel
         //NOTE: Статистика
         this.getStat = function (property, value) {
             var result = self.list().filter(function (item) {
@@ -72,9 +74,6 @@
             { title: tr.filter_StatusNo, count: ko.computed(function () { return self.getStat("titleMinVote", "No"); }) },
             { title: tr.filter_ShowAll, count: ko.computed(function () { return self.list().length; }) }
         ]);
-
-
-        
         ///NOTE: Данные для диаграммы
         this.data = [
             {
@@ -101,8 +100,11 @@
             for (var i = 0; i < self.data.length; i++) {
                 self.data[i].value = self.statistic()[i].count();
             }
-            new Chart(document.getElementById("pie").getContext("2d")).Pie(self.data);
+            //new Chart(document.getElementById("pie").getContext("2d")).Pie(self.data);
         };
+
+
+
 
         ///NOTE: Фильтрация
         this.filters = [
@@ -193,6 +195,18 @@
             };
             return buttons;
         });
+
+
+        ///TODO: Вынести загрузку View из ViewModel
+        this.isLoaded = ko.observable(false);
+        this.loadPage = function() {
+            if (!self.isLoaded()) {
+                viewLoader.loadView("pullRequestsView",function() {
+                    self.isLoaded(true);
+                });
+            }
+        }
+        this.loadPage();
     };
 });
 
