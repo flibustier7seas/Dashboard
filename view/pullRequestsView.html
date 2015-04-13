@@ -23,14 +23,11 @@
         <table class="table table-hover">
             <thead>
                 <tr class="text-info" data-bind="foreach: headers">
-                    <th data-bind="click: function (data) { $parent.sort(data, true) }">
-                        <span data-bind="text: title, click: function (data) { $parent.sort(data, true) }"></span>
-                        <span class="glyphicon glyphicon-sort text-muted sorting"></span>
-                        <span class="glyphicon glyphicon-sort-by-attributes sorting" data-bind="click: function (data) { $parent.sort(data, true) }"></span>
-                        <span class="glyphicon glyphicon-sort-by-attributes-alt sorting" data-bind="click: function (data) { $parent.sort(data, false) }"></span>
-
-                        <!--<a class="glyphicon glyphicon-arrow-up" href="#" data-bind="click: function (data) { $parent.sort(data, true) }, style: { 'opacity': opacityUp }"></a>
-        <a class="glyphicon glyphicon-arrow-down" href="#" data-bind="click: function (data) { $parent.sort(data, false) }, style: { 'opacity': opacityDown }"></a>-->
+                    <th data-bind="click: function (data) { $parent.sort(data) }">
+                        <span data-bind="text: title"></span>
+                        <span class="glyphicon glyphicon-sort text-muted" data-bind="visible: !active()"></span>
+                        <span class="glyphicon glyphicon-sort-by-attributes" data-bind="visible: active() && asc()"></span>
+                        <span class="glyphicon glyphicon-sort-by-attributes-alt" data-bind="visible: active() && !asc()"></span>
                     </th>
                 </tr>
             </thead>
@@ -56,7 +53,6 @@
                     </td>
                     <td class="col-md-1" data-bind="text: priorityName"></td>
                     <td class="col-md-1" data-bind="text: issueTypeName"></td>
-
                 </tr>
             </tbody>
         </table>

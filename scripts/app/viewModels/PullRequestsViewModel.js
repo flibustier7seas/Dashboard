@@ -10,38 +10,41 @@
 
         ///NOTE: Заголовки таблицы
         this.headers = [
-            { title: ""/*tr.header_Status*/, sortPropertyName: 'minVote', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_Title, sortPropertyName: 'title', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_Repository, sortPropertyName: 'repositoryName', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_Author, sortPropertyName: 'createdByDisplayName', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_CreationDate, sortPropertyName: 'creationDate', asc: false, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_Updated, sortPropertyName: 'update', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_StatusIssue, sortPropertyName: 'statusName', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_Priority, sortPropertyName: 'priorityName', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_TypeIssue, sortPropertyName: 'issueTypeName', asc: true, active: false, opacityUp: ko.observable(1), opacityDown: ko.observable(1) }
+            { title: ""/*tr.header_Status*/, sortPropertyName: 'minVote', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
+            { title: tr.header_Title, sortPropertyName: 'title', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
+            { title: tr.header_Repository, sortPropertyName: 'repositoryName', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
+            { title: tr.header_Author, sortPropertyName: 'createdByDisplayName', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
+            { title: tr.header_CreationDate, sortPropertyName: 'creationDate', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
+            { title: tr.header_Updated, sortPropertyName: 'update', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
+            { title: tr.header_StatusIssue, sortPropertyName: 'statusName', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
+            { title: tr.header_Priority, sortPropertyName: 'priorityName', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
+            { title: tr.header_TypeIssue, sortPropertyName: 'issueTypeName', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) }
         ];
+
+        this.getOpacity = ko.computed(function (data) {
+
+            console.log(data);
+        });
 
         ///NOTE: Столбец для сортировки
         this.sortHeader = ko.observable(self.headers[2]);
 
-        this.sort = function (data, asc) {
-            ///NOTE: Имитация устойчивой сортировки.
-            if (data.active && data.asc == asc) {
-                return;
-            };
+        this.sort = function (data) {
 
-            self.sortHeader().active = false;
-            self.sortHeader().opacityUp(1);
-            self.sortHeader().opacityDown(1);
+            self.sortHeader().active(false);
 
-            if (asc == true) {
-                ///NOTE: Подсветка стрелочки
-                data.opacityUp(0.5);
-            } else {
-                data.opacityDown(0.5);
-            };
-            data.asc = asc;
-            data.active = true;
+            //self.sortHeader().opacityUp(1);
+            //self.sortHeader().opacityDown(1);
+
+            //if (asc == true) {
+            //    ///NOTE: Подсветка стрелочки
+            //    data.opacityUp(0.5);
+            //} else {
+            //    data.opacityDown(0.5);
+            //};
+
+            data.active(true);
+            data.asc(!data.asc());
 
             self.sortHeader(data);
         };
@@ -49,7 +52,7 @@
         this.sortList = ko.computed(function () {
             var property = self.sortHeader().sortPropertyName;
             var compare = function (a, b) {
-                if (self.sortHeader().asc) {
+                if (self.sortHeader().asc()) {
                     return a[property]() < b[property]() ? -1 : a[property]() > b[property]() ? 1 : a[property]() == b[property]() ? 0 : 0;
                 } else {
                     return a[property]() > b[property]() ? -1 : a[property]() < b[property]() ? 1 : a[property]() == b[property]() ? 0 : 0;

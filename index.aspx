@@ -17,12 +17,6 @@
             teamcity: "<%=Settings.Services.TeamCityUrl%>",
         };
     </script>
-    
-    <style>
-        .sorting {
-            opacity: 0.5;
-        }
-    </style>
 </head>
 <body>
 
