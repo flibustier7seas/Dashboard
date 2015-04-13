@@ -10,15 +10,15 @@
 
         ///NOTE: Заголовки таблицы
         this.headers = [
-            { title: ""/*tr.header_Status*/, sortPropertyName: 'minVote', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_Title, sortPropertyName: 'title', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_Repository, sortPropertyName: 'repositoryName', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_Author, sortPropertyName: 'createdByDisplayName', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_CreationDate, sortPropertyName: 'creationDate', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_Updated, sortPropertyName: 'update', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_StatusIssue, sortPropertyName: 'statusName', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_Priority, sortPropertyName: 'priorityName', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) },
-            { title: tr.header_TypeIssue, sortPropertyName: 'issueTypeName', asc: ko.observable(true), active: ko.observable(false), opacityUp: ko.observable(1), opacityDown: ko.observable(1) }
+            { title: ""/*tr.header_Status*/, sortPropertyName: 'minVote', asc: ko.observable(true), active: ko.observable(false)},
+            { title: tr.header_Title, sortPropertyName: 'title', asc: ko.observable(true), active: ko.observable(false)},
+            { title: tr.header_Repository, sortPropertyName: 'repositoryName', asc: ko.observable(true), active: ko.observable(false)},
+            { title: tr.header_Author, sortPropertyName: 'createdByDisplayName', asc: ko.observable(true), active: ko.observable(false)},
+            { title: tr.header_CreationDate, sortPropertyName: 'creationDate', asc: ko.observable(true), active: ko.observable(false)},
+            { title: tr.header_Updated, sortPropertyName: 'update', asc: ko.observable(true), active: ko.observable(false)},
+            { title: tr.header_StatusIssue, sortPropertyName: 'statusName', asc: ko.observable(true), active: ko.observable(false)},
+            { title: tr.header_Priority, sortPropertyName: 'priorityName', asc: ko.observable(true), active: ko.observable(false)},
+            { title: tr.header_TypeIssue, sortPropertyName: 'issueTypeName', asc: ko.observable(true), active: ko.observable(false)}
         ];
 
         this.getOpacity = ko.computed(function (data) {
