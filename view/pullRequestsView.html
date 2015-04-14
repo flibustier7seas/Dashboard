@@ -25,7 +25,6 @@
                 <tr class="text-info" data-bind="foreach: headers">
                     <th data-bind="click: function (data) { $parent.sort(data) }">                            
                         <span data-bind="text: title"></span>
-                        <!--Переделать биндинг-->
                         <span class="iconSort glyphicon glyphicon-sort text-muted " data-bind="visible: status() == 0"></span>
                         <span class="iconSort glyphicon glyphicon-sort-by-attributes" data-bind="visible: status() == 1"></span>
                         <span class="iconSort glyphicon glyphicon-sort-by-attributes-alt" data-bind="visible: status() == -1"></span>
@@ -69,6 +68,7 @@
             </label>
         </div>
     </div>
+
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content" data-bind="with: chosenPullRequest">

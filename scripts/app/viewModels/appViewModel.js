@@ -5,19 +5,28 @@ define(["jquery", "ko"],
             var self = this;
 
             this.userId = user.id;
-            this.userName = user.name;
+            this.userName = user.login;
 
             this.collection = ko.observableArray();
+            this.headerActive = null;
 
-            ///TODO: Переделать, чтобы заголовки брать из self.collection
-            this.menuHeaders = ko.observableArray([
-                { title: "Pull Requests", active: ko.observable(true) }
-            ]);
+            this.addItem = function(item, title) {
+                var header = {
+                    title: title,
+                    active: ko.observable(false),
+                    obj: item
+                };
+
+                self.collection.push(header);
+
+                if (!self.headerActive) {
+                    self.headerActive = header;
+                    self.headerActive.active(true);
+                };
+            };
 
             this.setActiveMenu = function (header) {
-                self.menuHeaders().forEach(function (item) {
-                    item.active(false);
-                });
+                self.headerActive.active(false);
                 header.active(true);
             };
         };

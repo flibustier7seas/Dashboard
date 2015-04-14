@@ -29,6 +29,7 @@
                                 item.pullRequestId,
                                 item.createdBy.displayName,
                                 item.createdBy.id,
+                                item.createdBy.uniqueName,
                                 item.lastMergeSourceCommit.commitId,
                                 item.creationDate,
                                 item.sourceRefName.replace("refs/heads/", ""),
@@ -58,16 +59,13 @@
                                 }
                             });
 
-                            var issueArraySource = issueReg.exec(item.sourceRefName);
-                            var issueArrayTarget = issueReg.exec(item.targetRefName);
-                            var issueArray = issueArraySource || issueArrayTarget;
+                            var issueArray = issueReg.exec(item.sourceRefName) || issueReg.exec(item.targetRefName)
                             if (issueArray) {
                                 issueArray.forEach(function (str) {
                                     jira.getIssue(str)
                                         .then(function (data) {
                                             pullRequest.priorityName(data.fields.priority.name);
-                                            ///TODO: Вынести адрес
-                                            pullRequest.issueUrl("https://jira.2gis.ru/browse/" + str);
+                                            pullRequest.issueUrl(services.jira + "/browse/" + str);
                                             pullRequest.statusName(data.fields.status.name);
                                             pullRequest.issueTypeName(data.fields.issuetype.name);
                                         });
@@ -84,7 +82,7 @@
                             tfs.getReviewers(item.repository.id, item.pullRequestId)
                                 .then(function (data) {
                                     data.value.forEach(function (rvw) {
-                                        pullRequest.addReviewer(new reviewer(rvw.displayName, rvw.id, rvw.vote));
+                                        pullRequest.addReviewer(new reviewer(rvw.displayName, rvw.id, rvw.vote, rvw.uniqueName));
                                     });
 
                                 });

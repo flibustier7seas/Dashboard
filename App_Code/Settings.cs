@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.Net;
 using System.Web;
 using Microsoft.TeamFoundation.Client;
 
@@ -23,13 +22,16 @@ namespace Dashboard
                 var identity = configuration.AuthorizedIdentity;
                 var userId = identity.TeamFoundationId;
                 var userName = identity.DisplayName;
-
-                return new UserInfo(userId, userName);
+                var login = UserLogin;
+                return new UserInfo(userId, userName,login);
             });
 
         public static ServiceUrls Services
         {
-            get { return services.Value; }
+            get
+            {
+                return services.Value;
+            }
         }
 
         public static UserInfo CurrentUser
@@ -43,22 +45,30 @@ namespace Dashboard
             {
                 throw new ArgumentNullException("path");
             }
-            //HttpContext.Current.User.Identity.Name;
+            
             return TfsConfigurationServerFactory.GetConfigurationServer(new Uri(path));
+        }
+
+        private static string UserLogin
+        {
+            get { return HttpContext.Current.User.Identity.Name.Replace(@"\", @"\\"); }
         }
     }
 
     public class UserInfo
     {
-        public UserInfo(Guid id, string name)
+        public UserInfo(Guid id, string name, string login)
         {
             Id = id;
             Name = name;
+            Login = login;
         }
 
         public Guid Id { get; private set; }
 
         public string Name { get; private set; }
+
+        public string Login { get; private set; }
     }
 
     public class ServiceUrls

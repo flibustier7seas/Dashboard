@@ -1,5 +1,5 @@
 ﻿define(["jquery", "ko"], function ($, ko) {
-    return function (id, status, title, url, createdByDisplayName, createdById, lastMergeSourceCommitId,
+    return function (id, status, title, url, createdByDisplayName, createdById, createdByLogin, lastMergeSourceCommitId,
         creationDate, sourceRefName,targetRefName, mergeStatus, description, repositoryName, repositoryUrl) {
 
         var self = this;
@@ -10,6 +10,7 @@
         this.url = url;
         this.createdByDisplayName = createdByDisplayName;
         this.createdById = createdById;
+        this.createdByLogin = createdByLogin;
         this.lastMergeSourceCommitId = lastMergeSourceCommitId;
         this.creationDate = creationDate;
         this.sourceRefName = sourceRefName;

@@ -1,8 +1,9 @@
 ﻿define([], function () {
-    return function (displayName, id, vote) {
+    return function (displayName, id, vote,login) {
         this.displayName = displayName;
         this.id = id;
         this.vote = vote;
+        this.login = login;
         this.titleVote = "";
 
         this.updateTitleVote = function () {

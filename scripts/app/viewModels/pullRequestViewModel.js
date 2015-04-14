@@ -9,6 +9,7 @@
         this.title = ko.observable(pullRequest.title);
         this.createdByDisplayName = ko.observable(pullRequest.createdByDisplayName);
         this.createdById = ko.observable(pullRequest.createdById);
+        this.createdByLogin = ko.observable(pullRequest.createdByLogin);
         this.creationDate = ko.observable(pullRequest.creationDate);
         this.sourceRefName = ko.observable(pullRequest.sourceRefName);
         this.targetRefName = ko.observable(pullRequest.targetRefName);

@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" %>
+
 <%@ Import Namespace="Dashboard" %>
 
 <!DOCTYPE html>
@@ -10,7 +11,7 @@
     <link href="style/styleSheet.css" rel="stylesheet">
 
     <script type="text/javascript">
-        var user = { id: "<%=Settings.CurrentUser.Id%>", name: "<%=Settings.CurrentUser.Name %>" };
+        var user = { id: "<%=Settings.CurrentUser.Id%>", name: "<%=Settings.CurrentUser.Name %>", login: new String("<%=Settings.CurrentUser.Login %>") };
         var services = {
             tfs: "<%=Settings.Services.TfsUrl%>",
             jira: "<%=Settings.Services.JiraUrl%>",
@@ -30,7 +31,7 @@
                 </button>
             </div>
             <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav" data-bind="foreach: menuHeaders">
+                <ul class="nav navbar-nav" data-bind="foreach: collection">
                     <li><a href="#" data-bind="click: $root.setActiveMenu, text: title"></a></li>
                 </ul>
                 <a class="navbar-brand navbar-right" data-bind="text: userName"></a>
@@ -39,7 +40,9 @@
     </div>
 
     <div class="container-fluid" data-bind="foreach: collection">
-         <div data-bind="template: { if: isLoaded, name: viewName, data: data }"></div>
+        <div data-bind="visible: active, with: obj ">
+            <div data-bind="template: { if: isLoaded, name: viewName, data: data }"></div>
+        </div>
     </div>
 
 </body>

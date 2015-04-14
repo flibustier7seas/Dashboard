@@ -32,7 +32,14 @@
             });
 
             var app = new appViewModel();
-            app.collection.push(pullRequestsItem);
+            app.addItem(pullRequestsItem, "Pull Requests");
+
+            //app.addItem({
+            //    data: null,
+            //    viewName: "",
+            //    isLoaded: ko.observable(false)
+            //}, "Repositories");
+
             ko.applyBindings(app);
         });
     });
