@@ -20,10 +20,10 @@
         </div>
     </div>
     <div class="row">
-        <table class="table table-hover">
+        <table class="table table-hover" data-bind="yourBindingName: pullRequests">
             <thead>
                 <tr class="text-info" data-bind="foreach: headers">
-                    <th data-bind="click: function (data) { $parent.sort(data) }">                            
+                    <th data-bind="click: function (data) { $parent.sort(data) }">
                         <span data-bind="text: title"></span>
                         <span class="iconSort glyphicon glyphicon-sort text-muted " data-bind="visible: status() == 0"></span>
                         <span class="iconSort glyphicon glyphicon-sort-by-attributes" data-bind="visible: status() == 1"></span>

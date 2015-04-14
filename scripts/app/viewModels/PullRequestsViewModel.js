@@ -8,7 +8,6 @@
             self.list.push(item);
         };
 
-        ///NOTE: Заголовки таблицы
         this.headers = [
             { title: ""/*tr.header_Status*/, sortPropertyName: 'minVote',status: ko.observable(0) },
             { title: tr.header_Title, sortPropertyName: 'title',status: ko.observable(0) },
@@ -21,7 +20,6 @@
             { title: tr.header_TypeIssue, sortPropertyName: 'issueTypeName',status: ko.observable(0) }
         ];
 
-        ///NOTE: Столбец для сортировки
         this.sortHeader = self.headers[0];
 
         this.sort = function (data) {
@@ -48,8 +46,6 @@
         };
 
 
-        ///TODO: Вынести статистику в отдельную ViewModel
-        //NOTE: Статистика
         this.getStat = function (property, value) {
             var result = self.list().filter(function (item) {
                 return item[property]() == value;
@@ -63,36 +59,6 @@
             { title: tr.filter_StatusNo, count: ko.computed(function () { return self.getStat("titleMinVote", "No"); }) },
             { title: tr.filter_ShowAll, count: ko.computed(function () { return self.list().length; }) }
         ]);
-
-        ///NOTE: Данные для диаграммы
-        //this.data = [
-        //    {
-        //        value: 1,
-        //        color: "#F7464A",
-        //        highlight: "#FF5A5E",
-        //        label: tr.filter_StatusNoVote
-        //    },
-        //    {
-        //        value: 1,
-        //        color: "#46BFBD",
-        //        highlight: "#5AD3D1",
-        //        label: tr.filter_StatusYes
-        //    },
-        //    {
-        //        value: 1,
-        //        color: "#FDB45C",
-        //        highlight: "#FFC870",
-        //        label: tr.filter_StatusNo
-        //    }
-        //];
-        /////NOTE: Прорисовка диаграммы
-        //this.updateData = function () {
-        //    for (var i = 0; i < self.data.length; i++) {
-        //        self.data[i].value = self.statistic()[i].count();
-        //    }
-        //    //new Chart(document.getElementById("pie").getContext("2d")).Pie(self.data);
-        //};
-
 
         ///NOTE: Фильтрация
         this.filters = [
@@ -112,6 +78,7 @@
             }
         ];
 
+
         this.textForFilters = ko.observable("");
         this.propertyForFilters = ko.observable();
         this.activeFilter = ko.observable(self.filters[0].filter);
@@ -120,25 +87,23 @@
         };
 
         this.filteredListOfPullRequest = ko.computed(function () {
+
             var result;
-            //Фильтр по кнопке
+
             if (self.activeFilter()) {
                 result = self.list().filter(self.activeFilter());
             } else {
                 result = self.list();
             }
-            //Фильтр по введенному тексту
+
             if (self.textForFilters() != "") {
                 result = result.filter(function (item) {
                     return item[self.propertyForFilters()]().indexOf(self.textForFilters()) != -1;
                 });
             }
-            //self.updateData();
             return result;
         });
 
-
-        ///NOTE: PullRequest для подробного просмотра
         this.chosenPullRequest = ko.observable();
 
         this.setPullRequest = function (pullRequest) {
@@ -189,3 +154,32 @@
     };
 });
 
+
+///NOTE: Данные для диаграммы
+//this.data = [
+//    {
+//        value: 1,
+//        color: "#F7464A",
+//        highlight: "#FF5A5E",
+//        label: tr.filter_StatusNoVote
+//    },
+//    {
+//        value: 1,
+//        color: "#46BFBD",
+//        highlight: "#5AD3D1",
+//        label: tr.filter_StatusYes
+//    },
+//    {
+//        value: 1,
+//        color: "#FDB45C",
+//        highlight: "#FFC870",
+//        label: tr.filter_StatusNo
+//    }
+//];
+/////NOTE: Прорисовка диаграммы
+//this.updateData = function () {
+//    for (var i = 0; i < self.data.length; i++) {
+//        self.data[i].value = self.statistic()[i].count();
+//    }
+//    //new Chart(document.getElementById("pie").getContext("2d")).Pie(self.data);
+//};

@@ -51,7 +51,10 @@ namespace Dashboard
 
         private static string UserLogin
         {
-            get { return HttpContext.Current.User.Identity.Name.Replace(@"\", @"\\"); }
+            get
+            {
+                return HttpContext.Current.User.Identity.Name.Replace(@"\", @"\\"); 
+            }
         }
     }
 
