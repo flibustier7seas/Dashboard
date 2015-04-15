@@ -53,7 +53,7 @@
             var compare = utils.getFunctionCompare("pushDate");
             var max = utils.getMaxOfArray(self.commits(), compare);
             if (max) {
-                self.updateToText(max.pushDate);
+                self.updateToText(max.pushDateToText);
                 return max.pushDate;
             }
             return "";

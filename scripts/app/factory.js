@@ -75,7 +75,7 @@
                             tfs.getCommits(pullRequest.sourceRefName, pullRequest.targetRefName, item.repository.id)
                                 .then(function (data) {
                                     data.value.forEach(function (cmt) {
-                                        pullRequest.addCommit(new commit(cmt.commitId, utils.dateToText(cmt.committer.date), cmt.comment));
+                                        pullRequest.addCommit(new commit(cmt.commitId, cmt.committer.date, utils.dateToText(cmt.committer.date), cmt.comment));
                                     });
                                 });
 
