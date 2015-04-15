@@ -20,6 +20,7 @@
             { title: tr.header_TypeIssue, sortPropertyName: 'issueTypeName',status: ko.observable(0) }
         ];
 
+        ///NOTE: Сортировка
         this.sortHeader = self.headers[0];
 
         this.sort = function (data) {
@@ -45,22 +46,9 @@
             self.list.sort(compare);
         };
 
-
-        this.getStat = function (property, value) {
-            var result = self.list().filter(function (item) {
-                return item[property]() == value;
-            });
-            return result.length;
-        };
-
-        this.statistic = ko.observableArray([
-            { title: tr.filter_StatusNoVote, count: ko.computed(function () { return self.getStat("titleMinVote", "No vote"); }) },
-            { title: tr.filter_StatusYes, count: ko.computed(function () { return self.getStat("titleMinVote", "Yes"); }) },
-            { title: tr.filter_StatusNo, count: ko.computed(function () { return self.getStat("titleMinVote", "No"); }) },
-            { title: tr.filter_ShowAll, count: ko.computed(function () { return self.list().length; }) }
-        ]);
-
         ///NOTE: Фильтрация
+
+        ///NOTE: Фильтры по кнопке
         this.filters = [
             { title: tr.filter_ShowAll, filter: null },
             { title: tr.filter_OnlyErm, filter: function (item) { return item.repositoryName() == 'erm'; } },
@@ -77,15 +65,16 @@
                 }
             }
         ];
-
-
-        this.textForFilters = ko.observable("");
-        this.propertyForFilters = ko.observable();
         this.activeFilter = ko.observable(self.filters[0].filter);
         this.setActiveFilter = function (model) {
             self.activeFilter(model.filter);
         };
 
+        ///NOTE: Фильтр по введенному тексту
+        this.textForFilters = ko.observable("");
+        this.propertyForFilters = ko.observable();
+
+        
         this.filteredListOfPullRequest = ko.computed(function () {
 
             var result;
@@ -104,14 +93,16 @@
             return result;
         });
 
+        ///NOTE: Выбранный pullRequest, для отображения подробной информации
         this.chosenPullRequest = ko.observable();
-
         this.setPullRequest = function (pullRequest) {
             self.chosenPullRequest(pullRequest);
         };
 
 
         ///NOTE: Разбиение на страницы
+
+        //Количество записей на странице
         this.records = ko.observable(25);
         this.countRecords = ko.computed({
             read: function () {
@@ -123,12 +114,12 @@
                 }
             }
         });
-
+        //Открытая страница
         this.pageNumber = ko.observable(1);
         this.setPage = function (page) {
             self.pageNumber(page.num);
         };
-
+        //Количество страниц
         this.numberOfPages = ko.computed(function () {
             var num = Math.ceil(self.filteredListOfPullRequest().length / self.countRecords());
 
@@ -138,12 +129,15 @@
             return num;
         });
 
+        //Записи для текущей страницы
         this.pullRequests = ko.computed(function () {
             var indexEnd = self.pageNumber() * self.countRecords();
             var indexBegin = indexEnd - self.countRecords();
             return self.filteredListOfPullRequest().slice(indexBegin, indexEnd);
         });
 
+
+        //Кнопки для переключения страниц
         this.numberOfPagesButton = ko.computed(function () {
             var buttons = [];
             for (var i = 1; i <= self.numberOfPages() ; i++) {

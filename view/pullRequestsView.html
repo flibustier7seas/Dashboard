@@ -1,6 +1,6 @@
 ﻿<script type="text/html" id="pullRequestsView">
 
-    <button class="btn btn-primary" data-toggle="modal" data-target="#modalStatistic">Statistic</button>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#modalStatistic">Статистика</button>
 
     <div class="row">
         <div class="btn-group" data-toggle="buttons" data-bind="foreach: filters">
@@ -13,10 +13,10 @@
 
     <div class="row">
         <div class="col-xs-6">
-            <select class="col-md-2 form-control" data-bind="options: headers, value: propertyForFilters, optionsText: 'title', optionsValue: 'sortPropertyName'"></select>
+            <select class="col-md-2 form-control" data-bind="options: headers, value: propertyForFilters, optionsText: 'title', optionsValue: 'sortPropertyName', optionsCaption: 'Выберите столбец для фильтрации'"></select>
         </div>
         <div class="col-xs-6">
-            <input class="col-md-3 form-control" type="text" data-bind="textInput: textForFilters" />
+            <input class="col-md-3 form-control" placeholder="Введите текст" type="text" data-bind="textInput: textForFilters" />
         </div>
     </div>
     <div class="row">
@@ -169,12 +169,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Statistic</h4>
+                    <h4 class="modal-title">Статистика</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-4" data-bind="foreach: statistic">
-                            <a data-bind="text: title"></a>:<a data-bind="    text: count"></a><br />
+                            <a data-bind="text: title"></a>:<a data-bind="text: count"></a><br />
                         </div>
                         <div class="col-md-4">
                             <canvas id="pie" height="300" width="300"></canvas>
