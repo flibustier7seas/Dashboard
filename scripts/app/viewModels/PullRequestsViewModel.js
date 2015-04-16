@@ -1,8 +1,10 @@
 ﻿define(["jquery", "ko", "i18n!nls/tr", "chart"], function ($, ko, tr) {
-    return function () {
+    return function (pullRequests) {
         var self = this;
 
-        this.list = ko.observableArray();
+        this.statisticsViewModel = ko.observable();
+
+        this.list = pullRequests.list;
 
         this.add = function (item) {
             self.list.push(item);
@@ -37,6 +39,7 @@
         this.sortList = function () {
             var property = self.sortHeader.sortPropertyName;
             var compare = function (a, b) {
+                ///NOTE: Все поля должны быть одного типа, но по идее не все они обновляются,т.е. не все поля должны быть observable
                 if (self.sortHeader.status() == 1) {
                     return a[property]() < b[property]() ? -1 : a[property]() > b[property]() ? 1 : a[property]() == b[property]() ? 0 : 0;
                 } else {
@@ -147,33 +150,3 @@
         });
     };
 });
-
-
-///NOTE: Данные для диаграммы
-//this.data = [
-//    {
-//        value: 1,
-//        color: "#F7464A",
-//        highlight: "#FF5A5E",
-//        label: tr.filter_StatusNoVote
-//    },
-//    {
-//        value: 1,
-//        color: "#46BFBD",
-//        highlight: "#5AD3D1",
-//        label: tr.filter_StatusYes
-//    },
-//    {
-//        value: 1,
-//        color: "#FDB45C",
-//        highlight: "#FFC870",
-//        label: tr.filter_StatusNo
-//    }
-//];
-/////NOTE: Прорисовка диаграммы
-//this.updateData = function () {
-//    for (var i = 0; i < self.data.length; i++) {
-//        self.data[i].value = self.statistic()[i].count();
-//    }
-//    //new Chart(document.getElementById("pie").getContext("2d")).Pie(self.data);
-//};

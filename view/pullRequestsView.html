@@ -1,5 +1,4 @@
 ﻿<script type="text/html" id="pullRequestsView">
-
     <button class="btn btn-primary" data-toggle="modal" data-target="#modalStatistic">Статистика</button>
 
     <div class="row">
@@ -67,7 +66,7 @@
                 <span data-bind="text: num"></span>
             </label>
         </div>
-    </div>
+    </div>    
 
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -162,7 +161,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
 
     <div class="modal fade" id="modalStatistic" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -171,15 +170,10 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Статистика</h4>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-4" data-bind="foreach: statistic">
-                            <a data-bind="text: title"></a>:<a data-bind="text: count"></a><br />
-                        </div>
-                        <div class="col-md-4">
-                            <canvas id="pie" height="300" width="300"></canvas>
-                        </div>
-                    </div>
+                <div class="modal-body" data-bind="with: statisticsViewModel">                    
+
+                    <div data-bind="template: { if: isLoaded, name: viewName, data: data }"></div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
@@ -188,4 +182,3 @@
         </div>
     </div>
 </script>
-

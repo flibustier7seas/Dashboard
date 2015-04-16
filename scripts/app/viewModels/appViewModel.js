@@ -10,24 +10,18 @@ define(["jquery", "ko"],
             this.collection = ko.observableArray();
             this.headerActive = null;
 
-            this.addItem = function(item, title) {
-                var header = {
-                    title: title,
-                    active: ko.observable(false),
-                    obj: item
-                };
+            this.addItem = function(item) {
+                self.collection.push(item);
 
-                self.collection.push(header);
-
-                if (!self.headerActive) {
-                    self.headerActive = header;
-                    self.headerActive.active(true);
+                if (!self.headerActive && item.active()) {
+                    self.headerActive = item;
                 };
             };
 
             this.setActiveMenu = function (header) {
                 self.headerActive.active(false);
                 header.active(true);
+                self.headerActive = header;
             };
         };
     });

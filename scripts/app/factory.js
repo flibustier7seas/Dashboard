@@ -26,7 +26,7 @@
                                 item.pullRequestId,
                                 item.status,
                                 item.title,
-                                item.pullRequestId,
+                                repos.url + "/pullrequest/" +item.pullRequestId,
                                 item.createdBy.displayName,
                                 item.createdBy.id,
                                 item.createdBy.uniqueName,

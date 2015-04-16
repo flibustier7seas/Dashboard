@@ -1,0 +1,8 @@
+﻿<script type="text/html" id="statisticsView">
+    <div class="row">
+        <div class="col-md-4" data-bind="foreach: statistic">
+            <a data-bind="text: title"></a>:<a data-bind="text: count"></a><br />
+        </div>
+        <div class="col-md-8" data-bind="myChart: 'chart'"></div>
+    </div>
+</script>

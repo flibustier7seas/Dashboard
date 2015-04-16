@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" %>
+
 <%@ Import Namespace="Dashboard" %>
 
 <!DOCTYPE html>
@@ -8,7 +9,6 @@
     <script src="scripts/libs/require.js" data-main="scripts/bootstrap"></script>
     <link href="style/bootstrap.min.css" rel="stylesheet">
     <link href="style/styleSheet.css" rel="stylesheet">
-
     <script type="text/javascript">
         var user = { id: "<%=Settings.CurrentUser.Id%>", name: "<%=Settings.CurrentUser.Name %>", login: new String("<%=Settings.CurrentUser.Login %>") };
         var services = {
@@ -39,10 +39,9 @@
     </div>
 
     <div class="container-fluid" data-bind="foreach: collection">
-        <div data-bind="visible: active, with: obj ">
+        <div data-bind="visible: active">
             <div data-bind="template: { if: isLoaded, name: viewName, data: data }"></div>
         </div>
     </div>
-
 </body>
 </html>
