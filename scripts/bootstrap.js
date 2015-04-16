@@ -6,10 +6,9 @@
         "jquery":   "jquery-2.1.0",
         "ko": "knockout-3.3.0",
         "d3": "d3.v3.min",
-        "moment": "moment",
+        "moment": "moment-with-locales",
         "i18n": "i18n",
-        "bootstrapMin": "bootstrap.min",
-        "chart":"Chart"
+        "bootstrapMin": "bootstrap.min"
     },
         "shim": {
             "bootstrapMin": {

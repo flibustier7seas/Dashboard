@@ -9,6 +9,7 @@
         "header_StatusIssue": "Status Issue",
         "header_Priority": "Priority",
         "header_TypeIssue": "Type Issue",
+        "header_mergeStatus": "Merge Status",
 
         "filter_ShowAll": "Show All",
         "filter_OnlyErm": "Only erm",

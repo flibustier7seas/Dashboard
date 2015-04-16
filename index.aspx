@@ -43,5 +43,6 @@
             <div data-bind="template: { if: isLoaded, name: viewName, data: data }"></div>
         </div>
     </div>
+
 </body>
 </html>

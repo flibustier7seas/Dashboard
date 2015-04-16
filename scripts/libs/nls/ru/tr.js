@@ -8,6 +8,7 @@
     "header_StatusIssue": "Статус тикета",
     "header_Priority": "Приоритет",
     "header_TypeIssue": "Тип тикета",
+    "header_mergeStatus": "Статус слияния",
 
     "filter_ShowAll": "Все",
     "filter_OnlyErm": "Только erm",

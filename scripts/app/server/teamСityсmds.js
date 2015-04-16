@@ -1,6 +1,5 @@
 ﻿define(["jquery"], function ($) {
     return function (teamcityUrl) {
-
         var temcitycmds = {
             builds: teamcityUrl + "/httpAuth/app/rest/builds",
             build: function (buildId) {
@@ -12,11 +11,11 @@
         };
 
         return {
-            getBuilds: function (branchName) {
-                return $.getJSON(temcitycmds.buildsForBranch(branchName));
-            },
             getBuild: function (buildId) {
                 return $.getJSON(temcitycmds.build(buildId));
+            },
+            getBuilds: function (branchName) {
+                return $.getJSON(temcitycmds.buildsForBranch(branchName));
             }
         }
     };

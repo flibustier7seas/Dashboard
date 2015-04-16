@@ -1,4 +1,4 @@
-﻿define(["jquery", "ko", "i18n!nls/tr", "chart"], function ($, ko, tr) {
+﻿define(["jquery", "ko", "i18n!nls/tr"], function ($, ko) {
     return function () {
         var self = this;
 

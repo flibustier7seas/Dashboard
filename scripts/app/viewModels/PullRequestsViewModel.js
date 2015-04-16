@@ -1,4 +1,4 @@
-﻿define(["jquery", "ko", "i18n!nls/tr", "chart"], function ($, ko, tr) {
+﻿define(["jquery", "ko", "i18n!nls/tr"], function ($, ko, tr) {
     return function (pullRequests) {
         var self = this;
 
@@ -14,13 +14,20 @@
             { title: ""/*tr.header_Status*/, sortPropertyName: 'minVote',status: ko.observable(0) },
             { title: tr.header_Title, sortPropertyName: 'title',status: ko.observable(0) },
             { title: tr.header_Repository, sortPropertyName: 'repositoryName',status: ko.observable(0) },
-            { title: tr.header_Author, sortPropertyName: 'createdByDisplayName',status: ko.observable(0) },
+            //{ title: tr.header_Author, sortPropertyName: 'createdByDisplayName',status: ko.observable(0) },
             { title: tr.header_CreationDate, sortPropertyName: 'creationDate',status: ko.observable(0) },
             { title: tr.header_Updated, sortPropertyName: 'update',status: ko.observable(0) },
             { title: tr.header_StatusIssue, sortPropertyName: 'statusName',status: ko.observable(0) },
-            { title: tr.header_Priority, sortPropertyName: 'priorityName',status: ko.observable(0) },
-            { title: tr.header_TypeIssue, sortPropertyName: 'issueTypeName',status: ko.observable(0) }
+            { title: ""/*tr.header_Priority*/, sortPropertyName: 'priorityName',status: ko.observable(0) },
+            { title: ""/*tr.header_TypeIssue*/, sortPropertyName: 'issueTypeName',status: ko.observable(0) }
         ];
+
+        this.title = {
+            repository: tr.header_Repository,
+            author: tr.header_Author,
+            creationDate: tr.header_CreationDate,
+            mergeStatus: tr.header_mergeStatus
+        };
 
         ///NOTE: Сортировка
         this.sortHeader = self.headers[0];
@@ -39,7 +46,6 @@
         this.sortList = function () {
             var property = self.sortHeader.sortPropertyName;
             var compare = function (a, b) {
-                ///NOTE: Все поля должны быть одного типа, но по идее не все они обновляются,т.е. не все поля должны быть observable
                 if (self.sortHeader.status() == 1) {
                     return a[property]() < b[property]() ? -1 : a[property]() > b[property]() ? 1 : a[property]() == b[property]() ? 0 : 0;
                 } else {
@@ -54,8 +60,6 @@
         ///NOTE: Фильтры по кнопке
         this.filters = [
             { title: tr.filter_ShowAll, filter: null },
-            { title: tr.filter_OnlyErm, filter: function (item) { return item.repositoryName() == 'erm'; } },
-            { title: tr.filter_OnlyAutoTests, filter: function (item) { return item.repositoryName() == 'auto-tests'; } },
             { title: tr.filter_StatusNoVote, filter: function (item) { return item.titleMinVote() == 'No vote'; } },
             { title: tr.filter_StatusYes, filter: function (item) { return item.titleMinVote() == 'Yes'; } },
             { title: tr.filter_StatusNo, filter: function (item) { return item.titleMinVote() == 'No'; } },

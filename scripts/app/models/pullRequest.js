@@ -1,6 +1,6 @@
 ﻿define(["jquery", "ko", "../utils"], function ($, ko, utils) {
     return function (id, status, title, url, createdByDisplayName, createdById, createdByLogin, lastMergeSourceCommitId,
-        creationDate, sourceRefName,targetRefName, mergeStatus, description, repositoryName, repositoryUrl) {
+        creationDate, sourceRefName, targetRefName, mergeStatus, description, repositoryName, repositoryUrl, repositoryId,loader) {
 
         var self = this;
 
@@ -15,6 +15,7 @@
         this.mergeStatus = mergeStatus;
         this.description = description;
         this.repositoryUrl = repositoryUrl;
+        this.repositoryId = repositoryId;
 
         this.title = ko.observable(title);
         this.repositoryName = ko.observable(repositoryName);
@@ -23,21 +24,18 @@
         this.createdByLogin = ko.observable(createdByLogin);
         this.creationDateToText = ko.observable(utils.dateToText(creationDate));
         this.priorityName = ko.observable("");
+        this.priorityIconUrl = ko.observable("");
         this.statusName = ko.observable("");
         this.issueTypeName = ko.observable("");
+        this.issueTypeIconUrl = ko.observable("");
         this.issueUrl = ko.observable("");
+        this.updateToText = ko.observable();
+        this.update = ko.observable();
 
-        this.commits = ko.observableArray();
         this.reviewers = ko.observableArray();
-        this.builds = ko.observableArray();
-
-        this.addCommit = function (commit) {
-            self.commits.push(commit);
-        };
-        this.addReviewer = function(reviewer) {
+        this.addReviewer = function (reviewer) {
             self.reviewers.push(reviewer);
         };
-
 
         this.titleMinVote = ko.observable();
         this.minVote = ko.computed(function () {
@@ -52,19 +50,30 @@
                 return 20;
             }
         });
-
-        this.updateToText = ko.observable();
-        this.update = ko.computed(function () {
-            var compare = utils.getFunctionCompare("pushDate");
-            var max = utils.getMaxOfArray(self.commits(), compare);
-            if (max) {
-                self.updateToText(max.pushDateToText);
-                return max.pushDate;
+        
+        this.commitsArray = ko.observableArray();
+        this.commits = ko.pureComputed(function() {
+            if (!self.commitsArray().length) {
+                loader.getCommits(self.sourceRefName, self.targetRefName, self.repositoryId).then(function (data) {
+                    self.commitsArray(data);
+                    return self.commitsArray;
+                });
             }
-            return "";
+            return self.commitsArray();
         });
 
-        
-
+        this.buildsArray = ko.observableArray();
+        this.builds = ko.pureComputed(function () {
+            if (!self.buildsArray().length) {
+                loader.getBuildsId(self.sourceRefName).then(function (items) {
+                    items.forEach(function (item) {
+                        loader.getBuild(item).then(function (build) {
+                            self.buildsArray.push(build);
+                        });
+                    });
+                });
+            }
+            return self.buildsArray();
+        });
     };
 });

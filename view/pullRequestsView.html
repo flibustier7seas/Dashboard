@@ -1,5 +1,5 @@
 ﻿<script type="text/html" id="pullRequestsView">
-    <button class="btn btn-primary" data-toggle="modal" data-target="#modalStatistic">Статистика</button>
+    <!--<button class="btn btn-primary" data-toggle="modal" data-target="#modalStatistic">Статистика</button>-->
 
     <div class="row">
         <div class="btn-group" data-toggle="buttons" data-bind="foreach: filters">
@@ -24,9 +24,9 @@
                 <tr class="text-info" data-bind="foreach: headers">
                     <th data-bind="click: function (data) { $parent.sort(data) }">
                         <span data-bind="text: title"></span>
-                        <span class="iconSort glyphicon glyphicon-sort text-muted " data-bind="visible: status() == 0"></span>
-                        <span class="iconSort glyphicon glyphicon-sort-by-attributes" data-bind="visible: status() == 1"></span>
-                        <span class="iconSort glyphicon glyphicon-sort-by-attributes-alt" data-bind="visible: status() == -1"></span>
+                        <span class="floatRigth glyphicon glyphicon-sort text-muted " data-bind="visible: status() == 0"></span>
+                        <span class="floatRigth glyphicon glyphicon-sort-by-attributes" data-bind="visible: status() == 1"></span>
+                        <span class="floatRigth glyphicon glyphicon-sort-by-attributes-alt" data-bind="visible: status() == -1"></span>
                     </th>
                 </tr>
             </thead>
@@ -38,21 +38,20 @@
                         <span class="glyphicon glyphicon-remove-sign text-danger" data-bind="visible: minVote() == -10"></span>
                         <span class="glyphicon glyphicon-question-sign text-info" data-bind="visible: minVote() == 0"></span>
                     </td>
-                    <td class="col-md-4">
+                    <td class="col-md-6">
                         <a class="text-primary" data-bind="text: title, attr: { href: url }" target="_blank"></a>
                     </td>
                     <td class="col-md-1">
                         <a data-bind="text: repositoryName, attr: { href: repositoryUrl }" target="_blank"></a>
                     </td>
-                    <td class="col-md-2" data-bind="text: createdByDisplayName"></td>
+                    <!--<td class="col-md-2" data-bind="text: createdByDisplayName"></td>-->
                     <td class="col-md-2" data-bind="text: creationDateToText"></td>
                     <td class="col-md-2" data-bind="text: updateToText"></td>
-                    <td>
+                    <td class="col-md-2">
                         <a data-bind="text: statusName, attr: { href: issueUrl }" target="_blank"></a>
                     </td>
-                    <td class="col-md-1" data-bind="text: priorityName"></td>
-                    <td class="col-md-1" data-bind="text: issueTypeName"></td>
-
+                    <td><img data-bind="attr:{ src: priorityIconUrl, title:priorityName, alt:priorityName}"/></td>
+                    <td><img data-bind="attr:{ src: issueTypeIconUrl, title:issueTypeName, alt:issueTypeName}"/></td>
                 </tr>
             </tbody>
         </table>
@@ -66,7 +65,7 @@
                 <span data-bind="text: num"></span>
             </label>
         </div>
-    </div>    
+    </div>
 
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -76,28 +75,19 @@
                     <h4 class="modal-title" data-bind="text: title"></h4>
                 </div>
                 <div class="modal-body">
+                    <p class="text-info" data-bind="text:description"></p>
                     <p>
-                        <label>Repository</label>: <span data-bind="text: repositoryName"></span>
+                        <span data-bind="text: $parent.title.repository"></span>: <span data-bind="text: repositoryName"></span>
                     </p>
                     <p>
-                        <label>Created By</label>: <span data-bind="text: createdByDisplayName"></span>
+                        <span data-bind="text: $parent.title.author"></span>: <span data-bind="text: createdByDisplayName"></span>
                     </p>
                     <p>
-                        <label>Creation Date</label>: <span data-bind="text: creationDate"></span>
+                        <span data-bind="text: $parent.title.creationDate"></span>: <span data-bind="text: creationDateToText"></span>
                     </p>
                     <p>
-                        <label>SourceRefName</label>: <span data-bind="text: sourceRefName"></span>
+                        <span data-bind="text: $parent.title.mergeStatus"></span>: <span data-bind="text: mergeStatus"></span>
                     </p>
-                    <p>
-                        <label>TargetRefName</label>: <span data-bind="text: targetRefName"></span>
-                    </p>
-                    <p>
-                        <label>Merge Status</label>: <span data-bind="text: mergeStatus"></span>
-                    </p>
-                    <p>
-                        <label>Description</label>: <span data-bind="text: description"></span>
-                    </p>
-
                     <table class="table">
                         <caption>Reviewers</caption>
                         <thead>
@@ -113,9 +103,15 @@
                             </tr>
                         </tbody>
                     </table>
-
                     <table class="table">
-                        <caption>Commits (top 10)</caption>
+                        <caption>
+                            Commits (top 10)
+                            <p class="text-right text-info floatRigth">
+                                <span data-bind="text: sourceRefName"></span>
+                                <span class="glyphicon glyphicon-share-alt"></span>
+                                <span data-bind="text: targetRefName"></span>
+                            </p>
+                        </caption>
                         <thead>
                             <tr>
                                 <th>Push date</th>
@@ -129,7 +125,6 @@
                             </tr>
                         </tbody>
                     </table>
-
                     <table class="table">
                         <caption>Builds</caption>
                         <thead>
@@ -161,7 +156,7 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 
     <div class="modal fade" id="modalStatistic" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -170,7 +165,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Статистика</h4>
                 </div>
-                <div class="modal-body" data-bind="with: statisticsViewModel">                    
+                <div class="modal-body" data-bind="with: statisticsViewModel">
 
                     <div data-bind="template: { if: isLoaded, name: viewName, data: data }"></div>
 

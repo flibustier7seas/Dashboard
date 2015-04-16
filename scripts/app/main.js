@@ -1,7 +1,9 @@
 ﻿define(["jquery", "ko", "./viewModels/appViewModel", "./factory", "./viewModels/pullRequestsViewModel", "./viewModels/statisticsViewModel", "./models/pullRequests",
- "./server/jiraсmds", "./server/teamСityсmds", "./server/tfsсmds", "./viewLoader","jsapi"],
-    function ($, ko, appViewModel, factory, pullRequestsViewModel, statisticsViewModel, pullRequestsModel, jiracmds, teamСityсmds, tfscmds, viewLoader) {
+ "./server/jiraсmds", "./server/teamСityсmds", "./server/tfsсmds", "./viewLoader","moment"],
+    function ($, ko, appViewModel, factory, pullRequestsViewModel, statisticsViewModel, pullRequestsModel, jiracmds, teamСityсmds, tfscmds, viewLoader,moment) {
         $(function () {
+
+            moment.locale(window.navigator.language);
 
             var jira = new jiracmds(services.jira);
             var tc = new teamСityсmds(services.teamcity);
@@ -48,12 +50,11 @@
             viewLoader.loadView("statisticsView", function () {
                 statisticsItem.isLoaded(true);
                 ///NOTE: Возможно лучше вынести статистику в отдельное окно.
-                pullRequestsItem.data.statisticsViewModel(statisticsItem);
-                //app.addItem(statisticsItem, "Statistics");
+                //pullRequestsItem.data.statisticsViewModel(statisticsItem);
+                app.addItem(statisticsItem, "Statistics");
             });
 
             ko.applyBindings(app);
-            statisticsItem.isLoaded(true);
         });
     });
 

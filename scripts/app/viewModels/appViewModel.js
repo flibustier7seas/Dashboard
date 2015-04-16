@@ -10,7 +10,7 @@ define(["jquery", "ko"],
             this.collection = ko.observableArray();
             this.headerActive = null;
 
-            this.addItem = function(item) {
+            this.addItem = function (item) {
                 self.collection.push(item);
 
                 if (!self.headerActive && item.active()) {

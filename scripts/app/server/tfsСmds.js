@@ -12,8 +12,11 @@
             pullRequest: function (repositoryId, pullRequestId) {
                 return this.repository(repositoryId) + "/pullRequests/" + pullRequestId;
             },
+            commit: function (repositoryId, commitId) {
+                return this.repository(repositoryId) + "/commits/" + commitId;
+            },
             commits: function (repositoryId) {
-                return this.repository(repositoryId) + "/commitsBatch?$top=10"
+                return this.repository(repositoryId) + "/commitsBatch?$top=10";
             },
             reviewers: function (repositoryId, pullRequestId) {
                 return this.pullRequest(repositoryId, pullRequestId) + "/reviewers";
@@ -26,6 +29,9 @@
             },
             getPullRequests: function (repositoryId) {
                 return $.getJSON(commands.pullRequests(repositoryId));
+            },
+            getCommit: function (repositoryId, commitId) {
+                return $.getJSON(commands.commit(repositoryId, commitId));
             },
             getCommits: function (sourceRefName, targetRefName, repositoryId) {
                 var between = {
