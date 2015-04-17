@@ -1,7 +1,6 @@
 ﻿define([], function () {
     return function (id, status, title, url, createdByDisplayName, createdById, createdByLogin, lastMergeSourceCommitId,
         creationDate, sourceRefName, targetRefName, mergeStatus, description, repositoryName, repositoryUrl, repositoryId) {
-
         return {
             pullRequestId: id,
             status: status,
@@ -20,6 +19,5 @@
             createdByDisplayName: createdByDisplayName,
             repositoryName: repositoryName
         }
-
     };
 });

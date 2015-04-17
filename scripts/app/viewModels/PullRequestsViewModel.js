@@ -6,7 +6,6 @@
 
         this.list = ko.observableArray();
 
-
         this.load = function () {
             repositories.forEach(function (repository) {
                 loader.getPullRequests(repository).then(function (data) {
@@ -67,7 +66,6 @@
         };
 
         ///NOTE: Фильтрация
-
         ///NOTE: Фильтры по кнопке
         this.filters = [
             { title: tr.filter_ShowAll, filter: null },
