@@ -1,4 +1,4 @@
-﻿define(["jquery"], function ($) {
+﻿define(["jquery", "../utils", "../models/build"], function ($,utils, buildModel) {
     return function (teamcityUrl) {
         var temcitycmds = {
             builds: teamcityUrl + "/httpAuth/app/rest/builds",
@@ -12,10 +12,25 @@
 
         return {
             getBuild: function (buildId) {
-                return $.getJSON(temcitycmds.build(buildId));
+                return $.getJSON(temcitycmds.build(buildId)).then(function (obj) {
+                    return new buildModel(
+                        obj.buildTypeId,
+                        obj.state,
+                        obj.status,
+                        obj.webUrl,
+                        obj.statusText,
+                        utils.dateToTextTC(obj.startDate),
+                        utils.timeDifference(obj.startDate, obj.finishDate)
+                        );
+                });
             },
-            getBuilds: function (branchName) {
-                return $.getJSON(temcitycmds.buildsForBranch(branchName));
+            getBuildsId: function (branchName) {
+                console.log("getBuildsId: " + branchName);
+                return $.getJSON(temcitycmds.buildsForBranch(branchName)).then(function (data) {
+                    return $.map(data.build || [], function (item) {
+                        return item.id;
+                    });
+                });
             }
         }
     };

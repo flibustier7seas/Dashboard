@@ -1,60 +1,48 @@
-﻿define(["jquery", "ko", "./viewModels/appViewModel", "./factory", "./viewModels/pullRequestsViewModel", "./viewModels/statisticsViewModel", "./models/pullRequests",
- "./server/jiraсmds", "./server/teamСityсmds", "./server/tfsсmds", "./viewLoader","moment"],
-    function ($, ko, appViewModel, factory, pullRequestsViewModel, statisticsViewModel, pullRequestsModel, jiracmds, teamСityсmds, tfscmds, viewLoader,moment) {
+﻿define(["jquery", "ko", "./viewModels/appViewModel", "./viewModels/pullRequestsViewModel", "./viewModels/statisticsViewModel",
+    "./server/jiraсmds", "./server/teamСityсmds", "./server/tfsсmds", "./viewLoader", "moment", "./factory"],
+    function ($, ko, appViewModel, pullRequestsViewModel, statisticsViewModel,  jiracmds, teamСityсmds, tfscmds, viewLoader, moment, factory) {
         $(function () {
 
             moment.locale(window.navigator.language);
+
+            var app = new appViewModel();
 
             var jira = new jiracmds(services.jira);
             var tc = new teamСityсmds(services.teamcity);
             var tfs = new tfscmds(services.tfs);
 
-            var pullRequests = new pullRequestsModel();
+            var f = new factory(tfs, tc, jira);
 
             var pullRequestsItem = {
-                data: new pullRequestsViewModel(pullRequests),
+                data: null,
                 viewName: "pullRequestsView",
                 title: "Pull requests",
                 isLoaded: ko.observable(false),
                 active: ko.observable(true)
             };
 
-            var statisticsItem = {
-                data: new statisticsViewModel(pullRequests),
-                viewName: "statisticsView",
-                title: "Statistics",
-                isLoaded: ko.observable(false),
-                active: ko.observable(false)
-            };
-
-            var f = new factory(jira, tc, tfs);
-
-            f.getRepositories().then(function (repositories) {
-                repositories.forEach(function (repository) {
-                    f.getPullRequests(repository).then(function (items) {
-                        items.forEach(function (item) {
-                            pullRequests.add(item);
-                        });
-
-                    });
+            tfs.getRepositories().then(function(data) {
+                pullRequestsItem.data = new pullRequestsViewModel(data, f);
+                viewLoader.loadView("pullRequestsView", function () {
+                    pullRequestsItem.isLoaded(true);
+                    app.addItem(pullRequestsItem, "Pull Requests");
                 });
-            });
-            
-            var app = new appViewModel();
-
-            viewLoader.loadView("pullRequestsView", function () {
-                pullRequestsItem.isLoaded(true);
-                app.addItem(pullRequestsItem, "Pull Requests");
-            });
-
-            viewLoader.loadView("statisticsView", function () {
-                statisticsItem.isLoaded(true);
-                ///NOTE: Возможно лучше вынести статистику в отдельное окно.
-                //pullRequestsItem.data.statisticsViewModel(statisticsItem);
-                app.addItem(statisticsItem, "Statistics");
             });
 
             ko.applyBindings(app);
         });
     });
 
+//var statisticsItem = {
+//    data: new statisticsViewModel(pullRequests),
+//    viewName: "statisticsView",
+//    title: "Statistics",
+//    isLoaded: ko.observable(false),
+//    active: ko.observable(false)
+//};
+
+//viewLoader.loadView("statisticsView", function () {
+//    statisticsItem.isLoaded(true);
+//    //pullRequestsItem.data.statisticsViewModel(statisticsItem);
+//    app.addItem(statisticsItem, "Statistics");
+//});

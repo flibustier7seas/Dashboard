@@ -1,4 +1,4 @@
-﻿define(["jquery"], function ($) {
+﻿define(["jquery", "../models/issue"], function ($, issueModel) {
     return function (jiraUrl) {
 
         var jiracmds = {
@@ -10,7 +10,16 @@
 
         return {
             getIssue: function (issueName) {
-                return $.getJSON(jiracmds.issue(issueName));
+                return $.getJSON(jiracmds.issue(issueName)).then(function (item) {
+                    return new issueModel(
+                        item.fields.priority.name,
+                        item.fields.priority.iconUrl,
+                        services.jira + "/browse/" + issueName,
+                        item.fields.status.name,
+                        item.fields.issuetype.name,
+                        item.fields.issuetype.iconUrl
+                        );
+                });
             }
         }
     };

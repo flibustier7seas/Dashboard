@@ -1,25 +1,36 @@
 ﻿define(["jquery", "ko", "i18n!nls/tr"], function ($, ko, tr) {
-    return function (pullRequests) {
+    return function (repositories, loader) {
         var self = this;
 
         this.statisticsViewModel = ko.observable();
 
-        this.list = pullRequests.list;
+        this.list = ko.observableArray();
+
+
+        this.load = function () {
+            repositories.forEach(function (repository) {
+                loader.getPullRequests(repository).then(function (data) {
+                    ko.utils.arrayPushAll(self.list, data);
+                });
+            });
+        };
+        ///TODO: Исправить
+        this.load();
 
         this.add = function (item) {
             self.list.push(item);
         };
 
         this.headers = [
-            { title: ""/*tr.header_Status*/, sortPropertyName: 'minVote',status: ko.observable(0) },
-            { title: tr.header_Title, sortPropertyName: 'title',status: ko.observable(0) },
-            { title: tr.header_Repository, sortPropertyName: 'repositoryName',status: ko.observable(0) },
+            { title: ""/*tr.header_Status*/, sortPropertyName: 'minVote', status: ko.observable(0) },
+            { title: tr.header_Title, sortPropertyName: 'title', status: ko.observable(0) },
+            { title: tr.header_Repository, sortPropertyName: 'repositoryName', status: ko.observable(0) },
             //{ title: tr.header_Author, sortPropertyName: 'createdByDisplayName',status: ko.observable(0) },
-            { title: tr.header_CreationDate, sortPropertyName: 'creationDate',status: ko.observable(0) },
-            { title: tr.header_Updated, sortPropertyName: 'update',status: ko.observable(0) },
-            { title: tr.header_StatusIssue, sortPropertyName: 'statusName',status: ko.observable(0) },
-            { title: ""/*tr.header_Priority*/, sortPropertyName: 'priorityName',status: ko.observable(0) },
-            { title: ""/*tr.header_TypeIssue*/, sortPropertyName: 'issueTypeName',status: ko.observable(0) }
+            { title: tr.header_CreationDate, sortPropertyName: 'creationDate', status: ko.observable(0) },
+            { title: tr.header_Updated, sortPropertyName: 'update', status: ko.observable(0) },
+            { title: tr.header_StatusIssue, sortPropertyName: 'statusName', status: ko.observable(0) },
+            { title: ""/*tr.header_Priority*/, sortPropertyName: 'priorityName', status: ko.observable(0) },
+            { title: ""/*tr.header_TypeIssue*/, sortPropertyName: 'issueTypeName', status: ko.observable(0) }
         ];
 
         this.title = {
@@ -81,7 +92,7 @@
         this.textForFilters = ko.observable("");
         this.propertyForFilters = ko.observable();
 
-        
+
         this.filteredListOfPullRequest = ko.computed(function () {
 
             var result;

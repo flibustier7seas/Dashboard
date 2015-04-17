@@ -1,4 +1,4 @@
-﻿define(["jquery", "ko", "i18n!nls/tr", "d3", "Donut3D","Chart"], function ($, ko, tr) {
+﻿define(["jquery", "ko", "i18n!nls/tr", "d3", "Donut3D", "Chart"], function ($, ko, tr) {
     return function (pullRequests) {
         var self = this;
 
@@ -34,6 +34,11 @@
                 })
             }
         ]);
+        var statusData = [
+            { label: self.statistic()[0].title, value: self.statistic()[0].count(), color: "#3366CC" },
+            { label: self.statistic()[1].title, value: self.statistic()[1].count(), color: "#DC3912" },
+            { label: self.statistic()[2].title, value: self.statistic()[2].count(), color: "#FF9900" }
+        ];
 
         ko.bindingHandlers.myChart = {
             init: function (element, valueAccessor) {
@@ -41,37 +46,35 @@
                 svg.append("g").attr("id", valueAccessor());
             },
             update: function (element, valueAccessor) {
-                var salesData = [
-	                { label: self.statistic()[0].title, value: self.statistic()[0].count(), color: "#3366CC" },
-	                { label: self.statistic()[1].title, value: self.statistic()[1].count(), color: "#DC3912" },
-	                { label: self.statistic()[2].title, value: self.statistic()[2].count(), color: "#FF9900" }
-                ];
-                Donut3D.draw(valueAccessor(), salesData, 150, 150, 130, 100, 30, 0.4);
+                Donut3D.draw(valueAccessor(), statusData, 150, 150, 130, 100, 30, 0.4);
             }
         };
-        //var pieData = [
-        //    {
-        //        value: 300,
-        //        color: "#F7464A",
-        //        highlight: "#FF5A5E",
-        //        label: "Red"
-        //    },
-        //    {
-        //        value: 50,
-        //        color: "#46BFBD",
-        //        highlight: "#5AD3D1",
-        //        label: "Green"
-        //    }
-        //];
-        //ko.bindingHandlers.myChart = {
-        //    update: function (element) {
-        //        var canvas = document.createElement('canvas');
-        //        canvas.width = 600;
-        //        canvas.height = 600;
-        //        element.appendChild(canvas);
-        //        var ctx = canvas.getContext("2d");
-        //        new Chart(ctx).Pie(pieData);
-        //    }
-        //};
     };
 });
+
+//----------------Chart.js------------------
+//
+//var pieData = [
+//    {
+//        value: 300,
+//        color: "#F7464A",
+//        highlight: "#FF5A5E",
+//        label: "Red"
+//    },
+//    {
+//        value: 50,
+//        color: "#46BFBD",
+//        highlight: "#5AD3D1",
+//        label: "Green"
+//    }
+//];
+//ko.bindingHandlers.myChart = {
+//    update: function (element) {
+//        var canvas = document.createElement('canvas');
+//        canvas.width = 600;
+//        canvas.height = 600;
+//        element.appendChild(canvas);
+//        var ctx = canvas.getContext("2d");
+//        new Chart(ctx).Pie(pieData);
+//    }
+//};
