@@ -14,7 +14,7 @@
                     return new issueModel(
                         item.fields.priority.name,
                         item.fields.priority.iconUrl,
-                        services.jira + "/browse/" + issueName,
+                        jiraUrl + "/browse/" + issueName,
                         item.fields.status.name,
                         item.fields.issuetype.name,
                         item.fields.issuetype.iconUrl

@@ -1,5 +1,5 @@
 ﻿define(["jquery", "ko", "i18n!nls/tr", "d3", "Donut3D", "Chart"], function ($, ko, tr) {
-    return function (pullRequests) {
+    return function (pullRequests,userLogin) {
         var self = this;
 
         this.list = pullRequests.list;
@@ -20,7 +20,7 @@
             {
                 title: "My Pull Requests", count: ko.computed(function () {
                     return self.list().filter(function (item) {
-                        return item.createdByLogin() == user.login;
+                        return item.createdByLogin() == userLogin;
                     }).length;
                 })
             },
@@ -28,7 +28,7 @@
                 title: "My reviews", count: ko.computed(function () {
                     return self.list().filter(function (item) {
                         return item.reviewers().filter(function (reviewer) {
-                            return reviewer.login == user.login;
+                            return reviewer.login == userLogin;
                         }).length > 0;
                     }).length;
                 })

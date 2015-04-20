@@ -1,11 +1,11 @@
 define(["jquery", "ko"],
     function ($, ko) {
-        return function () {
+        return function (currentUser) {
 
             var self = this;
 
-            this.userId = user.id;
-            this.userName = user.login;
+            this.userId = currentUser.id;
+            this.userName = currentUser.login;
 
             this.collection = ko.observableArray();
             this.headerActive = null;

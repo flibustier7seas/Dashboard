@@ -1,7 +1,7 @@
 ﻿define(["jquery", "ko", "i18n!nls/tr"], function ($, ko, tr) {
-    return function (repositories, loader) {
+    return function (repositories, userLogin, loader) {
         var self = this;
-
+        
         this.statisticsViewModel = ko.observable();
 
         this.list = ko.observableArray();
@@ -71,11 +71,11 @@
             { title: tr.filter_StatusNoVote, filter: function (item) { return item.titleMinVote() == 'No vote'; } },
             { title: tr.filter_StatusYes, filter: function (item) { return item.titleMinVote() == 'Yes'; } },
             { title: tr.filter_StatusNo, filter: function (item) { return item.titleMinVote() == 'No'; } },
-            { title: tr.filter_MyPullRequest, filter: function (item) { return item.createdByLogin() == user.login; } },
+            { title: tr.filter_MyPullRequest, filter: function (item) { return item.createdByLogin() == userLogin; } },
             {
                 title: tr.filter_MyReview, filter: function (item) {
                     return item.reviewers().filter(function (reviewer) {
-                        return reviewer.login == user.login;
+                        return reviewer.login == userLogin;
                     }).length > 0;
                 }
             }

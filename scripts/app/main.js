@@ -5,13 +5,13 @@
 
             moment.locale(window.navigator.language);
 
-            var app = new appViewModel();
+            var app = new appViewModel(user);
 
             var jira = new jiracmds(services.jira);
             var tc = new teamСityсmds(services.teamcity);
             var tfs = new tfscmds(services.tfs);
 
-            var f = new factory(tfs, tc, jira);
+            var loader = new factory(tfs, tc, jira);
 
             var pullRequestsItem = {
                 data: null,
@@ -23,7 +23,7 @@
 
             tfs.getRepositories().then(function (data) {
 
-                pullRequestsItem.data = new pullRequestsViewModel(data, f);
+                pullRequestsItem.data = new pullRequestsViewModel(data, user.login, loader);
 
                 viewLoader.loadView("pullRequestsView", function () {
 
