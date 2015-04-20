@@ -12,8 +12,7 @@
                     return $.map(items || [], function (item) {
 
                         var pullRequest = new pullRequestViewModel(item, tfs, tc);
-
-                        ///TODO:
+                        
                         tfs.getCommit(item.repositoryId, item.lastMergeSourceCommitId)
                             .then(function (data) {
                                 pullRequest.update(data.pushDate);

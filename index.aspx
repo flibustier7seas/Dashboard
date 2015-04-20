@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <meta http-equiv="Cache-control" content="no-cache">
     <title>TFS Dashboard</title>
     <script src="scripts/libs/require.js" data-main="scripts/bootstrap"></script>
     <link href="style/bootstrap.min.css" rel="stylesheet">
@@ -19,7 +20,6 @@
     </script>
 </head>
 <body>
-
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">

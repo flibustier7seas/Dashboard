@@ -1,6 +1,4 @@
-﻿<script type="text/html" id="pullRequestsView">
-    <!--<button class="btn btn-primary" data-toggle="modal" data-target="#modalStatistic">Статистика</button>-->
-
+﻿<script type="text/html" id="pullRequestsView">   
     <div class="row">
         <div class="btn-group" data-toggle="buttons" data-bind="foreach: filters">
             <label class="btn btn-primary" data-bind="click: $parent.setActiveFilter">
@@ -19,10 +17,10 @@
         </div>
     </div>
     <div class="row">
-        <table class="table table-hover" data-bind="yourBindingName: pullRequests">
+        <table class="table table-hover">
             <thead>
                 <tr class="text-info" data-bind="foreach: headers">
-                    <th data-bind="click: function (data) { $parent.sort(data) }">
+                    <th class="thtop" data-bind="click: function (data) { $parent.sort(data) }">
                         <span data-bind="text: title"></span>
                         <span class="floatRigth glyphicon glyphicon-sort text-muted " data-bind="visible: status() == 0"></span>
                         <span class="floatRigth glyphicon glyphicon-sort-by-attributes" data-bind="visible: status() == 1"></span>
@@ -39,19 +37,18 @@
                         <span class="glyphicon glyphicon-question-sign text-info" data-bind="visible: minVote() == 0"></span>
                     </td>
                     <td class="col-md-6">
-                        <a class="text-primary" data-bind="text: title, attr: { href: url }" target="_blank"></a>
+                        <a class="text-primary" data-bind="text: title, attr: { href: url,target: '_blank' }"></a>
                     </td>
                     <td class="col-md-1">
-                        <a data-bind="text: repositoryName, attr: { href: repositoryUrl }" target="_blank"></a>
+                        <a data-bind="text: repositoryName, attr: { href: repositoryUrl,target: '_blank' }"></a>
                     </td>
-                    <!--<td class="col-md-2" data-bind="text: createdByDisplayName"></td>-->
                     <td class="col-md-2" data-bind="text: creationDateToText"></td>
                     <td class="col-md-2" data-bind="text: updateToText"></td>
                     <td class="col-md-2">
-                        <a data-bind="text: statusName, attr: { href: issueUrl }" target="_blank"></a>
+                        <a data-bind="text: statusName, attr: { href: issueUrl, target: '_blank'}"></a>
                     </td>
-                    <td><img data-bind="attr:{ src: priorityIconUrl, title:priorityName, alt:priorityName}"/></td>
-                    <td><img data-bind="attr:{ src: issueTypeIconUrl, title:issueTypeName, alt:issueTypeName}"/></td>
+                    <td class="col-md-1"><img class="icon" data-bind="attr:{ src: priorityIconUrl, title:priorityName, alt:priorityName}" /></td>
+                    <td class="col-md-1"><img data-bind="attr:{ src: issueTypeIconUrl, title:issueTypeName, alt:issueTypeName}" /></td>
                 </tr>
             </tbody>
         </table>
@@ -71,7 +68,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content" data-bind="with: chosenPullRequest">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times,</button>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                     <h4 class="modal-title" data-bind="text: title"></h4>
                 </div>
                 <div class="modal-body">
@@ -140,7 +137,7 @@
                         <tbody data-bind="foreach: builds">
                             <tr>
                                 <td>
-                                    <a data-bind="text: buildTypeId, attr: { href: webUrl }" target="_blank"></a>
+                                    <a data-bind="text: buildTypeId, attr: { href: webUrl,target: '_blank'}"></a>
                                 </td>
                                 <td data-bind="text: state"></td>
                                 <td data-bind="text: status"></td>
@@ -157,23 +154,25 @@
             </div>
         </div>
     </div>
+</script>
 
-    <div class="modal fade" id="modalStatistic" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times,</button>
-                    <h4 class="modal-title">Статистика</h4>
-                </div>
-                <div class="modal-body" data-bind="with: statisticsViewModel">
 
-                    <div data-bind="template: { if: isLoaded, name: viewName, data: data }"></div>
+<!--<button class="btn btn-primary" data-toggle="modal" data-target="#modalStatistic">Статистика</button>-->
+<!--<div class="modal fade" id="modalStatistic" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h4 class="modal-title">Статистика</h4>
+            </div>
+            <div class="modal-body" data-bind="with: statisticsViewModel">
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                </div>
+                <div data-bind="template: { if: isLoaded, name: viewName, data: data }"></div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             </div>
         </div>
     </div>
-</script>
+</div>-->

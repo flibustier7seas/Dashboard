@@ -46,8 +46,10 @@
 
         ///NOTE: Данные подгружаемые по требованию
         this.commitsArray = ko.observableArray();
+        this.commitIsLoad = false;
         this.commits = ko.pureComputed(function () {
-            if (!self.commitsArray().length) {
+            if (!self.commitIsLoad) {
+                self.commitIsLoad = true;
                 tfs.getCommits(self.sourceRefName(), self.targetRefName(), self.repositoryId()).then(function (data) {
                     self.commitsArray(data);
                     return self.commitsArray;
@@ -57,8 +59,10 @@
         });
 
         this.buildsArray = ko.observableArray();
+        this.buildIsLoad = false;
         this.builds = ko.pureComputed(function () {
-            if (!self.buildsArray().length) {
+            if (!self.buildIsLoad) {
+                self.buildIsLoad = true;
                 tc.getBuildsId(self.sourceRefName()).then(function (items) {
                     items.forEach(function (item) {
                         tc.getBuild(item).then(function (build) {

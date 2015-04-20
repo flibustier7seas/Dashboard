@@ -13,7 +13,6 @@
                 });
             });
         };
-        ///TODO: Исправить
         this.load();
 
         this.add = function (item) {
